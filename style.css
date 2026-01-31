@@ -1,0 +1,184 @@
+/* just starting w/ one stylesheet across the whole application for now */
+
+/* MAIN BODY */
+html, body {
+    text-align: center;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overscroll-behavior: none;
+    width: 100%;
+}
+
+.content {
+    text-align: center;
+    flex: 1;
+    padding: 24px;
+}
+
+ul { /* for the navbar for now so the bulletpoints don't show (will organise later) */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.navbar {
+    width: 180px;
+    border-right: 1px solid #ddd;
+    padding: 16px;
+    text-align: left;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    margin-top: 16px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 70px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 60px;
+    text-align: center;
+}
+
+.navbar a {
+    border-radius: 6px;
+    display: block;
+    width: 100%;
+}
+
+.navbar a:hover {
+    background: rgba(4, 255, 0, 0.742);
+}
+
+/* ----- HEADERS STYLING ----- */
+h1 {
+    color: black;
+    font-family: sans-serif, arial;
+    font-size: 40px;
+}
+
+h2 {
+    color: black;
+    font-family: sans-serif, arial;
+    font-size: 30px;
+}
+
+.date-header {
+    display: grid;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.date-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: center;
+    column-gap: 16px;
+    width: 100%;
+}
+
+.date-text h1, h2 {
+    margin: 0;
+}
+
+/* MAIN BUTTONS */
+#today-btn {
+    font-size: 24px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    width: 100px;
+}
+
+#previous-btn {
+    font-size: 25px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 40px;
+}
+
+#next-btn {
+    font-size: 25px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 40px;
+}
+
+/* MAIN BUTTONS HOVER SETTINGS */
+#today-btn:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
+
+#previous-btn:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
+
+#next-btn:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
+
+/* TODAY'S TASKS (Card 1) */
+.today-tasks {
+    text-align: center;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    background-color: rgb(141, 157, 141);
+    height: 40%;
+    width: 20%;
+}
+
+#add-task-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+}
+
+#filter-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+}
+
+#add-task-btn:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
+
+#filter-btn:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}

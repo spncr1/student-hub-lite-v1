@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Hub Dashboard (Lite)</title>
+        
+        <!-- CSS stylesheet -->
+        <link rel="stylesheet" href="style.css">
+
+        <!-- Fonts will go here (once decided)... -->
+        
+        <!-- Favicon goes here... -->
+    </head>
+    <body>
+
+        <nav class="navbar">
+            <!-- does nothing rn but will implement w/ later -->
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tasks.html">Tasks</a></li>
+                <li><a href="assignments.html">Assignments</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <button id="today-btn">TODAY</button>
+            
+            <div class="date-header">
+
+            <div class="date-row">
+                <button id="previous-btn"><</button>
+
+                <div class="date-text">
+                    <h1>31 January 2026</h1>
+                    <h2>Saturday</h2>
+                </div>
+
+                <button id="next-btn">></button>
+            </div>
+        </div>
+
+            <hr>
+
+            <h2>Welcome, (name).</h2> <!-- (name) is just a placeholder for now, will use a variable that stores the logged in user later to replace this -->
+
+            <!-- Today's Tasks (first dashboard card) -->
+             <div class="today-tasks">
+                <button id="add-task-btn">+</button>
+                <h2>TODAY'S TASKS</h2>
+                <button id="filter-btn">\/</button>
+             </div>
+
+             <!-- Assignments Due Today (second dashboard card) -->
+              <div class="assignments-due">
+
+             </div>
+
+             <!-- Calendar View (third dashboard card) - not sure how I'll implement this just yet, so just keeping as a placeholder here for now to implement later -->
+
+            <!-- Again, another placeholder (should be in bottom right - adjust later) -->
+             <div class="system-settings">
+                <button id="system-settings-btn">⚙️</button>
+             </div>
+        </main>
+        
+        <script src="index.js"></script>
+    </body>
+</html>
