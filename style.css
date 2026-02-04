@@ -152,49 +152,60 @@ h2 {
 
 /* TODAY'S TASKS (Card 1) */
 .today-tasks {
-    text-align: center;
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-rows: auto auto;
-    align-items: center;
+    align-items: start;
     background-color: rgb(141, 157, 141);
     height: 40%;
     width: 20%;
     border-radius: 10px;
-    padding: 12px;
-    gap: 10x;
+    padding: 14px 12px;
+    gap: 10px;
+}
+
+.today-tasks h2 {
+    margin: 2px 0 0;
+    text-align: center;
+    justify-self: center;
+    line-height: 1.1;
+}
+
+.today-tasks #add-task-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+    margin-top: 20px;
+}
+
+.today-tasks #filter-btn {
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+    margin-top: 20px;
 }
 
 #task-list {
     grid-column: 1 / -1;
-    margin: 0;
+    margin: 6px 0 0;
     padding: 0;
     list-style: none;
     text-align: left;
 }
 
-#task-list {
+#task-list li {
     background: rgba(255, 255, 255, 0.6);
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 8px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 10px;
     font-family: sans-serif, arial;
-}
-
-#add-task-btn {
-    font-size: 18px;
-    border-radius: 20px;
-    background-color: black;
-    color: white;
-    width: 30px;
-}
-
-#filter-btn {
-    font-size: 18px;
-    border-radius: 20px;
-    background-color: black;
-    color: white;
-    width: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
 }
 
 #add-task-btn:hover {
@@ -226,19 +237,44 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
+    font-family: sans-serif, arial;
     background: white;
     border-radius: 12px;
     padding: 16px;
     border: 1px solid #ddd;
     z-index: 10;
+    text-align: left;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    align-items: start;
+    column-gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-row label {
+    text-align: left;
+    margin: 0;
+    padding-top: 8px;
 }
 
 #modal-backdrop { z-index: 9; }
 
-#add-task-modal input, #add-task-modal textarea, #add-task-modal select {
-    width: 100%;
-    margin: 6px 0 12px;
+#add-task-modal input, #add-task-modal textarea {
+    width: 80%;
+    margin: 0;
     padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: sans-serif, arial;
+}
+
+#add-task-modal select {
+    width: 60%;
+    max-width: 100%;
+    padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-family: sans-serif, arial;
@@ -248,6 +284,14 @@ h2 {
     display: flex;
     justify-content: space-between;
     gap: 12px;
+}
+
+/* individual "add task" elements input styling */
+#task-notes {
+    resize: none;
+    height: 90px;
+    max-height: 90px;
+    overflow-y: auto;
 }
 
 .task-status {

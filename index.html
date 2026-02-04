@@ -45,7 +45,7 @@
 
             <hr>
 
-            <h2>Welcome, (name).</h2> <!-- (name) is just a placeholder for now, will use a variable that stores the logged in user later to replace this -->
+            <h2>Welcome, <span id="welcome-name"></span>.</h2> <!-- (name) is just a placeholder for now, will use a variable that stores the logged in user later to replace this -->
 
             <!-- Today's Tasks (first dashboard card) -->
              <div class="today-tasks">
@@ -59,22 +59,29 @@
 
              <div id="modal-backdrop" class="hidden"></div>
              <div id="add-task-modal" class="hidden" role="dialog" aria-modal="true">
-                <h3>ADD TASK</h3>
+                <h3 align="center">ADD TASK</h3>
                 <!-- Title -->
-                <label for="task-title"><strong>Title</strong></label>
-                <input id="task-title" type="text" placeholder="e.g., Finish tutorial">
+                 <div class="form-row">
+                    <label for="task-title"><strong>Title</strong></label>
+                    <input id="task-title" type="text" placeholder="e.g., Finish tutorial">
+                 </div>
 
                 <!-- Notes -->
-                <label for="task-notes"><strong>Notes</strong></label>
-                <textarea id="task-notes" rows="3" placeholder="Optional..."></textarea>
+                <div class="form-row">
+                    <label for="task-notes"><strong>Notes</strong></label>
+                    <textarea id="task-notes" rows="3" placeholder="Optional..."></textarea>
+                </div>
 
                 <!-- Priority -->
-                 <label for="task-priority"><strong>Priority</strong></label>
-                 <select id="task-priority">
-                    <option value="high">High</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="low">Low</option>
-                 </select>
+                <div class="form-row">
+                    <label for="task-priority"><strong>Priority</strong></label>
+                    <select id="task-priority">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div> 
+                
 
                  <!-- success message (if added task successfully) -->
                   <p id="task-status" class="task-status"></p>
