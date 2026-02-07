@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Hub (Lite) Assignments</title>
+        
+        <!-- CSS stylesheet -->
+        <link rel="stylesheet" href="style.css">
+
+        <!-- Fonts will go here (once decided)... -->
+        
+        <!-- Favicon goes here... -->
+    </head>
+    <body>
+
+        <nav class="navbar">
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tasks.html">Tasks</a></li>
+                <li><a href="assignments.html" class="active">Assignments</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <button id="today-btn">TODAY</button>
+            
+            <div class="date-header">
+
+                <div class="date-row">
+                    <button id="previous-btn"><</button>
+
+                    <div class="date-text">
+                        <h1 id="date-display"></h1>
+                        <h2 id="day-display"></h2>
+                    </div>
+
+                    <button id="next-btn">></button>
+                </div>
+            </div>
+            <hr>
+        </main>
+        
+        <script src="index.js"></script>
+    </body>
+</html>

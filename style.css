@@ -1,4 +1,7 @@
-/* just starting w/ one stylesheet across the whole application for now */
+/* ======================
+   MAIN DASHBOARD STYLING
+   ======================
+*/
 
 /* MAIN BODY */
 html, body {
@@ -179,7 +182,7 @@ h2 {
     line-height: 1.05;
 }
 
-.today-tasks #add-task-btn, .today-tasks #filter-btn {
+.today-tasks #add-task-btn, .today-tasks #sort-btn {
     font-size: 18px;
     border-radius: 20px;
     background-color: black;
@@ -218,7 +221,7 @@ h2 {
     color: black;
 }
 
-#filter-btn:hover {
+#sort-btn:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
     border-color: rgb(80, 90, 80);
@@ -305,4 +308,54 @@ h2 {
     min-height: 1.2em;
 }
 
+/* TODAY'S TASKS (SORT) STYLING */
+.today-tasks-header {
+    position: relative;
+}
+
+.sort-options {
+    display: grid;
+    gap: 6px;
+}
+
+.sort-option {
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    font-family: sans-serif, arial;
+}
+
+.sort-option:hover {
+    background: rgba(0,0,0,0.35);
+}
+
+.sort-option.active {
+    border-color: #111;
+    font-weight: 700;
+}
+
 /* ASSIGNMENTS DUE (Card 2) */
+
+/* System Settings Styling - stick to this format for additional buttons I want to add that aren't part of the main header */
+.system-settings {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+}
+
+#system-settings-btn {
+    font-size: 40px;
+    border-radius: 20px;
+    background-color: white;
+    color: white;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+    border: none;
+    cursor: pointer;
+}

@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskListEl = document.getElementById("task-list");
     const statusEl = document.getElementById("task-status");
 
+    const sortBtn = document.getElementById("sort-btn");
+    const sortPanel = document.getElementById("sort-panel");
+    const sortOptionsEl = document.getElementById("sort-options");
+    let currentSortMode = localStorage.getItem("tasksSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
+
     // Load the last selected date from localStorage (so that when you referesh, you keep your place)
     const savedDate = localStorage.getItem("selectedDate");
 
@@ -75,9 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const key = dateKey(selectedDate);
         const tasks = tasksByDate[key] || [];
 
+        const sortedTasks = sortTasks(tasks, currentSortMode); // apply the currently selected sort mode (front-end only for now, more backend logic to be implemented)
+        
         taskListEl.innerHTML = ""; // clears the old list
 
-        tasks.forEach((t, index) => {
+        sortedTasks.forEach((t) => {
             const li = document.createElement("li");
             li.textContent = `${t.title} (${t.priority})`;
             li.dataset.taskId = t.id; // attach the task id to the element (so clicks can find the correct task)
@@ -173,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const tasksByDate = loadAllTasks();
         const key = dateKey(selectedDate);
+        const now = Date.now();
 
         // check to ensure array exists for that date
         if (!tasksByDate[key]) tasksByDate[key] = [];
@@ -184,7 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
             notes,
             priority,
             done: false,
-            createdAt: Date.now()
+            createdAt: now,
+            updatedAt: now // so "last updated" works from day one
         }
 
         tasksByDate[key].push(newTask) // Similar to python append logic from mini-project last year
@@ -235,6 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks[idx].title = title;
         tasks[idx].notes = notesInput.value.trim();
         tasks[idx].priority = prioritySelect.value;
+        tasks[idx].updatedAt = Date.now();
 
         saveAllTasks(tasksByDate);
         renderTasksForSelectedDate();
@@ -273,6 +283,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }, STATUS_MS);
     }
 
+    /* SORT */
+    // helper methods
+    function openSortPanel() {
+        sortPanel.classList.remove("hidden");
+    }
+
+    function closeSortPanel() {
+        sortPanel.classList.add("hidden");
+    }
+
+    function toggleSortPanel() {
+        sortPanel.classList.toggle("hidden");
+    }
+
+    function sortTasks(tasks, mode) {
+        const copy = [...tasks]; // never mutate the original array
+
+        const normalise = (s) => (s || "").trim().toLowerCase(); // small helper to normalise strings for consistent A-Z sorting
+
+        const priorityRank = {high: 3, medium: 2, low: 1}; // priority ranking: highest should always come first
+
+        switch (mode) {
+            case "az":
+                copy.sort((a, b) => normalise(a.title).localeCompare(normalise(b.title)));
+                break;
+            case "za":
+                copy.sort((a, b) => normalise(b.title).localeCompare(normalise(a.title)));
+                break;
+            case "priority":
+                copy.sort((a, b) => {
+                    const pa = priorityRank[a.priority] || 0;
+                    const pb = priorityRank[b.priority] || 0;
+
+                    // higher priority first, where the tie breaker is the most recently created for priority clashes
+                    if (pb !== pa) return pb - pa;
+                    return (b.createdAt || 0) - (a.createdAt || 0);
+                });
+                break;
+            case "lastUpdated":
+                copy.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0)); // most recently updated first. if no updatedAt exists, fall back to createdAt
+                break;
+            case "createdNewOld":
+                copy.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                break;
+            case "createdOldNew":
+            default:
+                copy.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                break;
+        }
+
+        return copy;
+    }
+
+    function renderSortUI() {
+        const buttons = sortOptionsEl.querySelectorAll(".sort-options");
+        buttons.forEach(btn => {
+            btn.classList.toggle("active", btn.dataset.sort === currentSortMode);
+        });
+    }
+
     /* EVENTS WIRING (Clicks) - so that specific actions are performed based on clicks: */
     addTaskBtn.addEventListener("click", openModal);
     deleteBtn.addEventListener("click", deleteTask);
@@ -299,5 +369,37 @@ document.addEventListener("DOMContentLoaded", () => {
         openEditModal(taskId);
     });
 
+    // clicking the sort icon toggles the sort panel
+    sortBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleSortPanel();
+        if (!sortPanel.classList.contains("hidden")) {
+            renderSortUI();
+        }
+    });
+
+    sortOptionsEl.addEventListener("click", (e) => { // clicking an option sets the mode, saves it, re-renders tasks, and then closes the panel
+        const btn = e.target.closest(".sort-option");
+        if (!btn) return;
+
+        currentSortMode = btn.dataset.sort;
+        localStorage.setItem("taskSortMode", currentSortMode);
+
+        renderSortUI();
+        renderTasksForSelectedDate();
+        closeSortPanel();
+    });
+
+    // close the sort panel when the user clicks anywhere else on the page
+    document.addEventListener("click", () => {
+        closeSortPanel();
+    });
+
+    // prevent clicks *inside* the panel from closing it
+    sortPanel.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
     renderDate(); // IMPORTANT: when the date changes, the tasks need to be re-rendered to avoid confusion
+    renderSortUI();
 });

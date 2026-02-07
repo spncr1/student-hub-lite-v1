@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Student Hub Dashboard (Lite)</title>
+        <title>Student Hub (Lite) Dashboard</title>
         
         <!-- CSS stylesheet -->
         <link rel="stylesheet" href="style.css">
@@ -14,7 +14,6 @@
     <body>
 
         <nav class="navbar">
-            <!-- does nothing rn but will implement w/ later -->
             <button class="menu-toggle" aria-label="Toggle navigation">
                 ☰
             </button>
@@ -31,28 +30,41 @@
             
             <div class="date-header">
 
-            <div class="date-row">
-                <button id="previous-btn"><</button>
+                <div class="date-row">
+                    <button id="previous-btn"><</button>
 
-                <div class="date-text">
-                    <h1 id="date-display"></h1>
-                    <h2 id="day-display"></h2>
+                    <div class="date-text">
+                        <h1 id="date-display"></h1>
+                        <h2 id="day-display"></h2>
+                    </div>
+
+                    <button id="next-btn">></button>
                 </div>
-
-                <button id="next-btn">></button>
             </div>
-        </div>
-
+            
             <hr>
-
             <h2>Welcome, <span id="welcome-name"></span>.</h2> <!-- (name) is just a placeholder for now, will use a variable that stores the logged in user later to replace this -->
 
             <!-- Today's Tasks (first dashboard card) -->
              <div class="today-tasks">
                 <div class="today-tasks-header">
                     <button id="add-task-btn">+</button>
+                    
                     <h2>TODAY'S TASKS</h2>
-                    <button id="filter-btn">\/</button>
+                    
+                    <button id="sort-btn">\|/</button>
+                    <!-- Sort dropdown panel-->
+                    <div id="sort-panel" class="sort-panel hidden" role="menu" aria-label="Sort Tasks">
+                        <label><strong>Sort By</strong></label>
+                        <div id="sort-options" class="sort-options" role="menu">
+                            <button type="button" class="sort-option" data-sort="az">A-Z</button>
+                            <button type="button" class="sort-option" data-sort="za">Z-A</button>
+                            <button type="button" class="sort-option" data-sort="priority">Priority</button>
+                            <button type="button" class="sort-option" data-sort="lastUpdated">Last Updated</button>
+                            <button type="button" class="sort-option" data-sort="createdNewOld">Created (new -> old)</button>
+                            <button type="button" class="sort-option" data-sort="createdOldNew">Created (old -> new)</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Task list rendered here via JS -->
@@ -102,7 +114,7 @@
 
              <!-- Calendar View (third dashboard card) - not sure how I'll implement this just yet, so just keeping as a placeholder here for now to implement later -->
 
-            <!-- Again, another placeholder (should be in bottom right - adjust later) -->
+            <!-- System Settings -->
              <div class="system-settings">
                 <button id="system-settings-btn">⚙️</button>
              </div>
