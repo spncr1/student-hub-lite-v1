@@ -5,7 +5,7 @@
         <title>Student Hub (Lite) Dashboard</title>
         
         <!-- CSS stylesheet -->
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="/Styling/style.css">
 
         <!-- Fonts will go here (once decided)... -->
         
@@ -55,14 +55,16 @@
                     <button id="sort-btn">\|/</button>
                     <!-- Sort dropdown panel-->
                     <div id="sort-panel" class="sort-panel hidden" role="menu" aria-label="Sort Tasks">
-                        <label><strong>Sort By</strong></label>
-                        <div id="sort-options" class="sort-options" role="menu">
-                            <button type="button" class="sort-option" data-sort="az">A-Z</button>
-                            <button type="button" class="sort-option" data-sort="za">Z-A</button>
-                            <button type="button" class="sort-option" data-sort="priority">Priority</button>
-                            <button type="button" class="sort-option" data-sort="lastUpdated">Last Updated</button>
-                            <button type="button" class="sort-option" data-sort="createdNewOld">Created (new -> old)</button>
-                            <button type="button" class="sort-option" data-sort="createdOldNew">Created (old -> new)</button>
+                        <div class="sort-row">
+                            <label for="sort-select"><strong>Sort By</strong></label>
+                            <select id="sort-select">
+                                <option value="az">A-Z</option>
+                                <option value="za">Z-A</option>
+                                <option value="priority">Priority</option>
+                                <option value="lastUpdated">Last Updated</option>
+                                <option value="createdNewOld">Created (new -> old)</option>
+                                <option value="createdOldNew">Created (old -> new)</option>
+                            </select>
                         </div>
                     </div>
                 </div>

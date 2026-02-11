@@ -36,8 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const sortBtn = document.getElementById("sort-btn");
     const sortPanel = document.getElementById("sort-panel");
-    const sortOptionsEl = document.getElementById("sort-options");
-    let currentSortMode = localStorage.getItem("tasksSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
+    const sortSelect = document.getElementById("sort-select");
+    let currentSortMode = localStorage.getItem("tasksSortMode", currentSortMode); // load saved sort mode (default: createdNewOld)
+    sortSelect.value = currentSortMode;
 
     // Load the last selected date from localStorage (so that when you referesh, you keep your place)
     const savedDate = localStorage.getItem("selectedDate");
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* modal open/close */
     function openModal() {
-        let editingTaskId = null; // force add-mode
+        editingTaskId = null; // force add-mode
         
         document.getElementById("task-modal-title").textContent = "ADD TASK";
         confirmBtn.textContent = "Add";
@@ -155,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
         prioritySelect.value = "medium";
         statusEl.textContent = "";
         titleInput.focus(); // subtle UX improvement
+        closeSortPanel();
     }
 
     function closeModal() {
@@ -297,6 +299,10 @@ document.addEventListener("DOMContentLoaded", () => {
         sortPanel.classList.toggle("hidden");
     }
 
+    function isSortPanelOpen() {
+        return !sortPanel.classList.contains("hidden");
+    }
+
     function sortTasks(tasks, mode) {
         const copy = [...tasks]; // never mutate the original array
 
@@ -373,26 +379,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sortBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         toggleSortPanel();
-        if (!sortPanel.classList.contains("hidden")) {
-            renderSortUI();
-        }
-    });
-
-    sortOptionsEl.addEventListener("click", (e) => { // clicking an option sets the mode, saves it, re-renders tasks, and then closes the panel
-        const btn = e.target.closest(".sort-option");
-        if (!btn) return;
-
-        currentSortMode = btn.dataset.sort;
-        localStorage.setItem("taskSortMode", currentSortMode);
-
-        renderSortUI();
-        renderTasksForSelectedDate();
-        closeSortPanel();
-    });
-
-    // close the sort panel when the user clicks anywhere else on the page
-    document.addEventListener("click", () => {
-        closeSortPanel();
     });
 
     // prevent clicks *inside* the panel from closing it
@@ -400,6 +386,16 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
     });
 
+    // close the sort panel when the user clicks anywhere else on the page
+    document.addEventListener("click", () => {
+        closeSortPanel();
+    });
+
+    sortSelect.addEventListener("click", (e) => {
+        currentSortMode = sortSelect.value;
+        localStorage.setItem("taskSortMode", currentSortMode);
+        renderTasksForSelectedDate();
+    });
+
     renderDate(); // IMPORTANT: when the date changes, the tasks need to be re-rendered to avoid confusion
-    renderSortUI();
 });

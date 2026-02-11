@@ -166,6 +166,7 @@ h2 {
     border-radius: 10px;
     padding: 14px 12px;
     gap: 10px;
+    overflow: visible;
 }
 
 .today-tasks-header {
@@ -174,6 +175,7 @@ h2 {
     grid-template-columns: 30px 1fr 30px;
     align-items: center;
     column-gap: 10px;
+    position: relative;
 }
 
 .today-tasks-header h2 {
@@ -199,6 +201,8 @@ h2 {
     padding: 0;
     list-style: none;
     text-align: left;
+    overflow-y: auto;
+    max-height: 100%;
 }
 
 #task-list li {
@@ -309,33 +313,41 @@ h2 {
 }
 
 /* TODAY'S TASKS (SORT) STYLING */
-.today-tasks-header {
-    position: relative;
-}
+.sort-panel {
+    position: absolute;
 
-.sort-options {
+    top: 0;
+    left: calc(100% + 10px);
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+
     display: grid;
-    gap: 6px;
-}
+    gap: 8px;
 
-.sort-option {
-    width: 100%;
-    text-align: left;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: white;
-    cursor: pointer;
+    width: 190px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+    z-index: 999;
     font-family: sans-serif, arial;
 }
 
-.sort-option:hover {
-    background: rgba(0,0,0,0.35);
+.sort-panel label, .sort-panel select {
+    font-family: inherit;
+    font-size: 14px;
 }
 
-.sort-option.active {
-    border-color: #111;
-    font-weight: 700;
+.sort-panel label {
+    text-align: left;
+}
+
+.sort-panel select {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 /* ASSIGNMENTS DUE (Card 2) */
