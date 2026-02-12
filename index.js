@@ -40,6 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentSortMode = localStorage.getItem("taskSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
     sortSelect.value = currentSortMode;
 
+    // SYSTEM SETTINGS
+    const systemSettingsBtn = document.getElementById("system-settings-btn");
+    const systemSettingsModal = document.getElementById("system-settings-modal");
+    const navButtons = document.querySelectorAll(".settings-nav");
+    const panels = document.querySelectorAll(".settings-panel");
+    const subtitle = document.getElementById("settings-subtitle");
+
     // Load the last selected date from localStorage (so that when you referesh, you keep your place)
     const savedDate = localStorage.getItem("selectedDate");
 
@@ -351,11 +358,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    /* SYSTEM SETTINGS */
+    // helper methods
+    function openSystemSettings() {
+        closeSortPanel(); // close sort modal if its open
+
+        backdrop.classList.remove("hidden");
+        systemSettingsModal.classList.remove("hidden");
+    }
+
+    function closeSystemSettings() {
+        systemSettingsModal.classList.add("hidden");
+
+        const addTaskOpen = !modal.classList.contains("hidden");
+        if (!addTaskOpen) {
+            backdrop.classList.add("hidden");
+        }
+    }
+
+    function setActiveTab(tabKey) {
+        navButtons.forEach(btn => { // active button syling
+            btn.classList.toggle("active", btn.dataset.tab === tabKey);
+        });
+
+        panels.forEach(panel => {
+            panel.classList.toggle("hidden", panel.dataset.panel !== tabKey);
+        });
+
+        if (subtitle) {
+            subtitle.textContent = tabKey.charAt(0).toUpperCase() + tabKey.slice(1);
+        }
+    }
+
     /* EVENTS WIRING (Clicks) - so that specific actions are performed based on clicks: */
     addTaskBtn.addEventListener("click", openModal);
     deleteBtn.addEventListener("click", deleteTask);
     cancelBtn.addEventListener("click", closeModal);
-    backdrop.addEventListener("click", closeModal);
     todayBtn.addEventListener("click", goToToday);
     previousBtn.addEventListener("click", () => changeDay(-1));
     nextBtn.addEventListener("click", () => changeDay(+1));
@@ -399,6 +437,30 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTasksForSelectedDate();
         closeSortPanel();
     });
+
+    // System Settings wired up clicks
+    systemSettingsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openSystemSettings();
+    });
+
+    backdrop.addEventListener("click", () => {
+        closeModal(); // close whichever modal(s) are open
+        closeSystemSettings();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        closeModal();
+        closeSystemSettings();
+        closeSortPanel();
+    });
+
+    navButtons.forEach(btn => {
+        btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
+    });
+
+    setActiveTab("general"); // default tab when opening system settings modal
 
     renderDate(); // IMPORTANT: when the date changes, the tasks need to be re-rendered to avoid confusion
 });

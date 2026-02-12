@@ -45,35 +45,45 @@
             <hr>
             <h2>Welcome, <span id="welcome-name"></span>.</h2> <!-- (name) is just a placeholder for now, will use a variable that stores the logged in user later to replace this -->
 
-            <!-- Today's Tasks (first dashboard card) -->
-             <div class="today-tasks">
-                <div class="today-tasks-header">
-                    <button id="add-task-btn">+</button>
-                    
-                    <h2>TODAY'S TASKS</h2>
-                    
-                    <button id="sort-btn">\|/</button>
-                    <!-- Sort dropdown panel-->
-                    <div id="sort-panel" class="sort-panel hidden" role="menu" aria-label="Sort Tasks">
-                        <div class="sort-row">
-                            <label for="sort-select"><strong>Sort By</strong></label>
-                            <select id="sort-select">
-                                <option value="az">A-Z</option>
-                                <option value="za">Z-A</option>
-                                <option value="priority">Priority</option>
-                                <option value="lastUpdated">Last Updated</option>
-                                <option value="createdNewOld">Created (new -> old)</option>
-                                <option value="createdOldNew">Created (old -> new)</option>
-                            </select>
+            <!-- Today's Tasks & Assignments Due dashboard cards -->
+            <div class="dashboard-cards">
+                    <div class="today-tasks">
+                    <div class="today-tasks-header">
+                        <button id="add-task-btn">+</button>
+                        
+                        <h2>TODAY'S TASKS</h2>
+                        
+                        <button id="sort-btn">\|/</button>
+                        <!-- Sort dropdown panel-->
+                        <div id="sort-panel" class="sort-panel hidden" role="menu" aria-label="Sort Tasks">
+                            <div class="sort-row">
+                                <label for="sort-select"><strong>Sort By</strong></label>
+                                <select id="sort-select">
+                                    <option value="az">A-Z</option>
+                                    <option value="za">Z-A</option>
+                                    <option value="priority">Priority</option>
+                                    <option value="lastUpdated">Last Updated</option>
+                                    <option value="createdNewOld">Created (new -> old)</option>
+                                    <option value="createdOldNew">Created (old -> new)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Task list rendered here via JS -->
+                    <ul id="task-list"></ul>
                 </div>
 
-                <!-- Task list rendered here via JS -->
-                <ul id="task-list"></ul>
-             </div>
+                <div class="assignments-due">
+                    <div class="assignments-due-header">
+                        <h2>ASSIGNMENTS DUE TODAY</h2>
+                    </div>
+                </div>
+            </div>
 
              <div id="modal-backdrop" class="hidden"></div>
+
+             <!-- ADD TASK MODAL -->
              <div id="add-task-modal" class="hidden" role="dialog" aria-modal="true">
                 <h3 id="task-modal-title" align="center">ADD TASK</h3>
                 <!-- Title -->
@@ -109,17 +119,37 @@
                  </div>
              </div>
 
-             <!-- Assignments Due Today (second dashboard card) -->
-              <div class="assignments-due">
+             <!-- SYSTEM SETTINGS MODAL -->
+              <div id="system-settings-modal" class="hidden" role="dialog" aria-modal="true" aria-label="System Settings">
+                <div class="settings-layout">
+                    <aside class="settings-sidebar">
+                        <ul class="settings-sidebar-list">
+                            <li><button type="button" class="settings-nav active">General</button></li>
+                            <li><button type="button" class="settings-nav">Account</button></li>
+                            <li><button type="button" class="settings-nav">Customise</button></li>
+                        </ul>
+                    </aside>
 
-             </div>
+                    <!-- Main content -->
+                     <div class="settings-content">
+                        <div class="settings-header">
+                            <h3 class="settings-title">SYSTEM SETTINGS</h3>
+                            <div id="settings-subtitle" class="settings-subtitle">General</div>
+                        </div>
 
-             <!-- Calendar View (third dashboard card) - not sure how I'll implement this just yet, so just keeping as a placeholder here for now to implement later -->
-
-            <!-- System Settings -->
+                        <div class="settings-body">
+                            <!-- Panels go here -->
+                        </div>
+                     </div>
+                </div>
+              </div>
+              
+              <!-- System Settings Button (placement)-->
              <div class="system-settings">
                 <button id="system-settings-btn">⚙️</button>
              </div>
+
+             <!-- Calendar View (third dashboard card) - not sure how I'll implement this just yet, so just keeping as a placeholder here for now to implement later -->
         </main>
         
         <script src="index.js"></script>
