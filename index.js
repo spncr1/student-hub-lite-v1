@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const navButtons = document.querySelectorAll(".settings-nav");
     const panels = document.querySelectorAll(".settings-panel");
     const subtitle = document.getElementById("settings-subtitle");
+    const darkToggle = document.getElementById("dark-mode-toggle"); // for dark mode
 
     // Load the last selected date from localStorage (so that when you referesh, you keep your place)
     const savedDate = localStorage.getItem("selectedDate");
@@ -390,6 +391,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function setDarkMode(isOn) {
+        document.body.classList.toggle("dark-mode", isOn);
+        localStorage.setItem("darkMode", isOn ? "1" : "0");
+    }
+
     /* EVENTS WIRING (Clicks) - so that specific actions are performed based on clicks: */
     addTaskBtn.addEventListener("click", openModal);
     deleteBtn.addEventListener("click", deleteTask);
@@ -461,6 +467,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setActiveTab("general"); // default tab when opening system settings modal
+
+    if (darkToggle) {
+        // load saved preference
+        const saved = localStorage.getItem("darkMode") === "1";
+        darkToggle.checked = saved;
+        setDarkMode(saved);
+
+        darkToggle.addEventListener("change", () => {
+            setDarkMode(darkToggle.checked);
+        });
+    }
 
     renderDate(); // IMPORTANT: when the date changes, the tasks need to be re-rendered to avoid confusion
 });
