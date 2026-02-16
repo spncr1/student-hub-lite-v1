@@ -297,6 +297,11 @@ h2 {
     align-items: start;
 }
 
+.subjects-panel { grid-column: 1; }
+.assignments-table-card { grid-column: 1; }
+.assignments-main { grid-column: 2; }
+.assignments-widgets { grid-column: 3; }
+
 /* Subjects panel */
 .subjects-panel {
     border: 1px solid #ddd;
@@ -345,14 +350,68 @@ h2 {
     font-weight: 800;
 }
 
-/* Main centre */
+/* Left column */
+.assignments-table-card {
+    border: 2px solid rgb(3, 46, 8);
+    background-color: rgb(141, 157, 141);
+    border-radius: 10px;
+    padding: 14px 12px;
+    grid-column: 1;
+    margin-top: 18px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.assignments-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.table-title {
+    margin: 0;
+    font-family: sans-serif, arial;
+    font-size: 26px;
+    font-weight: 900;
+}
+
+.assignments-table-wrap {
+    overflow: auto;
+    border-radius: 10px;
+}
+
+.assignments-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.75);
+    font-family: sans-serif, arial;
+}
+
+.assignments-table th, .assignments-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+}
+
+.assignments-table th {
+    background: rgba(255, 255, 255, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Middle column */
 .assignments-main {
     display: grid;
     gap: 12px;
 }
 
 /* Controls row placeholder */
-.assignment-controls {
+.assignments-controls {
     display: flex;
     gap: 12px;
     align-items: center;
@@ -396,60 +455,12 @@ h2 {
     border: 1px solid #ccc;
 }
 
-/* Table card */
-.assignments-table-card {
-    border: 2px solid rgb(3, 46, 8);
-    background-color: rgb(141, 157, 141);
-    border-radius: 10px;
-    padding: 14px 12px;
-}
-
-.assignments-table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.table-title {
-    margin: 0;
-    font-family: sans-serif, arial;
-    font-size: 26px;
-    font-weight: 900;
-}
-
-.assignments-table-wrap {
-    overflow: auto;
-    border-radius: 10px;
-}
-
-.assignments-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.75);
-    font-family: sans-serif, arial;
-}
-
-.assignments-table th, .assignments td {
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
-    text-align: left;
-    font-size: 14px;
-    font-weight: 700;
-    color: #111;
-}
-
-.assignments-table th {
-    background: rgba(255, 255, 255, 0.9);
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
 /* Right widgets column */
 .assignments-widgets {
     display: grid;
-    gap: 14px;
+    gap: 20px;
+    align-content: start;
+    justify-items: stretch;
 }
 
 .widget-card {
@@ -457,18 +468,18 @@ h2 {
     background: #fff;
     border-radius: 12px;
     text-align: left;
-    min-height: 130px;
+    min-height: 150px;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
 .widget-title {
     font-family: sans-serif, arial;
     font-weight: 900;
     font-size: 14px;
-    margin-bottom: 10px;
 }
 
 .widget-placeholder {
-    border-radius: 10px;
     background: rgba(0, 0, 0, 0,06);
     height: 90px;
 }
@@ -482,5 +493,13 @@ h2 {
 @media (max-width: 1100px) {
     .assignments-layout {
         grid-template-columns: 1fr;
+    }
+
+    .subjects-panel, .assignments-table-card, .assignments-main, .assignments-widgets {
+        grid-column: auto;
+    }
+
+    .assignments-table-card {
+        margin-top: 12px;
     }
 }

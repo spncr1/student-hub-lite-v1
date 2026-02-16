@@ -6,6 +6,7 @@
         
         <!-- CSS stylesheet -->
         <link rel="stylesheet" href="/Styling/assignments.css">
+        <!-- <link rel="stylesheet" href="/Styling/dark-mode.css"> -->
 
         <!-- Fonts will go here (once decided)... -->
         
@@ -32,53 +33,25 @@
 
             <!-- MAIN LAYOUT -->
             <section class="assignments-layout">
+                <!-- LEFT COLUMN -->
                 <aside class="subjects-panel" aria-label="Subjects">
                     <h3 class="panel-title">Subjects <span class="panel-subtitle">(Semester)</span>:</h3>
 
                     <ul class="subjects-list">
-                        <li><button type="button" class="subject-item active" data-subject="all">All Subjects</button></li>
-                        <li><button type="button" class="subject-item active" data-subject="subject-1">Subject 1</button></li>
-                        <li><button type="button" class="subject-item active" data-subject="subject-2">Subject 2</button></li>
-                        <li><button type="button" class="subject-item active" data-subject="subject-3">Subject 3</button></li>
-                        <li><button type="button" class="subject-item active" data-subject="subject-4">Subject 4</button></li>
+                        <li><button type="button" class="subject-item active" data-subject="subject-1">Intro to Data Engineering</button></li>
+                        <li><button type="button" class="subject-item active" data-subject="subject-2">Collaboration in Complex Projects</button></li>
+                        <li><button type="button" class="subject-item active" data-subject="subject-3">Data Structures & Algorithms</button></li>
+                        <li><button type="button" class="subject-item active" data-subject="subject-4">Engineering Research Preparation</button></li>
 
                     </ul>
                 </aside>
 
-                <section class="assignments-main" aria-label="Assignments table">
-                    <div class="assignments-controls">
-                        <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
-
-                        <div class="controls-group">
-                            <label class="control-label" for="assignments-sort">Sort</label>
-                            <select id="assignments-sort" class="control-select">
-                                <option value="dueSoon">Due date (soonest)</option>
-                                <option value="dueLate">Due date (latest)</option>
-                                <option value="weightHigh">Weighting (high -> low)</option>
-                                <option value="weightLow">Weighting (low -> high) </option>
-                                <option value="priority">Priority</option>
-                            </select>
-                        </div>
-
-                        <div class="controls-group">
-                            <label class="control-label" for="assignments-filter">Filter</label>
-                            <select id="assignments-filter" class="control-select">
-                                <option value="all">All</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                                <option value="completed">All</option>
-                            </select>
-                        </div>
+                <div class="assignments-table-card" aria-label="All Assignments table">
+                    <div class="assignments-table-header">
+                        <h2 class="table-title">All Assignments</h2>
                     </div>
 
-                    <!-- TABLE SHELL -->
-                    <div class="assignments-table-card">
-                        <div class="assignments-table-header">
-                            <h2 class="table-title">All Assignments</h2>
-                        </div>
-
-                        <div class="assignments-table-wrap">
+                    <div class="assignments-table-wrap">
                             <table class="assignments-table">
                                 <thead>
                                     <tr>
@@ -111,10 +84,40 @@
                                 </tbody>
                             </table>
                         </div>
+                </div>
+
+                <!-- MIDDLE COLUMN -->
+                <section class="assignments-main" aria-label="Assignments controls">
+                    <div class="assignments-controls">
+                        <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
+
+                        <div class="controls-group">
+                            <label class="control-label" for="assignments-sort">Sort</label>
+                            <select id="assignments-sort" class="control-select">
+                                <option value="dueSoon">Due date (soonest)</option>
+                                <option value="dueLate">Due date (latest)</option>
+                                <option value="weightHigh">Weighting (high -> low)</option>
+                                <option value="weightLow">Weighting (low -> high) </option>
+                                <option value="priority">Priority</option>
+                            </select>
+                        </div>
+
+                        <div class="controls-group">
+                            <label class="control-label" for="assignments-filter">Filter</label>
+                            <select id="assignments-filter" class="control-select">
+                                <option value="all">All</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                                <option value="completed">All</option>
+                            </select>
+                        </div>
                     </div>
+                    
+                    <!-- any future centred content will go here-->
                 </section>
 
-                <!-- RIGHT: VISUAL WIDGETS (placeholders) -->
+                <!-- RIGHT COLUMN: VISUAL WIDGETS (placeholders) -->
                  <aside class="assignments-widgets" aria-label="Summary widgets">
                     <div class="widget-card">
                         <div class="widget-title">TBC</div>
@@ -168,7 +171,7 @@
                                     </div>
 
                                     <label class="switch">
-                                        <input type="checkbox" id="darkmode-toggle">
+                                        <input type="checkbox" id="dark-mode-toggle">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
