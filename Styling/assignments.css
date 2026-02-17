@@ -289,18 +289,15 @@ h2 {
     opacity: 0.75;
 }
 
-/* 3-column layout: subjects | main | widgets */
+/* 3-column layout: subjects / all assignments | main | widgets */
 .assignments-layout {
     display: grid;
     grid-template-columns: 220px minmax(520px, 1fr) 320px;
+    grid-template-rows: auto auto;
     gap: 18px;
     align-items: start;
+    row-gap: 125px;
 }
-
-.subjects-panel { grid-column: 1; }
-.assignments-table-card { grid-column: 1; }
-.assignments-main { grid-column: 2; }
-.assignments-widgets { grid-column: 3; }
 
 /* Subjects panel */
 .subjects-panel {
@@ -309,6 +306,8 @@ h2 {
     padding: 12px;
     text-align: left;
     background: #fff;
+    grid-column: 1;
+    grid-row: 1 / 3;
 }
 
 .panel-title {
@@ -356,16 +355,20 @@ h2 {
     background-color: rgb(141, 157, 141);
     border-radius: 10px;
     padding: 14px 12px;
-    grid-column: 1;
-    margin-top: 18px;
+
+    grid-column: 1 / 3;
+    grid-row: 2;
+    align-self: start;
     width: 100%;
     box-sizing: border-box;
+    margin-top: 0;
+    overflow: visible;
 }
 
 .assignments-table-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: left;
     margin-bottom: 10px;
 }
 
@@ -408,36 +411,53 @@ h2 {
 .assignments-main {
     display: grid;
     gap: 12px;
+    grid-column: 2; 
+    grid-row: 1;
+    align-self: start;
 }
 
 /* Controls row placeholder */
 .assignments-controls {
     display: flex;
     gap: 12px;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-start;
-    flex-wrap: wrap;
 
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background: #fff;
+    width: 70%;
+    position: relative;
+    top: 200px;
+    left: 70px;
 }
 
 .btn-primary {
-    border: none;
-    background: #111;
-    color: #fff;
-    padding: 10px 12px;
-    border-radius: 8px;
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
     cursor: pointer;
-    font-family: sans-serif, arial;
-    font-weight: 700;
+
+    justify-self: start;    
+}
+
+.btn-primary:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
 }
 
 .controls-group {
     display: grid;
-    gap: 6px;
+    gap: 5px;
+    justify-items: start;
 }
 
 .control-label {
@@ -453,6 +473,15 @@ h2 {
     padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#assignments-sort {
+    width: 180px;
+}
+
+#assignments-filter {
+    width: 120px;
 }
 
 /* Right widgets column */
@@ -461,6 +490,9 @@ h2 {
     gap: 20px;
     align-content: start;
     justify-items: stretch;
+    grid-column: 3; 
+    grid-row: 1 / 3;
+    align-self: start;
 }
 
 .widget-card {
@@ -477,6 +509,7 @@ h2 {
     font-family: sans-serif, arial;
     font-weight: 900;
     font-size: 14px;
+    margin: 0 0 10px;
 }
 
 .widget-placeholder {

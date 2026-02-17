@@ -38,6 +38,7 @@
                     <h3 class="panel-title">Subjects <span class="panel-subtitle">(Semester)</span>:</h3>
 
                     <ul class="subjects-list">
+                        <!--<li><button type="button" class="subject-item active" data-subject="all-subjects">Add a Subject (placeholder)</button></li>-->
                         <li><button type="button" class="subject-item active" data-subject="subject-1">Intro to Data Engineering</button></li>
                         <li><button type="button" class="subject-item active" data-subject="subject-2">Collaboration in Complex Projects</button></li>
                         <li><button type="button" class="subject-item active" data-subject="subject-3">Data Structures & Algorithms</button></li>
@@ -46,50 +47,13 @@
                     </ul>
                 </aside>
 
-                <div class="assignments-table-card" aria-label="All Assignments table">
-                    <div class="assignments-table-header">
-                        <h2 class="table-title">All Assignments</h2>
-                    </div>
-
-                    <div class="assignments-table-wrap">
-                            <table class="assignments-table">
-                                <thead>
-                                    <tr>
-                                        <th>Course</th>
-                                        <th>Task</th>
-                                        <th>Priority</th>
-                                        <th>Status</th>
-                                        <th>Due Date</th>
-                                        <th>Weighting (%)</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="assignments-body">
-                                    <!-- placeholder rows (for now) -->
-                                     <tr>
-                                        <td>Data Structures & Algorithms</td>
-                                        <td>Programming Assignment 1</td>
-                                        <td>Medium</td>
-                                        <td>In progress</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                     </tr>
-                                     <tr>
-                                        <td>Engineering Research Preparation</td>
-                                        <td>AT1</td>
-                                        <td>Not started</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                </div>
-
                 <!-- MIDDLE COLUMN -->
                 <section class="assignments-main" aria-label="Assignments controls">
                     <div class="assignments-controls">
-                        <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
+                        <div class="controls-group">
+                            <label class="control-label" for="add-assignment-btn">Add Assignments</label>
+                            <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
+                        </div>
 
                         <div class="controls-group">
                             <label class="control-label" for="assignments-sort">Sort</label>
@@ -109,7 +73,7 @@
                                 <option value="high">High</option>
                                 <option value="medium">Medium</option>
                                 <option value="low">Low</option>
-                                <option value="completed">All</option>
+                                <option value="completed">Completed</option>
                             </select>
                         </div>
                     </div>
@@ -134,6 +98,30 @@
                         <div class="widget-placeholder widget-pie"></div>
                     </div>
                  </aside>
+
+                 <div class="assignments-table-card" aria-label="All Assignments table">
+                    <div class="assignments-table-header">
+                        <h2 class="table-title">All Assignments</h2>
+                    </div>
+
+                    <div class="assignments-table-wrap">
+                            <table class="assignments-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Task</th>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th>Due Date</th>
+                                        <th>Weighting (%)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="assignments-body">
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
             </section>
             <!-- <hr> - USE IF I WANNA ADD AN EXTRA SECTION BELOW FOR ADDITIONAL SETTINGS --> 
 
@@ -187,6 +175,6 @@
              </div>
         </main>
         
-        <script src="index.js"></script>
+        <script src="/Assignments/assignments.js"></script>
     </body>
 </html>

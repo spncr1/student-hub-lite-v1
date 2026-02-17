@@ -184,6 +184,7 @@ h2 {
     height: 30px;
     align-self: center;
     justify-self: center;
+    cursor: pointer;
 }
 
 #task-list {
