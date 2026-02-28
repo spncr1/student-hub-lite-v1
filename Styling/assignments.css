@@ -9,6 +9,9 @@
   - System settings button + modal
 */
 
+* { box-sizing: border-box; }
+img { max-width: 100%; height: auto; display: block; }
+
 html, body {
     text-align: center;
     display: flex;
@@ -792,15 +795,57 @@ button, input, select, textarea { font-family: inherit; }
 
 /* Responsive fallback just in case of trouble */
 @media (max-width: 1100px) {
+    html, body {
+        display: block;
+        width: 100%;
+    }
+
+    .navbar {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .content {
+        padding: 16px;
+    }
+    
     .assignments-layout {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
     }
 
-    .subjects-panel, .assignments-table-card, .assignments-main, .assignments-widgets {
-        grid-column: auto;
+    .assignment-widgets {
+        grid-row: auto;
     }
 
-    .assignments-table-card {
+    .weighting-carousel, .assignments-controls {
+        width: 100%;
+        margin: 0;
+    }
+
+    .assignments-controls {
         margin-top: 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    .assignments-table-card {
+        overflow-x: auto;
+    }
+
+    .assignments-table {
+        min-width: 720px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-title { font-size: 26px; }
+    .navbar ul { font-size: 18px; }
+    .menu-toggle { font-size: 54px; margin-left: 0; }
+
+    .carousel-slide {
+        width: 100%;
+        min-height: 160px;
     }
 }

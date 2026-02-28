@@ -860,11 +860,25 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCarousel();
     });
 
+    const SEMESTER_KEY = "studenthub_semester_label";
+
+    function loadSemesterLabel() {
+        const saved = localStorage.getItem(SEMESTER_KEY);
+        return saved && saved.trim() ? saved : "Autumn Session 2026";
+    }
+
+    function renderSemesterLabel() {
+        const el = document.getElementById("semester-label");
+        if (!el) return;
+        el.textContent = `(${loadSemesterLabel()})`;
+    }
+
      // Initial render
     renderSubjects(loadSubjects());
     populateCourseOptions();
     renderAssignments();
     rebuildCarousel();
+    renderSemesterLabel();
     subjectsListEl.addEventListener("scroll", updateSubjectsOverflowHint);
     window.addEventListener("resize", updateSubjectsOverflowHint);
 });
