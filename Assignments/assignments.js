@@ -169,12 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function groupAssignmentsBySubject(assignments) {
         const map = new Map();
 
-        (assignments || []).forEach(a => {
+        assignments.forEach(a => {
             if (!a || !a.courseId) return;
 
-            if (!map.has(a.courseId)) {
-                map.set(a.courseId, []);
-            }
+            if (!map.has(a.courseId)) map.set(a.courseId, []);
             map.get(a.courseId).push(a);
         });
         
@@ -211,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSubjects(subjects);
         renderSubjects(subjects);
         showSubjectStatus("Subject added successfully.", { closeAfter: true });
+        renderTotalCourseAssignmentsWidget();
     }
 
     function saveSubjectEdits() {
@@ -241,6 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSubjects(subjects);
         renderSubjects(subjects);
         showSubjectStatus("Subject updated.", { closeAfter: true });
+        renderTotalCourseAssignmentsWidget();
     }
 
     function deleteSubject() {
@@ -251,6 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveSubjects(subjects);
         renderSubjects(subjects);
         showSubjectStatus("Subject deleted.", { closeAfter: true });
+        renderTotalCourseAssignmentsWidget();
     }
 
     function openSystemSettings() {
@@ -599,6 +600,8 @@ document.addEventListener("DOMContentLoaded", () => {
         saveAssignments(assignments);
         renderAssignments();
         closeAssignmentModal();
+        renderTotalCourseAssignmentsWidget();
+        renderDashboard();
     }
 
     function saveAssignmentEdits() {
@@ -641,6 +644,8 @@ document.addEventListener("DOMContentLoaded", () => {
         saveAssignments(assignments);
         renderAssignments();
         closeAssignmentModal();
+        renderTotalCourseAssignmentsWidget();
+        renderDashboard();
     }
 
     function deleteAssignment() {
@@ -649,79 +654,171 @@ document.addEventListener("DOMContentLoaded", () => {
         saveAssignments(assignments);
         renderAssignments();
         closeAssignmentModal();
+        renderTotalCourseAssignmentsWidget();
+        renderDashboard();
     }
 
     // Widget FUNCTIONS
     function createPieSVG(assignmentsForSubject, subjectName) {
-        const size = 120;
-        const radius = size / 2;
-        
-        const weights = assignmentsForSubject
-            .map(a => Number(a.weighting))
-            .filter(Number.isFinite)
-        
-        const total = weights.reduce((sum, w) => sum + w, 0);
+    const size = 120;
+    const radius = size / 2;
 
-        const wrapper = document.createElement("div");
-        wrapper.style.textAlign = "center";
+    const wrapper = document.createElement("div");
+    wrapper.style.textAlign = "center";
 
-        const title = document.createElement("div");
-        title.textContent = subjectName;
-        title.style.fontWeight = "700";
-        title.style.marginBottom = "6px";
-        wrapper.appendChild(title);
-        
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-        svg.setAttribute("width", size);
-        svg.setAttribute("height", size);
-        svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+    const title = document.createElement("div");
+    title.textContent = subjectName;
+    title.style.fontWeight = "700";
+    title.style.marginBottom = "6px";
+    wrapper.appendChild(title);
 
-        let startAngle = 0;
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", size);
+    svg.setAttribute("height", size);
+    svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
 
-        assignmentsForSubject.forEach((a, index) => {
-            const w = Number(a.weighting);
-            if (!Number.isFinite(w) || total === 0) return;
+    // Collect finite weights
+    const weights = assignmentsForSubject
+        .map(a => Number(a?.weighting))
+        .filter(Number.isFinite);
 
-            if (!total) {
-                const msg= document.createElement("div");
-                msg.textContent = "No weightings yet";
-                msg.style.fontSize = "12px";
-                msg.style.opacity = "0.8";
-                wrapper.appendChild(msg);
-                return wrapper;
+    const total = weights.reduce((sum, w) => sum + w, 0);
+
+    // If total is 0 (all zero / blank weights), draw something anyway
+    if (!Number.isFinite(total) || total <= 0) {
+        const n = assignmentsForSubject.length;
+
+        if (n <= 0) {
+            const msg = document.createElement("div");
+            msg.textContent = "No assignments yet.";
+            msg.style.fontSize = "12px";
+            msg.style.opacity = "0.8";
+            wrapper.appendChild(msg);
+            return wrapper;
+        }
+
+        // 1 assignment -> full pie
+        if (n === 1) {
+            const circle = document.createElementNS(svgNS, "circle");
+            circle.setAttribute("cx", radius);
+            circle.setAttribute("cy", radius);
+            circle.setAttribute("r", radius);
+            circle.style.setProperty("fill", "hsl(120, 70%, 55%)", "important"); // single colour
+            circle.style.setProperty("stroke", "none", "important");
+            svg.appendChild(circle);
+        } else {
+            // 2+ assignments -> equal slices
+            let startAngle = 0;
+
+            for (let i = 0; i < n; i++) {
+                const sliceAngle = (1 / n) * 2 * Math.PI;
+                const endAngle = startAngle + sliceAngle;
+
+                const x1 = radius + radius * Math.cos(startAngle);
+                const y1 = radius + radius * Math.sin(startAngle);
+                const x2 = radius + radius * Math.cos(endAngle);
+                const y2 = radius + radius * Math.sin(endAngle);
+
+                const largeArc = sliceAngle > Math.PI ? 1 : 0;
+
+                const path = document.createElementNS(svgNS, "path");
+                path.setAttribute(
+                    "d",
+                    `M ${radius} ${radius}
+                     L ${x1} ${y1}
+                     A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
+                     Z`
+                );
+
+                const hue = (i * 60) % 360;
+                path.style.setProperty("fill", `hsl(${hue}, 70%, 55%)`, "important");
+                path.style.setProperty("stroke", "none", "important");
+
+                svg.appendChild(path);
+                startAngle = endAngle;
             }
+        }
 
-            const sliceAngle = (w / total) * 2 * Math.PI;
-            const endAngle = startAngle + sliceAngle;
+        wrapper.appendChild(svg);
 
-            const x1 = radius + radius * Math.cos(startAngle);
-            const y1 = radius + radius * Math.sin(startAngle);
-            const x2 = radius + radius * Math.cos(endAngle);
-            const y2 = radius + radius * Math.sin(endAngle);
+        const note = document.createElement("div");
+        note.textContent = "Total weighting = 0%";
+        note.style.fontSize = "12px";
+        note.style.opacity = "0.75";
+        note.style.marginTop = "6px";
+        wrapper.appendChild(note);
 
-            const largeArc = sliceAngle > Math.PI ? 1 : 0;
+        return wrapper;
+    }
 
-            const path = document.createElementNS(svgNS, "path");
-            path.setAttribute("d",
-                `M ${radius} ${radius}
-                 L ${x1} ${y1}
-                 A ${radius} ${radius}  0 ${largeArc} 1 ${x2} ${y2}
-                 Z`
-            );
+    // Normal weighted pie
+    const positive = assignmentsForSubject.filter(a => Number(a?.weighting) > 0 && Number.isFinite(Number(a?.weighting)));
 
-            const hue = (index * 60) % 360;
-            const colour = `hsl(${hue}, 70%, 55%)`;
-
-            path.style.setProperty("fill", colour, "important");
-            path.style.setProperty("stroke", "none", "important");
-
-            svg.appendChild(path);
-            startAngle = endAngle;
-        });
+    // If only one positive weighting -> draw a full circle (SVG arcs can't do full 360° reliably)
+    if (positive.length === 1) {
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("cx", radius);
+        circle.setAttribute("cy", radius);
+        circle.setAttribute("r", radius);
+        circle.setAttribute("fill", "hsl(0, 70%, 55%)"); // pick whatever base colour you want
+        circle.style.setProperty("fill", "hsl(0, 70%, 55%)", "important");
+        circle.style.setProperty("stroke", "none", "important");
+        svg.appendChild(circle);
 
         wrapper.appendChild(svg);
         return wrapper;
+    }
+
+    let startAngle = 0;
+
+    positive.forEach((a, index) => {
+        const w = Number(a.weighting);
+        const sliceAngle = (w / total) * 2 * Math.PI;
+
+        // Safety: if we ever get ~full circle due to floating point, also fallback to circle
+        if (sliceAngle >= (2 * Math.PI - 1e-6)) {
+            const circle = document.createElementNS(svgNS, "circle");
+            circle.setAttribute("cx", radius);
+            circle.setAttribute("cy", radius);
+            circle.setAttribute("r", radius);
+            circle.setAttribute("fill", `hsl(${(index * 60) % 360}, 70%, 55%)`);
+            circle.style.setProperty("fill", `hsl(${(index * 60) % 360}, 70%, 55%)`, "important");
+            circle.style.setProperty("stroke", "none", "important");
+            svg.appendChild(circle);
+            return;
+        }
+
+        const endAngle = startAngle + sliceAngle;
+
+        const x1 = radius + radius * Math.cos(startAngle);
+        const y1 = radius + radius * Math.sin(startAngle);
+        const x2 = radius + radius * Math.cos(endAngle);
+        const y2 = radius + radius * Math.sin(endAngle);
+
+        const largeArc = sliceAngle > Math.PI ? 1 : 0;
+
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute(
+            "d",
+            `M ${radius} ${radius}
+            L ${x1} ${y1}
+            A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
+            Z`
+        );
+
+        const hue = (index * 60) % 360;
+        path.setAttribute("fill", `hsl(${hue}, 70%, 55%)`);
+        path.style.setProperty("fill", `hsl(${hue}, 70%, 55%)`, "important");
+        path.style.setProperty("stroke", "none", "important");
+
+        svg.appendChild(path);
+        startAngle = endAngle;
+    });
+
+    wrapper.appendChild(svg);
+    return wrapper;
+    
     }
 
     function renderCarousel() {
@@ -761,18 +858,277 @@ document.addEventListener("DOMContentLoaded", () => {
 
         subjects.forEach(s => {
             const list = grouped.get(s.id) || [];
-            const hasWeights = list.some(a => Number.isFinite(Number(a.weighting)) && Number(a.weighting) > 0);
-            if (!hasWeights) return;
-                carouselSubjects.push({
-                    id: s.id,
-                    name: s.name,
-                    assignments: list
-                });
+            
+            if (!list.length) return;
+
+            carouselSubjects.push({
+                id: s.id,
+                name: s.name,
+                assignments: list
+            });
         });
 
         carouselIndex = 0;
         renderCarousel();
     }
+
+    function getSubjectColour(i) {
+        // Stable, readable colours (repeat safely)
+        const palette = [
+            "hsl(210, 70%, 55%)",
+            "hsl(120, 70%, 50%)",
+            "hsl(35, 85%, 55%)",
+            "hsl(290, 65%, 60%)",
+            "hsl(0, 75%, 60%)",
+            "hsl(180, 65%, 45%)"
+        ];
+        return palette[i % palette.length];
+        }
+
+        function countAssignmentsBySubject(assignments) {
+        const counts = new Map();
+        assignments.forEach(a => {
+            if (!a || !a.courseId) return;
+            counts.set(a.courseId, (counts.get(a.courseId) || 0) + 1);
+        });
+        return counts;
+        }
+
+    function renderTotalCourseAssignmentsWidget() {
+        const barsEl = document.getElementById("total-assignments-bars");
+        const legendEl = document.getElementById("total-assignments-legend");
+        const maxEl = document.getElementById("total-assignments-max");
+        if (!barsEl || !legendEl) return;
+
+        const subjects = loadSubjects();
+        const assignments = loadAssignments();
+        const counts = countAssignmentsBySubject(assignments);
+
+        // build rows (keep only subjects that exist)
+        const rows = subjects.map((s, idx) => ({
+            id: s.id,
+            name: s.name,
+            count: counts.get(s.id) || 0,
+            colour: getSubjectColour(idx)
+        }));
+
+        // choose axis max: fixed 6 (as you requested), but auto-expand if user exceeds it
+        const maxCount = Math.max(6, ...rows.map(r => r.count));
+        if (maxEl) maxEl.textContent = String(maxCount);
+
+        barsEl.innerHTML = "";
+        legendEl.innerHTML = "";
+
+        if (!rows.length) {
+            barsEl.innerHTML = `<div style="opacity:.75;font-size:12px;padding:10px;">No subjects yet.</div>`;
+            return;
+        }
+
+        // OPTIONAL: you can sort by count desc for readability
+        rows.sort((a, b) => b.count - a.count);
+
+        rows.forEach(r => {
+            const pct = maxCount > 0 ? (r.count / maxCount) * 100 : 0;
+
+            const row = document.createElement("div");
+            row.className = "bar-row";
+
+            row.innerHTML = `
+            <div class="bar-label">${r.name}</div>
+            <div class="bar-trackline">
+                <div class="bar-track">
+                <div class="bar-fill"></div>
+                </div>
+                <div class="bar-count">${r.count}</div>
+            </div>
+            `;
+
+            const fill = row.querySelector(".bar-fill");
+            fill.style.width = `${pct}%`;
+            fill.style.background = r.colour;
+
+            barsEl.appendChild(row);
+
+            // legend item
+            const item = document.createElement("div");
+            item.className = "legend-item";
+            item.innerHTML = `
+            <span class="legend-swatch"></span>
+            <span>${r.name}</span>
+            `;
+            item.querySelector(".legend-swatch").style.background = r.colour;
+            legendEl.appendChild(item);
+        });
+    }
+
+    /* ===== Assignments Dashboard (Status/Priority slides) ===== */
+    let dashIndex = 0;
+    const dashSlides = ["status", "priority"];
+
+    function statusLabel(s) {
+    // your stored values are: not-started, in-progress, completed
+    if (s === "not-started") return "Not started";
+    if (s === "in-progress") return "In progress";
+    if (s === "completed") return "Completed";
+    return "Other";
+    }
+
+    function buildStatusCounts(assignments) {
+    const counts = new Map([
+        ["not-started", 0],
+        ["in-progress", 0],
+        ["completed", 0],
+    ]);
+
+    assignments.forEach(a => {
+        const key = (a?.status || "").toLowerCase();
+        if (counts.has(key)) counts.set(key, counts.get(key) + 1);
+        else counts.set("other", (counts.get("other") || 0) + 1);
+    });
+
+    // remove "other" if unused
+    if ((counts.get("other") || 0) === 0) counts.delete("other");
+    return counts;
+    }
+
+    function coloursForStatus(key) {
+    // simple, readable palette
+    if (key === "completed") return "#2ecc71";
+    if (key === "in-progress") return "#f1c40f";
+    if (key === "not-started") return "#e74c3c";
+    return "#7f8c8d";
+    }
+
+    function createVerticalBarChart({ title, countsMap, colourFn, labelFn }) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "vchart";
+
+    const plot = document.createElement("div");
+    plot.className = "vchart-plot";
+
+    const entries = Array.from(countsMap.entries());
+    const max = Math.max(1, ...entries.map(([, v]) => v)); // avoid divide by zero
+
+    entries.forEach(([key, val]) => {
+        const col = document.createElement("div");
+        col.style.display = "flex";
+        col.style.flexDirection = "column";
+        col.style.alignItems = "center";
+        col.style.gap = "0";
+
+        const bar = document.createElement("div");
+        bar.className = "vbar";
+
+        const fill = document.createElement("div");
+        fill.className = "vbar-fill";
+        fill.style.setProperty("--h", `${(val / max) * 100}%`);
+        fill.style.setProperty("background", colourFn(key), "important");
+
+        const count = document.createElement("div");
+        count.className = "vbar-count";
+        count.textContent = String(val);
+
+        bar.appendChild(fill);
+        bar.appendChild(count);
+
+        const lbl = document.createElement("div");
+        lbl.className = "vbar-label";
+        lbl.textContent = labelFn(key);
+
+        col.appendChild(bar);
+        col.appendChild(lbl);
+        plot.appendChild(col);
+    });
+
+    const divider = document.createElement("div");
+    divider.className = "vchart-divider";
+
+    const legend = document.createElement("div");
+    legend.className = "vchart-legend";
+
+    entries.forEach(([key]) => {
+        const item = document.createElement("div");
+        item.className = "vchart-legend-item";
+
+        const sw = document.createElement("span");
+        sw.className = "vchart-swatch";
+        sw.style.background = colourFn(key);
+
+        const txt = document.createElement("span");
+        txt.textContent = labelFn(key);
+
+        item.appendChild(sw);
+        item.appendChild(txt);
+        legend.appendChild(item);
+    });
+
+    wrapper.appendChild(plot);
+    wrapper.appendChild(divider);
+    wrapper.appendChild(legend);
+
+    return wrapper;
+    }
+
+    function renderDashboard() {
+    const slideEl = document.getElementById("dash-slide");
+    const labelEl = document.getElementById("dash-label");
+    const dotsEl = document.getElementById("dash-dots");
+    if (!slideEl || !labelEl || !dotsEl) return;
+
+    slideEl.innerHTML = "";
+    dotsEl.innerHTML = "";
+
+    const assignments = loadAssignments();
+    const mode = dashSlides[dashIndex];
+
+    if (mode === "status") {
+        labelEl.textContent = "Status";
+
+        const counts = buildStatusCounts(assignments);
+
+        // if truly nothing exists, show a simple message
+        const total = Array.from(counts.values()).reduce((a, b) => a + b, 0);
+        if (total === 0) {
+        slideEl.textContent = "No assignments yet.";
+        } else {
+        slideEl.appendChild(
+            createVerticalBarChart({
+            title: "Status",
+            countsMap: counts,
+            colourFn: coloursForStatus,
+            labelFn: (k) => (k === "other" ? "Other" : statusLabel(k))
+            })
+        );
+        }
+    } else {
+        labelEl.textContent = "Priority";
+        // placeholder for next slide so the carousel works now
+        const msg = document.createElement("div");
+        msg.style.fontSize = "13px";
+        msg.style.opacity = "0.8";
+        msg.style.textAlign = "center";
+        msg.style.paddingTop = "60px";
+        msg.textContent = "Priority view coming next.";
+        slideEl.appendChild(msg);
+    }
+
+    dashSlides.forEach((_, i) => {
+        const dot = document.createElement("span");
+        if (i === dashIndex) dot.classList.add("active");
+        dotsEl.appendChild(dot);
+    });
+    }
+
+    /* dashboard nav wiring */
+    document.getElementById("dash-prev")?.addEventListener("click", () => {
+    dashIndex = (dashIndex - 1 + dashSlides.length) % dashSlides.length;
+    renderDashboard();
+    });
+
+    document.getElementById("dash-next")?.addEventListener("click", () => {
+    dashIndex = (dashIndex + 1) % dashSlides.length;
+    renderDashboard();
+    });
 
     // Wiring up the events (subjects)
     addSubjectBtn.addEventListener("click", openSubjectModal);
@@ -879,6 +1235,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAssignments();
     rebuildCarousel();
     renderSemesterLabel();
+    renderTotalCourseAssignmentsWidget();
+    renderDashboard();
     subjectsListEl.addEventListener("scroll", updateSubjectsOverflowHint);
     window.addEventListener("resize", updateSubjectsOverflowHint);
 });

@@ -511,9 +511,12 @@ h2 {
     cursor: pointer;  
 }
 
-/*.carousel-nav:hover {
-
-}*/
+.carousel-nav:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
 
 .carousel-dots {
     display: flex;
@@ -633,10 +636,242 @@ h2 {
     height: 90px;
 }
 
-/* Different placeholder shapes based on first initial UI sketch */
-.widget-line { height: 90px; }
-.widget-list { height: 110px; }
-.widget-pie { height: 110px; }
+/* ===== Total Course Assignments widget ===== */
+
+.total-assignments-widget .bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* baseline */
+  border-left: 2px solid rgba(0,0,0,0.35);
+  padding: 8px 10px 6px 12px;
+}
+
+.total-assignments-widget .bar-row {
+  display: grid;
+  gap: 6px;
+}
+
+.total-assignments-widget .bar-label {
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Trackline needs the bar area to expand to full width */
+.total-assignments-widget .bar-trackline {
+  display: grid;
+  grid-template-columns: 1fr auto; /* bar takes all space, count is fixed */
+  align-items: center;
+  column-gap: 10px; /* spacing between bar end and number */
+}
+
+/* REMOVE the grey "track" entirely */
+.total-assignments-widget .bar-track {
+  width: 100%;
+  height: 14px;
+  background: transparent;   /* <-- key: no grey bar */
+  overflow: visible;         /* no clipping needed */
+}
+
+/* Coloured bar */
+.total-assignments-widget .bar-fill {
+  height: 14px;
+  width: 0%;
+  border-radius: 5px;
+}
+
+/* Number on the right */
+.total-assignments-widget .bar-count {
+  min-width: 20px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-left: 0px; /* a touch more breathing room */
+}
+
+/* Axis wrapper should NOT be a flex row */
+.total-assignments-widget .axis {
+  padding: 6px 10px 0 12px; /* align with bars baseline padding */
+}
+
+/* Bottom number line */
+.total-assignments-widget .axis-bottom-line {
+  height: 2px;
+  background: rgba(0,0,0,0.35);
+  margin: 4px 0 6px;
+}
+
+/* Vertical line layout */
+.total-assignments-widget .axis-vertical-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* Legend */
+.total-assignments-widget .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 8px 10px 10px 10px;
+  font-size: 12px;
+}
+
+.total-assignments-widget .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.total-assignments-widget .legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ===== Assignments Dashboard Widget ===== */
+.dash-widget {
+  padding: 10px 10px 12px;
+}
+
+.dash-tabs {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.dash-nav {
+  font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;  
+}
+
+.dash-nav:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: rgb(80, 90, 80);
+    color: black;
+}
+
+.dash-label {
+  text-align: center;
+  font-weight: 800;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.dash-slide {
+  min-height: 210px;
+}
+
+/* Vertical bar chart */
+.vchart {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 10px;
+}
+
+.vchart-plot {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 10px;
+  padding: 0 8px;
+  border-left: 2px solid rgba(0,0,0,0.35); /* y-axis */
+  border-bottom: 2px solid rgba(0,0,0,0.55); /* x-axis baseline */
+}
+
+.vbar {
+  width: 22px;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: visible;
+  height: 120px;
+  padding-bottom: 18px;
+}
+
+.vbar-fill {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  height: 0%;
+  bottom: 18px;
+  height: calc(var(--h, 0%) - 0px);
+}
+
+.vbar-count {
+  position: static;
+  bottom: 2px;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0.9;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.vbar-label {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.vchart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 0 6px;
+  font-size: 12px;
+}
+
+.vchart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vchart-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.dash-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dash-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.25);
+}
+
+.dash-dots span.active {
+  background: rgba(0,0,0,0.7);
+}
 
 /* Add subjects / subjects panel additional CSS styling settings */
 .hidden { display: none; }

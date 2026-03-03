@@ -107,19 +107,49 @@
 
                     <div class="widget-card">
                         <div class="widget-title">Total Course Assignments</div>
-                        <div class="widget-placeholder widget-list"></div>
+                        <div class="total-assignments-widget">
+                            <div id="total-assignments-bars" class="bars"></div>
+
+                            <div class="axis">
+                                <div class="axis-bottom-line"></div>
+                                <div class="axis-vertical-line">
+                                    <span>0</span>
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                    <span id="total-assignments-max">6</span>
+                                </div>
+                            </div>
+
+                            <div id="total-assignments-legend" class="legend"></div>
+                        </div>
                     </div>
                     
                     <div class="widget-card">
-                        <div class="widget-title">Status</div>
-                        <div class="widget-placeholder widget-pie"></div>
+                        <div class="widget-title">Assignments Dashboard</div>
+
+                        <div class="dash-widget">
+                            <div class="dash-tabs">
+                                <button type="button" class="dash-nav" id="dash-prev" aria-label="Prev"><</button>
+                                <div class="dash-label" id="dash-label">Status</div>
+                                <button type="button" class="dash-nav" id="dash-next" aria-label="Next">></button>
+                            </div>
+
+                            <div class="dash-slide" id="dash-slide">
+                                <!-- JS injects slide content here -->
+                            </div>
+
+                            <div class="dash-dots" id="dash-dots"></div>
+                        </div>
                     </div>
                  </aside>
 
                  <div class="assignments-table-card" aria-label="All Assignments table">
                     <div class="assignments-table-header">
-                        <h2 class="table-title">All Assignments</h2>
-                        <p>(Surgical delete button goes here + other customisation buttons)</p>
+                        <h2 class="table-title">All Assignments <span class="page-subtitle" id="semester-label"></span></h2>
+                        <button id="reset-btn">Reset</button>
                     </div>
 
                     <div class="assignments-table-wrap">
@@ -239,7 +269,7 @@
 
                  <!-- Priority -->
                  <div class="form-row">
-                    <label for="assignment-priority"><strong>Course</strong></label>
+                    <label for="assignment-priority"><strong>Priority</strong></label>
                     <select id="assignment-priority">
                         <option value="high">High</option>
                         <option value="medium" selected>Medium</option>
