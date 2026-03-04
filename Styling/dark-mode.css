@@ -84,14 +84,8 @@ body.dark-mode .menu-toggle {
     color: white;
 }
 
-body.dark-mode h1 {
+body.dark-mode h1, body.dark-mode h2 {
     font-family: sans-serif, arial;
-    font-size: 40px;
-}
-
-body.dark-mode h2 {
-    font-family: sans-serif, arial;
-    font-size: 30px;
 }
 
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode li, body.dark-mode label, body.dark-mode a, body.dark-mode span {
@@ -244,7 +238,7 @@ body.dark-mode #add-task-modal {
     background: black;
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid black;
+    border: 1px solid grey;
     z-index: 10;
     text-align: left;
 }
@@ -270,7 +264,7 @@ body.dark-mode #add-task-modal input, body.dark-mode #add-task-modal textarea {
     margin: 0;
     padding: 10px;
     border-radius: 8px;
-    border: 1px solid black;
+    border: 1px solid grey;
     font-family: sans-serif, arial;
 }
 
@@ -279,7 +273,7 @@ body.dark-mode #add-task-modal select {
     max-width: 100%;
     padding: 6px 10px;
     border-radius: 8px;
-    border: 1px solid black;
+    border: 1px solid grey;
     font-family: sans-serif, arial;
 }
 
@@ -311,7 +305,7 @@ body.dark-mode .sort-panel {
     left: calc(100% + 10px);
 
     background: black;
-    border: 1px solid black;
+    border: 1px solid grey;
     border-radius: 10px;
     padding: 10px;
 
@@ -340,7 +334,7 @@ body.dark-mode .sort-panel select {
     width: 100%;
     padding: 6px 10px;
     border-radius: 8px;
-    border: 1px solid black;
+    border: 1px solid grey;
 }
 
 body.dark-mode .sort-row {
@@ -378,7 +372,7 @@ body.dark-mode .assignments-due-header {
 body.dark-mode .system-settings {
     position: fixed;
     bottom: 50px;
-    right: 50px;
+    left: 50px;
 }
 
 body.dark-mode #system-settings-btn {
@@ -410,7 +404,7 @@ body.dark-mode #system-settings-modal {
     background: black;
     border-radius: 12px;
     padding: 0;
-    border: 1px solid #111;
+    border: 1px solid grey;
     z-index: 10;
     text-align: left;
     overflow: hidden;
@@ -423,7 +417,7 @@ body.dark-mode .settings-layout {
 }
 
 body.dark-mode .settings-sidebar {
-    border-right: 1px solid #111;
+    border-right: 1px solid grey;
     padding: 12px;
     background: black;
     color: white;
@@ -452,6 +446,7 @@ body.dark-mode .settings-nav {
     border: 1px solid white;
     color: white;
     background: black;
+    border: 2px solid grey;
     border-radius: 8px;
     padding: 8px 10px;
     cursor: pointer;
@@ -473,7 +468,7 @@ body.dark-mode .settings-nav.active {
 body.dark-mode .settings-header {
     padding-bottom: 10px;
     margin-bottom: 12px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid grey;
 }
 
 body.dark-mode .settings-title {
@@ -500,6 +495,7 @@ body.dark-mode .setting-row {
     gap: 14px;
     margin-top: 12px;
 }
+
 body.dark-mode .setting-labels { text-align: left; margin-left: 10px; }
 body.dark-mode .setting-name { font-weight: 700; }
 body.dark-mode .setting-desc { font-size: 12px; opacity: 0.75; margin-top: 2px; }
@@ -549,7 +545,481 @@ body.dark-mode .switch input:checked + .slider::before {
     transform: translateX(17px);
 }
 
-body.dark-mode #add-subject-modal, #add-assignment-modal {
+body.dark-mode #add-subject-modal, body.dark-mode #add-assignment-modal {
     background: black;
-    border: black;
+    border: 2px solid grey;
+}
+
+body.dark-mode .weighting-carousel {
+  border: 2px solid #111;
+  background: #000;
+  border-radius: 10px;
+  padding: 16px;
+  width: 70%;
+  margin: 0 auto 16px auto;
+  border: 2px solid grey;
+}
+
+body.dark-mode #weighting-carousel svg path {
+  fill: initial;
+  stroke: none;
+}
+
+body.dark-mode .carousel-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+body.dark-mode .carousel-slide {
+  width: 120px;
+  min-height: 120px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.dark-mode .carousel-slide svg {
+  display: block;
+}
+
+body.dark-mode .carousel-nav {
+  font-size: 18px;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #000;
+  width: 30px;
+  height: 30px;
+  align-self: center;
+  justify-self: center;
+  cursor: pointer;
+  border: 1px solid #fff;
+}
+
+body.dark-mode .carousel-nav:hover {
+  background-color: rgb(80, 90, 80);
+  border-color: black;
+  color: #fff;
+  cursor: pointer;
+}
+
+body.dark-mode .carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+body.dark-mode .carousel-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  opacity: 0.3;
+}
+
+body.dark-mode .carousel-dots span.active {
+  opacity: 1;
+}
+
+/* Controls panel */
+body.dark-mode .assignments-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  padding: 10px 12px;
+  background-color: rgb(141, 157, 141);
+  border: 2px solid grey;
+  border-radius: 10px;
+  width: 70%;
+  margin-left: 70px;
+}
+
+/* Primary buttons (Add etc.) */
+body.dark-mode .btn-primary {
+  font-size: 18px;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #000;
+  width: 30px;
+  height: 30px;
+  align-self: center;
+  justify-self: center;
+  cursor: pointer;
+  border: 1px solid grey;
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: rgb(80, 90, 80);
+  border-color: white;
+  color: #fff;
+  cursor: pointer;
+}
+
+body.dark-mode .btn-secondary {
+    font-size: 14px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid black;
+    color: black;
+    width: 60px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;   
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: white;
+    color: white;
+}
+
+body.dark-mode .controls-group {
+  display: grid;
+  gap: 5px;
+  justify-items: start;
+}
+
+body.dark-mode .control-label {
+  font-family: sans-serif, arial;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  color: #e9e9ea;
+}
+
+body.dark-mode .control-select {
+  font-family: sans-serif, arial;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 2px solid #e9e9ea;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.6);
+  color: #e9e9ea;
+}
+
+body.dark-mode #assignments-sort { width: 180px; }
+body.dark-mode #assignments-filter { width: 120px; }
+
+body.dark-mode .assignments-widgets {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  justify-items: stretch;
+  grid-column: 3;
+  grid-row: 1 / 3;
+  align-self: start;
+}
+
+body.dark-mode .widget-card {
+  border: 1px solid #111;
+  background: #000;
+  border-radius: 12px;
+  text-align: left;
+  min-height: 150px;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 2px solid grey;
+}
+
+body.dark-mode .widget-title {
+  font-family: sans-serif, arial;
+  font-weight: 900;
+  font-size: 14px;
+  margin: 0 0 10px;
+  color: #e9e9ea;
+}
+
+/* ===== Total Course Assignments widget (dark axis/labels) ===== */
+body.dark-mode .total-assignments-widget .bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 2px solid rgba(255,255,255,0.35);
+  padding: 8px 10px 6px 12px;
+}
+
+body.dark-mode .total-assignments-widget .bar-row { display: grid; gap: 6px; }
+
+body.dark-mode .total-assignments-widget .bar-label {
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.9;
+  color: #e9e9ea;
+}
+
+body.dark-mode .total-assignments-widget .bar-trackline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 10px;
+}
+
+body.dark-mode .total-assignments-widget .bar-track {
+  width: 100%;
+  height: 14px;
+  background: transparent;
+  overflow: visible;
+}
+
+body.dark-mode .total-assignments-widget .bar-fill {
+  height: 14px;
+  width: 0%;
+  border-radius: 5px;
+}
+
+body.dark-mode .total-assignments-widget .bar-count {
+  min-width: 20px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.9;
+  color: #e9e9ea;
+}
+
+body.dark-mode .total-assignments-widget .axis {
+  padding: 6px 10px 0 12px;
+  color: #e9e9ea;
+}
+
+body.dark-mode .total-assignments-widget .axis-bottom-line {
+  height: 2px;
+  background: rgba(255,255,255,0.35);
+  margin: 4px 0 6px;
+}
+
+body.dark-mode .total-assignments-widget .axis-vertical-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.75;
+  color: #e9e9ea;
+}
+
+body.dark-mode .total-assignments-widget .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 8px 10px 10px 10px;
+  font-size: 12px;
+  color: #e9e9ea;
+}
+
+body.dark-mode .total-assignments-widget .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.dark-mode .total-assignments-widget .legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ===== Assignments Dashboard widget ===== */
+body.dark-mode .dash-widget { padding: 10px 10px 12px; }
+
+body.dark-mode .dash-tabs {
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+body.dark-mode .dash-nav {
+  font-size: 18px;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #000;           
+  width: 30px;
+  height: 30px;
+  align-self: center;
+  justify-self: center;
+  cursor: pointer;
+  border: 1px solid #fff;
+}
+
+body.dark-mode .dash-nav:hover {
+  background-color: rgb(80, 90, 80);
+  border-color: rgb(80, 90, 80);
+  color: #fff;
+  cursor: pointer;
+}
+
+body.dark-mode .dash-label {
+  text-align: center;
+  font-weight: 800;
+  font-size: 13px;
+  opacity: 0.9;
+  color: #e9e9ea;
+}
+
+body.dark-mode .dash-slide {
+  min-height: 210px;
+  color: #e9e9ea;
+}
+
+
+body.dark-mode .vchart {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 10px;
+}
+
+body.dark-mode .vchart-plot {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 10px;
+  padding: 0 8px;
+  border-left: 2px solid rgba(255,255,255,0.35);
+  border-bottom: 2px solid rgba(255,255,255,0.55);
+}
+
+body.dark-mode .vbar {
+  width: 18px;
+  border-radius: 5px;
+  background: transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: visible;
+  height: 120px;
+  padding-bottom: 0;
+}
+
+body.dark-mode .vbar-fill {
+  width: 100%;
+  border-radius: 5px;
+  height: 0%;
+  bottom: auto;
+  height: calc(var(--h, 0%) - 0px);
+}
+
+body.dark-mode .vbar-count {
+  position: static;
+  transform: none;
+  left: auto;
+  top: auto;
+  bottom: auto;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #e9e9ea;
+}
+
+body.dark-mode .vbar-label {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.85;
+  color: #e9e9ea;
+}
+
+body.dark-mode .vchart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: #e9e9ea;
+}
+
+body.dark-mode .vchart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.dark-mode .vchart-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+body.dark-mode .dash-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+body.dark-mode .dash-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.25);
+}
+
+body.dark-mode .dash-dots span.active {
+  background: rgba(255,255,255,0.7);
+}
+
+/* Responsive fallback just in case */
+@media (max-width: 1100px) {
+    html, body {
+        display: block;
+        width: 100%;
+    }
+
+    .navbar {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .content {
+        padding: 16px;
+    }
+    
+    .assignments-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .assignment-widgets {
+        grid-row: auto;
+    }
+
+    .weighting-carousel, .assignments-controls {
+        width: 100%;
+        margin: 0;
+    }
+
+    .assignments-controls {
+        margin-top: 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    .assignments-table-card {
+        overflow-x: auto;
+    }
+
+    .assignments-table {
+        min-width: 720px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-title { font-size: 26px; }
+    .navbar ul { font-size: 18px; }
+    .menu-toggle { font-size: 54px; margin-left: 0; }
+
+    .carousel-slide {
+        width: 100%;
+        min-height: 160px;
+    }
 }

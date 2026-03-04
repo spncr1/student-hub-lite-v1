@@ -114,6 +114,44 @@ h2 {
 }
 
 /* MAIN BUTTONS */
+.btn-primary {
+    font-size: 18px;
+    border-radius: 20px;
+    background-color: black;
+    border: 2px solid grey;
+    color: white;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+}
+
+.btn-primary:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: black;
+    color: black;
+}
+
+.btn-secondary {
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: rgb(141, 157, 141);
+    border: 2px solid black;
+    color: black;
+    width: 60px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: grey;
+    color: black;
+}
+
 #today-btn {
     font-size: 24px;
     border-radius: 5px;
@@ -376,7 +414,7 @@ h2 {
 .system-settings {
     position: fixed;
     bottom: 50px;
-    right: 50px;
+    left: 50px;
 }
 
 #system-settings-btn {

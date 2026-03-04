@@ -9,9 +9,6 @@
   - System settings button + modal
 */
 
-* { box-sizing: border-box; }
-img { max-width: 100%; height: auto; display: block; }
-
 html, body {
     text-align: center;
     display: flex;
@@ -102,7 +99,7 @@ h2 {
 .system-settings {
     position: fixed;
     bottom: 50px;
-    right: 50px;
+    left: 50px;
 }
 
 #system-settings-btn {
@@ -444,6 +441,7 @@ h2 {
 .assignments-table th, .assignments-table td {
     padding: 10px 12px;
     background: rgba(255, 255, 255, 0.6);
+    border-right: 1px solid rgba(0,0,0,0.12);
     border-bottom: 1px solid rgba(0,0,0,0.12);
     text-align: left;
     font-size: 14px;
@@ -458,7 +456,6 @@ h2 {
 /* Middle column */
 .assignments-main {
     display: grid;
-    gap: 12px;
     grid-column: 2; 
     grid-row: 1;
     align-self: start;
@@ -466,8 +463,8 @@ h2 {
 
 /* Controls row / Main widget (pie chart) */
 .weighting-carousel {
-    border: 2px solid rgb(3, 46, 8);
-    background: rgb(141, 157, 141);
+    border: 2px solid #ddd;
+    background: #fff;
     border-radius: 10px;
     padding: 16px;
     width: 70%;
@@ -504,6 +501,7 @@ h2 {
     border-radius: 20px;
     background-color: black;
     color: white;
+    border: 2px solid grey;
     width: 30px;
     height: 30px;
     align-self: center;
@@ -514,7 +512,7 @@ h2 {
 .carousel-nav:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
 
@@ -548,7 +546,6 @@ h2 {
     border: 2px solid rgb(3, 46, 8);
     border-radius: 10px;
     width: 70%;
-    margin-top: 220px;
     margin-left: 70px;
 }
 
@@ -557,20 +554,41 @@ h2 {
     font-size: 18px;
     border-radius: 20px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 30px;
     height: 30px;
     align-self: center;
-    justify-self: center;
-    cursor: pointer;    
+    justify-self: center; 
 }
 
 .btn-primary:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
+
+.btn-secondary {
+    font-size: 14px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid black;
+    color: black;
+    width: 60px;
+    height: 30px;
+    align-self: center;
+    justify-self: center;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(80, 90, 80);
+    cursor: pointer;
+    border-color: grey;
+    color: black;
+}
+
+/*if i wanna add specific styling for the reset btn then it can go here under the "btn-secondary" class */
 
 .controls-group {
     display: grid;
@@ -629,11 +647,6 @@ h2 {
     font-weight: 900;
     font-size: 14px;
     margin: 0 0 10px;
-}
-
-.widget-placeholder {
-    background: rgba(0, 0, 0, 0.06);
-    height: 90px;
 }
 
 /* ===== Total Course Assignments widget ===== */
@@ -747,9 +760,10 @@ h2 {
 }
 
 .dash-nav {
-  font-size: 18px;
+    font-size: 18px;
     border-radius: 20px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 30px;
     height: 30px;
@@ -795,36 +809,35 @@ h2 {
 }
 
 .vbar {
-  width: 22px;
-  border-radius: 8px 8px 0 0;
+  width: 18px;
+  border-radius: 5px;
   background: transparent;
   position: relative;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   overflow: visible;
   height: 120px;
-  padding-bottom: 18px;
+  padding-bottom: 0;
 }
 
 .vbar-fill {
   width: 100%;
-  border-radius: 8px 8px 0 0;
+  border-radius: 5px;
   height: 0%;
-  bottom: 18px;
+  bottom: auto;
   height: calc(var(--h, 0%) - 0px);
 }
 
 .vbar-count {
   position: static;
-  bottom: 2px;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: none;
+  left: auto;
+  top: auto;
+  bottom: auto;
+  margin-top: 6px;
   font-size: 12px;
-  font-weight: 800;
-  opacity: 0.9;
-  z-index: 5;
-  white-space: nowrap;
 }
 
 .vbar-label {
@@ -833,6 +846,7 @@ h2 {
   font-size: 11px;
   font-weight: 700;
   opacity: 0.85;
+  margin-bottom: 10px;
 }
 
 .vchart-legend {
@@ -1028,22 +1042,9 @@ button, input, select, textarea { font-family: inherit; }
     gap: 12px;
 }
 
-/* Responsive fallback just in case of trouble */
+/* Responsive fallback just in case */
 @media (max-width: 1100px) {
-    html, body {
-        display: block;
-        width: 100%;
-    }
-
-    .navbar {
-        width: 100%;
-        border-right: 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .content {
-        padding: 16px;
-    }
+    html, body { display: flex; }
     
     .assignments-layout {
         grid-template-columns: 1fr;
@@ -1051,36 +1052,11 @@ button, input, select, textarea { font-family: inherit; }
     }
 
     .assignment-widgets {
+        grid-column: 1;
         grid-row: auto;
     }
 
-    .weighting-carousel, .assignments-controls {
-        width: 100%;
-        margin: 0;
-    }
-
-    .assignments-controls {
-        margin-top: 12px;
-    }
-}
-
-@media (max-width: 900px) {
     .assignments-table-card {
-        overflow-x: auto;
-    }
-
-    .assignments-table {
-        min-width: 720px;
-    }
-}
-
-@media (max-width: 600px) {
-    .page-title { font-size: 26px; }
-    .navbar ul { font-size: 18px; }
-    .menu-toggle { font-size: 54px; margin-left: 0; }
-
-    .carousel-slide {
-        width: 100%;
-        min-height: 160px;
+        grid-column: 1;
     }
 }
