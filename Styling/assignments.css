@@ -145,6 +145,7 @@ h2 {
     display: grid;
     grid-template-columns: 120px 1fr;
     min-height: 240px;
+    margin-top: 12px;
 }
 
 .settings-sidebar {
@@ -277,15 +278,12 @@ h2 {
   =======================
 */
 
-.assignments-page-header {
-    margin-bottom: 16px;
-}
-
 .page-title {
     margin: 0;
     font-family: sans-serif, arial;
     font-size: 34px;
     letter-spacing: 1px;
+    margin-bottom: 10px;
 }
 
 .page-subtitle {
@@ -297,10 +295,10 @@ h2 {
 /* 3-column layout: subjects / all assignments | main | widgets */
 .assignments-layout {
     display: grid;
-    grid-template-columns: 220px minmax(520px, 1fr) 320px;
+    grid-template-columns: 220px minmax(420px, 1fr) 220px 320px;
     grid-template-rows: auto auto;
     gap: 16px;
-    row-gap: 8px;
+    row-gap: 20px;
     column-gap: 16px;
     align-items: start;
 }
@@ -403,7 +401,7 @@ h2 {
     border-radius: 10px;
     padding: 14px 12px;
 
-    grid-column: 1 / 3;
+    grid-column: 1 / 4;
     grid-row: 2;
     align-self: start;
     width: 100%;
@@ -455,7 +453,7 @@ h2 {
 
 /* Middle column */
 .assignments-main {
-    display: grid;
+    display: block;
     grid-column: 2; 
     grid-row: 1;
     align-self: start;
@@ -466,9 +464,17 @@ h2 {
     border: 2px solid #ddd;
     background: #fff;
     border-radius: 10px;
-    padding: 16px;
-    width: 70%;
-    margin: 0 auto 16px auto;
+    padding: 8px 16px 14px;
+    max-width: 400px;
+    height: 270px;
+    display: grid;
+    align-content: start;
+    row-gap: 20px;
+    overflow: hidden;
+}
+
+.weighting-carousel .carousel-header h3, .weighting-carousel .carousel-content, .weighting-carousel .carousel-dots {
+    margin: 0;
 }
 
 #weighting-carousel svg path {
@@ -477,14 +483,20 @@ h2 {
 }
 
 .carousel-content {
-    display: flex;
-    align-items: center;
+    display: grid;
     justify-content: center;
-    gap: 12px;
 }
 
+.carousel-footer {
+    display: grid;
+    grid-template-columns: 30px auto 30px;
+    align-items: center;
+}
+
+.carousel-subject { font-weight: 700; text-align: center; }
+
 .carousel-slide {
-    width: 120px;
+    width: 330px;
     min-height: 120px;
     height: auto;
     display: flex;
@@ -536,17 +548,21 @@ h2 {
 }
 
 .assignments-controls {
+    grid-column: 3;
+    grid-row: 1;
     display: flex;
+    flex-direction: column;
     gap: 12px;
-    align-items: flex-end;
+    align-items: stretch;
     justify-content: flex-start;
 
-    padding: 10px 12px;
+    padding: 14px 12px;
     background: rgb(141, 157, 141);
     border: 2px solid rgb(3, 46, 8);
     border-radius: 10px;
-    width: 70%;
-    margin-left: 70px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 295px;
 }
 
 /* for all "add" style buttons on the page */
@@ -592,8 +608,12 @@ h2 {
 
 .controls-group {
     display: grid;
-    gap: 5px;
-    justify-items: start;
+    gap: 6px;
+    justify-items: stretch;
+}
+
+.assignments-controls .controls-group:first-child {
+    justify-items: center;
 }
 
 .control-label {
@@ -614,11 +634,11 @@ h2 {
 }
 
 #assignments-sort {
-    width: 180px;
+    width: 100%;
 }
 
 #assignments-filter {
-    width: 120px;
+    width: 100%;
 }
 
 /* Right widgets column */
@@ -627,7 +647,7 @@ h2 {
     gap: 20px;
     align-content: start;
     justify-items: stretch;
-    grid-column: 3; 
+    grid-column: 4; 
     grid-row: 1 / 3;
     align-self: start;
 }
@@ -1051,7 +1071,9 @@ button, input, select, textarea { font-family: inherit; }
         grid-template-rows: auto;
     }
 
-    .assignment-widgets {
+    .assignments-main,
+    .assignments-controls,
+    .assignments-widgets {
         grid-column: 1;
         grid-row: auto;
     }

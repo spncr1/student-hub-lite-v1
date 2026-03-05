@@ -659,18 +659,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Widget FUNCTIONS
-    function createPieSVG(assignmentsForSubject, subjectName) {
-    const size = 120;
+    function createPieSVG(assignmentsForSubject) {
+    const size = 160;
     const radius = size / 2;
 
     const wrapper = document.createElement("div");
     wrapper.style.textAlign = "center";
-
-    const title = document.createElement("div");
-    title.textContent = subjectName;
-    title.style.fontWeight = "700";
-    title.style.marginBottom = "6px";
-    wrapper.appendChild(title);
 
     const svgNS = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNS, "svg");
@@ -822,12 +816,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderCarousel() {
+        const subjectEl = document.getElementById("carousel-subject");
         const slideEl = document.getElementById("carousel-slide");
         const dotsEl = document.getElementById("carousel-dots");
-        if (!slideEl || !dotsEl) return;
+        if (!subjectEl || !slideEl || !dotsEl) return;
 
         slideEl.innerHTML = "";
         dotsEl.innerHTML = "";
+        subjectEl.textContent = "";
 
         if (!carouselSubjects.length) {
             slideEl.textContent = "No assignments yet.";
@@ -838,8 +834,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (carouselIndex < 0 || carouselIndex >= carouselSubjects.length) carouselIndex = 0;
 
         const current = carouselSubjects[carouselIndex];
+        subjectEl.textContent = current.name;
         slideEl.appendChild(
-            createPieSVG(current.assignments, current.name)
+            createPieSVG(current.assignments)
         );
 
         carouselSubjects.forEach((_, i) => {

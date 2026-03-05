@@ -49,55 +49,56 @@
                 </aside>
 
                 <!-- MIDDLE COLUMN -->
-                <section class="assignments-main" aria-label="Assignments controls">
+                <section class="assignments-main" aria-label="Assessment weightings">
                     <div class="weighting-carousel" id="weighting-carousel">
                         <div class="carousel-header">
                             <h3>Assessment Weightings</h3>
                         </div>
 
                         <div class="carousel-content">
-                            <button class="carousel-nav" id="carousel-prev"><</button>
-
                             <div class="carousel-slide" id="carousel-slide">
                                 <!-- content here -->
                             </div>
-
-                            <button class="carousel-nav" id="carousel-next">></button>
+                            <div class="carousel-footer">
+                                <button class="carousel-nav" id="carousel-prev"><</button>
+                                <div class="carousel-subject" id="carousel-subject"></div>
+                                <button class="carousel-nav" id="carousel-next">></button>
+                            </div>
                         </div>
 
                         <div class="carousel-dots" id="carousel-dots"></div>
                     </div>
-
-                    <div class="assignments-controls">
-                        <div class="controls-group">
-                            <label class="control-label" for="add-assignment-btn">Add Assignments</label>
-                            <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
-                        </div>
-
-                        <div class="controls-group">
-                            <label class="control-label" for="assignments-sort">Sort</label>
-                            <select id="assignments-sort" class="control-select">
-                                <option value="dueSoon">Due date (soonest)</option>
-                                <option value="dueLate">Due date (latest)</option>
-                                <option value="weightHigh">Weighting (high -> low)</option>
-                                <option value="weightLow">Weighting (low -> high) </option>
-                                <option value="priority">Priority</option>
-                            </select>
-                        </div>
-
-                        <div class="controls-group">
-                            <label class="control-label" for="assignments-filter">Filter (by priority)</label>
-                            <select id="assignments-filter" class="control-select">
-                                <option value="all">All</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                    </div>
-                    
                     <!-- any future centred content will go here-->
                 </section>
+
+                <!-- CONTROLS COLUMN -->
+                <aside class="assignments-controls" aria-label="Assignments controls">
+                    <div class="controls-group">
+                        <label class="control-label" for="add-assignment-btn">Add Assignments</label>
+                        <button type="button" class="btn-primary" id="add-assignment-btn">+</button>
+                    </div>
+
+                    <div class="controls-group">
+                        <label class="control-label" for="assignments-sort">Sort</label>
+                        <select id="assignments-sort" class="control-select">
+                            <option value="dueSoon">Due date (soonest)</option>
+                            <option value="dueLate">Due date (latest)</option>
+                            <option value="weightHigh">Weighting (high -> low)</option>
+                            <option value="weightLow">Weighting (low -> high) </option>
+                            <option value="priority">Priority</option>
+                        </select>
+                    </div>
+
+                    <div class="controls-group">
+                        <label class="control-label" for="assignments-filter">Filter (by priority)</label>
+                        <select id="assignments-filter" class="control-select">
+                            <option value="all">All</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </aside>
 
                 <!-- RIGHT COLUMN: VISUAL WIDGETS -->
                  <aside class="assignments-widgets" aria-label="Summary widgets">
