@@ -207,19 +207,28 @@ h2 {
 
 /* DASHBOARD CARDS STYLING */
 .dashboard-cards {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) minmax(320px, 1.35fr) minmax(260px, 1fr);
     gap: 30px;
-    margin-top: 30px;
+    width: auto;
+    margin: 30px 24px 0;
+    padding-inline: 0;
+    box-sizing: border-box;
+    align-items: start;
 }
 
-/* TODAY'S TASKS (Card 1) */
-.today-tasks {
+/* SHARED CARDS STYLING */
+.today-tasks { grid-column: 1; }
+.assignments-due { grid-column: 2; }
+.calendar-widget { grid-column: 3; }
+
+.today-tasks, .assignments-due {
     display: grid;
     align-content: start;
     background-color: rgb(141, 157, 141);
     border: rgb(3, 46, 8) 2px solid;
-    width: 20%;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 10px;
     padding: 14px 12px;
     gap: 10px;
@@ -227,7 +236,7 @@ h2 {
     overflow: hidden;
 }
 
-.today-tasks-header {
+.today-tasks-header, .assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 30px 1fr 30px;
@@ -237,12 +246,24 @@ h2 {
     flex: 0 0 auto;
 }
 
-.today-tasks-header h2 {
+.assignments-due-header {
+    grid-template-columns: 1fr;
+}
+
+.today-tasks-header h2, .assignments-due-header h2 {
     margin: 0;
-    text-align: center;
     line-height: 1.05;
 }
 
+.today-tasks-header h2 {
+    text-align: center;
+}
+
+.assignments-due-header h2 {
+    text-align: left;
+}
+
+/* TODAY'S TASKS (Card 1) */
 .today-tasks #add-task-btn, .today-tasks #sort-btn {
     font-size: 18px;
     border-radius: 20px;
@@ -417,26 +438,141 @@ h2 {
 }
 
 /* ASSIGNMENTS DUE (Card 2) */
-.assignments-due {
+#assignments-due-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.assignment-due-item {
+    background: rgba(255, 255, 255, 0.75);
+    border: rgb(3, 46, 8) 2px solid;
+    border-radius: 10px;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.assignment-due-task {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.15;
+}
+
+.assignment-due-subject {
+    margin-top: 4px;
+    font-size: 16px;
+    color: rgba(17, 17, 17, 0.7);
+}
+
+/* "meta" being short for metadata here */
+.assignment-due-meta {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #111;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.assignment-priority-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.assignment-priority-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.assignment-priority-dot.priority-high { background: #e74c3c; }
+.assignment-priority-dot.priority-medium { background: #f2c94c; }
+.assignment-priority-dot.priority-low { background: #27ae60; }
+.assignment-priority-dot:not(.priority-high):not(.priority-medium):not(.priority-low) { background: #9e9e9e; }
+
+.assignments-due-more {
+    margin-top: auto;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* CALENDAR WIDGET (Card 3 placeholder) */
+.calendar-widget {
+    grid-column: 3;
     display: grid;
     align-content: start;
-    background-color: rgb(141, 157, 141);
-    border: rgb(3, 46, 8) 2px solid;
-    height: 40%;
-    width: 20%;
+    border: 2px solid #ddd;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 10px;
     padding: 14px 12px;
     gap: 10px;
-    overflow: visible;
+    min-height: 260px;
 }
 
-.assignments-due-header {
-    grid-column: 1 / -1;
+.calendar-widget-header h2 {
+    margin: 0;
+    text-align: left;
+    line-height: 1.05;
+}
+
+.calendar-weekdays {
     display: grid;
-    grid-template-columns: 30px 1fr 30px;
-    align-items: center;
-    column-gap: 10px;
-    position: relative;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    color: #7b7b7b;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendar-day {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    width: 38px;
+    height: 38px;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 600;
+    color: #111;
+    cursor: pointer;
+}
+
+.calendar-day:hover {
+    background: rgba(0, 0, 0, 0.20);
+}
+
+.calendar-day.outside-month {
+    color: rgba(70, 70, 70, 0.4);
+}
+
+.calendar-day.is-today {
+    box-shadow: inset 0 0 0 2px rgba(115, 228, 111, 0.6);
+}
+
+.calendar-day.selected {
+    background: rgba(115, 228, 111, 0.6);
+    color: #fff;
 }
 
 /* SYSTEM SETTINGS STYLING */

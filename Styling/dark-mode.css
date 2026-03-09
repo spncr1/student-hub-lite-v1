@@ -106,7 +106,7 @@ body.dark-mode h1, body.dark-mode h2 {
     font-family: sans-serif, arial;
 }
 
-body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode li, body.dark-mode label, body.dark-mode a, body.dark-mode span {
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label, body.dark-mode a {
     color: #e9e9ea;
 }
 
@@ -161,26 +161,36 @@ body.dark-mode #today-btn:hover, body.dark-mode #previous-btn:hover, body.dark-m
 }
 
 body.dark-mode .dashboard-cards {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(240px, 0.9fr) minmax(320px, 1.35fr) minmax(260px, 1fr);
     gap: 30px;
-    margin-top: 30px;
+    width: auto;
+    margin: 30px 24px 0;
+    padding-inline: 0;
+    box-sizing: border-box;
+    align-items: start;
 }
 
-body.dark-mode .today-tasks {
+/* SHARED CARD STYLING */
+body.dark-mode .today-tasks { grid-column: 1; }
+body.dark-mode .assignments-due { grid-column: 2; }
+body.dark-mode .calendar-widget { grid-column: 3; }
+
+body.dark-mode .today-tasks, body.dark-mode .assignments-due {
     display: grid;
     align-content: start;
     background-color: rgb(141, 157, 141);
-    border: rgb(10, 185, 31) 2px solid;
-    height: 45%;
-    width: 20%;
+    border: rgb(64, 84, 64) 2px solid;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 10px;
     padding: 14px 12px;
     gap: 10px;
-    overflow: visible;
+    max-height: 420px;
+    overflow: hidden;
 }
 
-body.dark-mode .today-tasks-header {
+body.dark-mode .today-tasks-header, body.dark-mode .assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 30px 1fr 30px;
@@ -189,15 +199,21 @@ body.dark-mode .today-tasks-header {
     position: relative;
 }
 
-body.dark-mode .today-tasks-header h2 {
+body.dark-mode .assignments-due-header {
+    grid-template-columns: 1fr;
+}
+
+body.dark-mode .today-tasks-header h2, body.dark-mode .assignments-due-header h2 {
     margin: 0;
-    text-align: center;
     line-height: 1.05;
-    color: black;
+}
+
+body.dark-mode .today-tasks-header h2 {
+    text-align: center;
 }
 
 body.dark-mode .assignments-due-header h2 {
-    color: black;
+    text-align: left;
 }
 
 body.dark-mode .today-tasks #add-task-btn, body.dark-mode .today-tasks #sort-btn {
@@ -367,26 +383,143 @@ body.dark-mode .sort-row label {
     margin-bottom: 8px;
 }
 
-body.dark-mode .assignments-due {
+body.dark-mode #assignments-due-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+body.dark-mode .assignment-due-item {
+    background: rgba(255, 255, 255, 0.75);
+    border: rgb(3, 46, 8) 1px solid;
+    border-radius: 10px;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+body.dark-mode .assignment-due-task {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.15;
+}
+
+body.dark-mode .assignment-due-subject {
+    margin-top: 4px;
+    font-size: 16px;
+    color: rgba(17, 17, 17, 0.72);
+}
+
+body.dark-mode .assignment-due-meta {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+body.dark-mode .assignment-due-meta span {
+    color: #000;
+}
+
+body.dark-mode .assignment-priority-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+body.dark-mode .assignment-priority-dot.priority-high { background: #e74c3c; }
+body.dark-mode .assignment-priority-dot.priority-medium { background: #f2c94c; }
+body.dark-mode .assignment-priority-dot.priority-low { background: #27ae60; }
+body.dark-mode .assignment-priority-dot:not(.priority-high):not(.priority-medium):not(.priority-low) { background: #9e9e9e; }
+
+body.dark-mode .assignments-due-more {
+    margin-top: auto;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* CALENDAR WIDGET (Card 3 placeholder) */
+body.dark-mode .calendar-widget {
+    grid-column: 3;
     display: grid;
     align-content: start;
     background-color: rgb(141, 157, 141);
-    border: rgb(10, 185, 31) 2px solid;
-    height: 40%;
-    width: 20%;
+    border: rgb(64, 84, 64) 2px solid;
+    width: 100%;
+    box-sizing: border-box;
     border-radius: 10px;
     padding: 14px 12px;
     gap: 10px;
-    overflow: visible;
+    min-height: 260px;
 }
 
-body.dark-mode .assignments-due-header {
-    grid-column: 1 / -1;
+body.dark-mode .calendar-widget-header h2 {
+    margin: 0;
+    text-align: left;
+    line-height: 1.05;
+    color: #111;
+}
+
+body.dark-mode .calendar-weekdays {
     display: grid;
-    grid-template-columns: 30px 1fr 30px;
-    align-items: center;
-    column-gap: 10px;
-    position: relative;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    color: #555;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+}
+
+body.dark-mode .calendar-weekdays span {
+    color: #555;
+}
+
+body.dark-mode .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+body.dark-mode .calendar-day {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    width: 38px;
+    height: 38px;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1b1b1b;
+    cursor: pointer;
+}
+
+body.dark-mode .calendar-day:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+body.dark-mode .calendar-day.outside-month {
+    color: #9aa0a6;
+}
+
+body.dark-mode .calendar-day.is-today {
+    box-shadow: inset 0 0 0 2px #2f80ed;
+}
+
+body.dark-mode .calendar-day.selected {
+    background: #2f80ed;
+    color: #fff;
 }
 
 body.dark-mode .system-settings {
@@ -1085,7 +1218,7 @@ body.dark-mode .assignments-main {
 }
 
 body.dark-mode .subjects-panel {
-    border: 2px solid rgb(10, 185, 31);
+    border: rgb(64, 84, 64) 2px solid;
     background-color: rgb(141, 157, 141);
     border-radius: 10px;
     padding: 14px 12px;
@@ -1187,7 +1320,7 @@ body.dark-mode #subjects-list .subject-item:disabled {
 }
 
 body.dark-mode .assignments-table-card {
-    border: 2px solid rgb(10, 185, 31);
+    border: rgb(64, 84, 64) 2px solid;
     background-color: rgb(141, 157, 141);
     border-radius: 10px;
     padding: 14px 12px;
@@ -1406,7 +1539,7 @@ body.dark-mode .assignments-controls {
     justify-self: center;
     padding: 14px 12px;
     background: rgb(141, 157, 141);
-    border: 2px solid rgb(10, 185, 31);
+    border: rgb(64, 84, 64) 2px solid;
     border-radius: 10px;
     width: 100%;
     max-width: 180px;

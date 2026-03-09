@@ -80,8 +80,39 @@
                     <div class="assignments-due-header">
                         <h2>ASSIGNMENTS DUE TODAY</h2>
                     </div>
+                    <ul id="assignments-due-list"></ul>
+                    <div id="assignments-due-more" class="assignments-due-more hidden"></div>
+                </div>
+
+                <div class="calendar-widget">
+                    <div class="calendar-widget-header">
+                        <h2 id="calendar-month-label">MONTH YEAR</h2>
+                    </div>
+                    <div class="calendar-weekdays" aria-hidden="true">
+                        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                    </div>
+                    <div id="calendar-days" class="calendar-days" role="grid" aria-label="Calendar"></div>
                 </div>
             </div>
+
+            <template id="assignment-due-item-template">
+                <li class="assignment-due-item">
+                    <div class="assignment-due-task"></div>
+                    <div class="assignment-due-subject"></div>
+                    <div class="assignment-due-meta">
+                        <span class="assignment-due-date-label"></span>
+                        <span class="assignment-priority-group">
+                            <span class="assignment-priority-dot" aria-hidden="true"></span>
+                            <span class="assignment-priority-label"></span>
+                        </span>
+                        <span class="assignment-status-label"></span>
+                    </div>
+                </li>
+            </template>
+
+            <template id="assignment-due-empty-template">
+                <li class="assignment-due-empty">No assignments due on this date.</li>
+            </template>
 
              <div id="modal-backdrop" class="hidden"></div>
 
@@ -168,8 +199,6 @@
              <div class="system-settings">
                 <button id="system-settings-btn">⚙️</button>
              </div>
-
-             <!-- Calendar View (third dashboard card) - not sure how I'll implement this just yet, so just keeping as a placeholder here for now to implement later -->
         </main>
         
         <script src="/index.js"></script>
