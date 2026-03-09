@@ -5,7 +5,7 @@
         <title>Student Hub (Lite) Tasks</title>
         
         <!-- CSS stylesheet -->
-        <link rel="stylesheet" href="/Styling/style.css">
+        <link rel="stylesheet" href="/Styling/tasks.css">
         <link rel="stylesheet" href="/Styling/dark-mode.css">
 
         <!-- Fonts will go here (once decided)... -->
@@ -13,7 +13,7 @@
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="/Images/student-hub-lite-favicon-v1.png">
     </head>
-    <body>
+    <body class="tasks-page">
 
         <nav class="navbar">
             <button class="menu-toggle" aria-label="Toggle navigation">
@@ -28,50 +28,110 @@
         </nav>
 
         <main class="content">
-            <button id="today-btn">TODAY</button>
-            
-            <div class="date-header">
+            <header class="tasks-page-header">
+                <h1 class="page-title">TASKS PLANNER</h1>
+            </header>
 
-                <div class="date-row">
-                    <button id="previous-btn"><</button>
+            <section class="tasks-controls" aria-label="Tasks controls">
+                <div class="tasks-nav-group">
+                    <button id="today-btn">TODAY</button>
+                    <button id="previous-btn" class="tasks-nav-btn" aria-label="Previous period"><</button>
+                    <button id="next-btn" class="tasks-nav-btn" aria-label="Next period">></button>
+                </div>
 
-                    <div class="date-text">
-                        <h1 id="date-display"></h1>
-                        <h2 id="day-display"></h2>
+                <div class="tasks-range-label-wrap">
+                    <h2 id="tasks-range-label">Week of ...</h2>
+                </div>
+
+                <div class="tasks-view-toggle" role="tablist" aria-label="Calendar view">
+                    <button id="week-view-btn" class="btn-secondary active" type="button" role="tab" aria-selected="true">Week</button>
+                    <button id="month-view-btn" class="btn-secondary" type="button" role="tab" aria-selected="false">Month</button>
+                </div>
+            </section>
+
+            <section id="tasks-week-view" class="tasks-surface" aria-label="Weekly tasks schedule">
+                <div class="tasks-grid-shell">
+                    <div class="tasks-week-header-row">
+                        <div class="tasks-time-header">TIME</div>
+                        <div id="tasks-week-header" class="tasks-week-header"></div>
                     </div>
 
-                    <button id="next-btn">></button>
+                    <div class="tasks-week-body-row">
+                        <div id="tasks-week-time-rail" class="tasks-time-rail" aria-hidden="true"></div>
+                        <div id="tasks-week-body" class="tasks-week-body"></div>
+                    </div>
+                </div>
+            </section>
+
+            <template id="week-slot-template">
+                <div class="week-slot">
+                    <button type="button" class="slot-add-btn" aria-label="Add task">+</button>
+                    <div class="slot-quarter-grid">
+                        <div class="slot-quarter" data-quarter="0"></div>
+                        <div class="slot-quarter" data-quarter="1"></div>
+                        <div class="slot-quarter" data-quarter="2"></div>
+                        <div class="slot-quarter" data-quarter="3"></div>
+                    </div>
+                </div>
+            </template>
+
+            <section id="tasks-month-view" class="tasks-surface hidden" aria-label="Monthly tasks schedule">
+                <div class="tasks-month-layout">
+                    <div class="tasks-month-calendar">
+                        <div class="tasks-month-weekdays" aria-hidden="true">
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                        </div>
+                        <div id="tasks-month-days" class="tasks-month-days" role="grid" aria-label="Month"></div>
+                    </div>
+
+                    <div class="tasks-month-agenda">
+                        <h3 id="tasks-selected-date-label" class="tasks-selected-date-label">Selected date</h3>
+                        <div class="tasks-month-agenda-grid">
+                            <div id="tasks-month-time-rail" class="tasks-time-rail" aria-hidden="true"></div>
+                            <div id="tasks-month-body" class="tasks-month-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="modal-backdrop" class="hidden"></div>
+
+            <div id="add-task-modal" class="hidden" role="dialog" aria-modal="true" aria-label="Add task">
+                <h3 id="task-modal-title" align="center">ADD TASK</h3>
+
+                <div class="form-row">
+                    <label for="task-title"><strong>Title</strong></label>
+                    <input id="task-title" type="text" placeholder="e.g., Finish tutorial">
+                </div>
+
+                <div class="form-row">
+                    <label for="task-notes"><strong>Notes</strong></label>
+                    <textarea id="task-notes" rows="3" placeholder="Optional..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label for="task-priority"><strong>Priority</strong></label>
+                    <select id="task-priority">
+                        <option value="high">High</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="task-time"><strong>Time</strong></label>
+                    <input id="task-time" type="time" step="60">
+                </div>
+
+                <p id="task-status" class="task-status"></p>
+                <p id="task-schedule-context" class="task-schedule-context"></p>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="cancel-task-btn">Cancel</button>
+                    <button class="btn-secondary hidden" id="delete-task-btn">Delete</button>
+                    <button class="btn-secondary" id="confirm-task-btn">Add</button>
                 </div>
             </div>
-            <hr>
-            <!-- the below is utter dog shit, but this is just a placeholder to give me an idea on how i want this to look in line with the original sketch -->
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <hr>
 
             <!-- SYSTEM SETTINGS MODAL -->
               <div id="system-settings-modal" class="hidden" role="dialog" aria-modal="true" aria-label="System Settings">
@@ -107,7 +167,7 @@
                                     </div>
 
                                     <label class="switch">
-                                        <input type="checkbox" id="darkmode-toggle">
+                                        <input type="checkbox" id="dark-mode-toggle">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -123,6 +183,6 @@
              </div>
         </main>
         
-        <script src="tasks.js"></script>
+        <script src="/Tasks/tasks.js"></script>
     </body>
 </html>

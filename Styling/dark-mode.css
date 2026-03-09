@@ -190,6 +190,14 @@ body.dark-mode .today-tasks, body.dark-mode .assignments-due {
     overflow: hidden;
 }
 
+body.dark-mode .today-tasks {
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+body.dark-mode .assignments-due {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
 body.dark-mode .today-tasks-header, body.dark-mode .assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
@@ -235,6 +243,7 @@ body.dark-mode #task-list {
     text-align: left;
     overflow-y: auto;
     max-height: 100%;
+    min-height: 0;
 }
 
 body.dark-mode #task-list li {
@@ -389,6 +398,9 @@ body.dark-mode #assignments-due-list {
     padding: 0;
     display: grid;
     gap: 10px;
+    overflow-y: auto;
+    max-height: 100%;
+    min-height: 0;
 }
 
 body.dark-mode .assignment-due-item {
@@ -469,21 +481,21 @@ body.dark-mode .calendar-widget-header h2 {
     margin: 0;
     text-align: left;
     line-height: 1.05;
-    color: #111;
+    color: #ddd;
 }
 
 body.dark-mode .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
-    color: #555;
+    color: rgb(0, 0, 0);
     font-size: 15px;
     font-weight: 700;
     text-align: center;
 }
 
 body.dark-mode .calendar-weekdays span {
-    color: #555;
+    color: #bbb;
 }
 
 body.dark-mode .calendar-days {
@@ -501,7 +513,7 @@ body.dark-mode .calendar-day {
     margin: 0 auto;
     font-size: 20px;
     font-weight: 600;
-    color: #1b1b1b;
+    color: #ddd;
     cursor: pointer;
 }
 
@@ -510,16 +522,16 @@ body.dark-mode .calendar-day:hover {
 }
 
 body.dark-mode .calendar-day.outside-month {
-    color: #9aa0a6;
+    color: #bbb;
 }
 
 body.dark-mode .calendar-day.is-today {
-    box-shadow: inset 0 0 0 2px #2f80ed;
+    box-shadow: inset 0 0 0 2px rgba(115, 228, 111, 0.6);
 }
 
 body.dark-mode .calendar-day.selected {
-    background: #2f80ed;
-    color: #fff;
+    background: rgba(115, 228, 111, 0.6);
+    color: #111;
 }
 
 body.dark-mode .system-settings {
@@ -1721,5 +1733,168 @@ body.dark-mode .view-assignment-desc {
         width: 100%;
         max-width: 100%;
         margin: 0;
+    }
+}
+
+/* =========================================
+   TASKS DARK MODE (CALENDAR SCAFFOLD)
+   ========================================= */
+body.dark-mode .tasks-surface {
+    background: #111318;
+    border-color: #2a2d35;
+}
+
+body.dark-mode .tasks-range-label-wrap h2 {
+    color: #e9e9ea;
+}
+
+body.dark-mode .tasks-controls #today-btn {
+    font-size: 18px;
+    width: 100px;
+    height: 38px;
+}
+
+body.dark-mode .tasks-controls .tasks-nav-btn {
+    font-size: 25px;
+    width: 40px;
+    height: 38px;
+}
+
+body.dark-mode .tasks-controls .tasks-view-toggle .btn-secondary {
+    width: 78px;
+    height: 32px;
+    font-size: 14px;
+}
+
+body.dark-mode .tasks-view-toggle .btn-secondary.active {
+    background: white;
+    color: black;
+    border-color: grey;
+}
+
+body.dark-mode .tasks-time-header,
+body.dark-mode .time-label,
+body.dark-mode .week-day-header,
+body.dark-mode .tasks-selected-date-label,
+body.dark-mode .tasks-month-weekdays span {
+    color: #e9e9ea;
+}
+
+body.dark-mode .tasks-time-header,
+body.dark-mode .tasks-time-rail,
+body.dark-mode .time-label,
+body.dark-mode .tasks-week-header,
+body.dark-mode .week-slot,
+body.dark-mode .slot-quarter,
+body.dark-mode .tasks-month-agenda-grid,
+body.dark-mode .month-slot {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+body.dark-mode .week-day-header {
+    background: rgba(92, 152, 92, 0.6);
+}
+
+body.dark-mode .week-day-header.today {
+    background: rgba(115, 228, 111, 0.26);
+    border-bottom: 2px solid rgba(129, 239, 126, 0.85);
+}
+
+body.dark-mode .tasks-month-calendar,
+body.dark-mode .tasks-month-agenda {
+    background: #171920;
+    border-color: #2a2d35;
+}
+
+body.dark-mode .tasks-month-day {
+    background: #1f232d;
+    color: #e9e9ea;
+    border-color: #2f3441;
+}
+
+body.dark-mode .tasks-month-day.today {
+    border-color: #f05454;
+}
+
+body.dark-mode .tasks-month-day.selected {
+    outline: 2px solid rgba(129, 239, 126, 0.85);
+}
+
+body.dark-mode .tasks-month-day.outside {
+    opacity: 0.55;
+}
+
+body.dark-mode .slot-add-btn {
+    background: #ffffff;
+    border-color: #e9e9ea;
+    color: black;
+}
+
+body.dark-mode .slot-add-btn:hover {
+    background: #405040;
+    border-color: #405040;
+    color: #111;
+}
+
+body.dark-mode .task-card {
+    color: #111;
+    border-color: rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .task-card.priority-high {
+    background: #d78882;
+}
+
+body.dark-mode .task-card.priority-medium {
+    background: #98b69b;
+}
+
+body.dark-mode .task-card.priority-low {
+    background: #7fbe94;
+}
+
+body.dark-mode .tbd-chip {
+    background: rgba(255, 255, 255, 0.7);
+    color: #111;
+}
+
+body.dark-mode .tbd-chip {
+    background: rgba(255, 255, 255, 0.7);
+    color: #111;
+}
+
+body.dark-mode .tbd-chip:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .tbd-chip:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .tbd-more,
+body.dark-mode .tbd-more,
+body.dark-mode .tasks-month-day-count,
+body.dark-mode .task-schedule-context {
+    color: #e9e9ea;
+}
+
+body.dark-mode #task-time {
+    background: #111;
+    color: #e9e9ea;
+    border: 1px solid grey;
+}
+
+body.dark-mode #task-time:focus {
+    outline: 2px solid rgba(129, 239, 126, 0.5);
+}
+
+body.dark-mode #task-time::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.85;
+}
+
+@media (max-width: 800px) {
+    body.dark-mode .tasks-range-label-wrap h2 {
+        font-size: 28px;
     }
 }

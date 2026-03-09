@@ -236,6 +236,14 @@ h2 {
     overflow: hidden;
 }
 
+.today-tasks {
+    grid-template-rows: auto minmax(0, 1fr);
+}
+
+.assignments-due {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
 .today-tasks-header, .assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
@@ -444,6 +452,9 @@ h2 {
     padding: 0;
     display: grid;
     gap: 10px;
+    overflow-y: auto;
+    max-height: 100%;
+    min-height: 0;
 }
 
 .assignment-due-item {
