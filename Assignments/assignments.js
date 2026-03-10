@@ -834,7 +834,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Professional Practice",
             "Global Perspectives",
             "Contemporary Issues",
-            "Applies Studies",
+            "Applied Studies",
             "Ethics and Society",
             "Global Perspectives",
             "Principles of Communication",
