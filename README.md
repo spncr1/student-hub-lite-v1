@@ -4,7 +4,7 @@ A browser-based productivity web app designed to help students manage tasks, ass
 
 My motivation behind building this project was to help me build a clean, simple system that visualises how daily work connects to larger academic goals. The focus was on clarity, usability, and creating an interface that makes planning feel calm rather than overwhelming.
 
-*Live version: https://student-hub-lite-v1.vercel.app/*
+*Live version: https://nexa-v1.vercel.app/*
 
 ---
 
