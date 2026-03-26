@@ -1,4 +1,4 @@
-# STELLIS - A Student Productivity Hub
+# NEXA - A Student Productivity Hub
 
 A browser-based productivity web app designed to help students manage tasks, assignments, and schedules all in the one place.
 
