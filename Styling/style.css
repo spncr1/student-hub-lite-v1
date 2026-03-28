@@ -145,14 +145,22 @@ h2 {
 /* MAIN BUTTONS */
 .btn-primary {
     font-size: 18px;
-    border-radius: 20px;
+    border-radius: 999px;
     background-color: black;
     border: 2px solid grey;
     color: white;
     width: 30px;
     height: 30px;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
     align-self: center;
     justify-self: center;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .btn-primary:hover {
@@ -399,7 +407,7 @@ h2 {
 /* TODAY'S TASKS (SORT) STYLING */
 .sort-panel {
     position: absolute;
-    top: 30px;
+    top: 40px;
     left: calc(100% + 10px);
     right: auto;
 
@@ -602,12 +610,9 @@ body.nav-collapsed .system-settings {
 }
 
 #system-settings-btn {
+    appearance: none;
+    background: transparent;
     font-size: 40px;
-    border-radius: 20px;
-    background-color: white;
-    color: white;
-    width: 30px;
-    height: 30px;
     align-self: center;
     justify-self: center;
     border: none;

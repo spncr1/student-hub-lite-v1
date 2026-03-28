@@ -737,14 +737,22 @@ body.nav-collapsed .system-settings {
 /* for all "add" style buttons on the page */
 .btn-primary {
     font-size: 18px;
-    border-radius: 20px;
+    border-radius: 999px;
     background-color: black;
     border: 2px solid grey;
     color: white;
     width: 30px;
     height: 30px;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
     align-self: center;
-    justify-self: center; 
+    justify-self: center;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .btn-primary:hover {
@@ -1111,6 +1119,19 @@ body.nav-collapsed .system-settings {
 
 .subjects-panel-header .panel-title {
     margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.subjects-add-btn,
+#add-subject-btn {
+    flex: 0 0 30px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
 }
 
 #subject-modal-backdrop {

@@ -192,6 +192,7 @@ body.dark-mode .today-tasks, body.dark-mode .assignments-due {
 
 body.dark-mode .today-tasks {
     grid-template-rows: auto minmax(0, 1fr);
+    overflow: visible;
 }
 
 body.dark-mode .assignments-due {
@@ -345,9 +346,9 @@ body.dark-mode .task-status {
 
 body.dark-mode .sort-panel {
     position: absolute;
-
-    top: 0;
+    top: 40px;
     left: calc(100% + 10px);
+    right: auto;
 
     background: black;
     border: 1px solid grey;
@@ -548,12 +549,9 @@ body.dark-mode.nav-collapsed .system-settings {
 }
 
 body.dark-mode #system-settings-btn {
+    appearance: none;
+    background: transparent;
     font-size: 40px;
-    border-radius: 20px;
-    background-color: black;
-    color: black;
-    width: 30px;
-    height: 30px;
     align-self: center;
     justify-self: center;
     border: none;
@@ -854,15 +852,22 @@ body.dark-mode .assignments-controls {
 /* Primary buttons (Add etc.) */
 body.dark-mode .btn-primary {
   font-size: 18px;
-  border-radius: 20px;
+  border-radius: 999px;
   background-color: #fff;
   color: #000;
   width: 30px;
   height: 30px;
+  padding: 0;
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  line-height: 1;
   align-self: center;
   justify-self: center;
   cursor: pointer;
   border: 1px solid grey;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 body.dark-mode .btn-primary:hover {
@@ -1304,6 +1309,19 @@ body.dark-mode .subjects-panel-header {
 
 body.dark-mode .subjects-panel-header .panel-title {
     margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+body.dark-mode .subjects-add-btn,
+body.dark-mode #add-subject-btn {
+    flex: 0 0 30px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
 }
 
 body.dark-mode .panel-title {
