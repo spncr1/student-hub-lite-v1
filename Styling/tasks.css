@@ -700,12 +700,9 @@ body.nav-collapsed .system-settings {
 }
 
 #system-settings-btn {
+    appearance: none;
+    background: transparent;
     font-size: 40px;
-    border-radius: 20px;
-    background-color: white;
-    color: white;
-    width: 30px;
-    height: 30px;
     align-self: center;
     justify-self: center;
     border: none;

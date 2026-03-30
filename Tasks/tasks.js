@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector(".menu-toggle");
     const NAV_COLLAPSED_KEY = "studenthub_nav_collapsed";
+    const mobileNavQuery = window.matchMedia("(max-width: 768px)");
     const TASKS_KEY = "tasksByDate";
     const SUBJECTS_KEY = "studenthub_subjects";
     const ASSIGNMENTS_KEY = "studenthub_assignments";
@@ -935,7 +936,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (menuToggle) {
         const savedCollapsed = localStorage.getItem(NAV_COLLAPSED_KEY) === "1";
-        setNavCollapsed(savedCollapsed);
+        setNavCollapsed(mobileNavQuery.matches ? true : savedCollapsed);
         menuToggle.addEventListener("click", () => {
             const next = !document.body.classList.contains("nav-collapsed");
             setNavCollapsed(next);

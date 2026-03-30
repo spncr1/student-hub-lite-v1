@@ -148,12 +148,9 @@ body.nav-collapsed .system-settings {
 }
 
 #system-settings-btn {
+    appearance: none;
+    background: transparent;
     font-size: 40px;
-    border-radius: 20px;
-    background-color: white;
-    color: white;
-    width: 30px;
-    height: 30px;
     align-self: center;
     justify-self: center;
     border: none;
@@ -1299,23 +1296,95 @@ button, input, select, textarea { font-family: inherit; }
     word-break: break-word;
 }
 
-/* Responsive fallback just in case */
-@media (max-width: 1100px) {
-    html, body { display: flex; }
-    
+@media (max-width: 1200px) {
+    .assignments-layout {
+        grid-template-columns: 200px minmax(0, 1fr) 170px;
+        grid-template-rows: auto auto auto;
+        gap: 16px;
+    }
+
+    .subjects-panel {
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    .assignments-main {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .assignments-controls {
+        grid-column: 3;
+        grid-row: 1;
+        width: 100%;
+        max-width: none;
+        min-height: 0;
+        padding: 12px 10px;
+    }
+
+    .weighting-carousel {
+        width: 100%;
+        max-width: none;
+        min-height: 0;
+        padding: 12px 14px;
+        --pie-size: 130px;
+    }
+
+    .carousel-footer {
+        width: min(100%, calc(var(--pie-size) + 60px));
+    }
+
+    .assignments-widgets {
+        grid-column: 2 / 4;
+        grid-row: 2;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .widget-card {
+        min-height: 0;
+    }
+
+    .dash-slide {
+        min-height: 170px;
+    }
+
+    .vchart-legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .assignments-table-card {
+        grid-column: 1 / 4;
+        grid-row: 3;
+    }
+}
+
+@media (max-width: 860px) {
     .assignments-layout {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
     }
 
+    .subjects-panel,
     .assignments-main,
     .assignments-controls,
-    .assignments-widgets {
+    .assignments-widgets,
+    .assignments-table-card {
         grid-column: 1;
         grid-row: auto;
     }
 
-    .assignments-table-card {
-        grid-column: 1;
+    .assignments-controls,
+    .weighting-carousel {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .assignments-controls {
+        min-height: 0;
+    }
+
+    .assignments-widgets {
+        grid-template-columns: 1fr;
     }
 }
