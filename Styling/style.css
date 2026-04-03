@@ -262,7 +262,7 @@ h2 {
 .today-tasks-header, .assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 36px 1fr 36px;
+    grid-template-columns: 30px 1fr 30px;
     align-items: center;
     column-gap: 10px;
     position: relative;
@@ -490,7 +490,7 @@ h2 {
 .assignment-due-subject {
     margin-top: 4px;
     font-size: 16px;
-    color: rgba(17, 17, 17, 0.7);
+    color: rgba(17, 17, 17, 0.72);
 }
 
 /* "meta" being short for metadata here */
@@ -499,7 +499,7 @@ h2 {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 8px;
     color: #111;
     font-size: 14px;
     font-weight: 600;
@@ -820,6 +820,10 @@ body.nav-collapsed .system-settings {
     transform: translateX(17px);
 }
 
+/*  ===================================
+    RESPONSIVE SCREEN & WINDOW RESIZING 
+    ===================================
+*/
 @media (max-width: 1400px) {
     .dashboard-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -842,16 +846,54 @@ body.nav-collapsed .system-settings {
     }
 }
 
-@media (max-width: 620px) {
-    
-    .dashboard-cards {
-        grid-template-columns: 1fr;
+@media (max-width: 1100px) {
+    html, body {
+        display: block;
+        width: 100%;
     }
 
-    .calendar-widget {
-        grid-column: auto;
-        max-width: 100%;
-        justify-self: stretch;
+    .navbar {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .content {
+        padding: 16px;
+    }
+    
+    .assignments-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .assignments-widgets {
+        grid-row: auto;
+    }
+
+    .weighting-carousel, .assignments-controls {
+        width: 100%;
+        margin: 0;
+    }
+
+    .assignments-controls {
+        margin-top: 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    .assignments-table-card {
+        overflow-x: auto;
+    }
+
+    .assignments-table {
+        min-width: 720px;
+    }
+}
+
+@media (max-width: 800px) {
+    .tasks-range-label-wrap h2 {
+        font-size: 28px;
     }
 }
 
@@ -921,14 +963,10 @@ body.nav-collapsed .system-settings {
     }
 
     .menu-toggle {
-        background: none;
-        border: none;
+        display: block;
         font-size: 52px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        margin-left: 50px;
-        text-align: center;
-        transition: margin-left 0.24s ease;
+        margin: 0 0 10px 0;
+        align-self: flex-start;
     }
 
     .content {
@@ -1095,6 +1133,17 @@ body.nav-collapsed .system-settings {
     }
 }
 
+@media (max-width: 600px) {
+    .page-title { font-size: 26px; }
+    .navbar ul { font-size: 18px; }
+    .menu-toggle { font-size: 54px; margin-left: 0; }
+
+    .carousel-slide {
+        width: 100%;
+        min-height: 160px;
+    }
+}
+
 @media (max-width: 560px) {
     .dashboard-cards {
         grid-template-columns: 1fr;
@@ -1117,4 +1166,56 @@ body.nav-collapsed .system-settings {
     .dashboard-cards {
         grid-template-columns: 1fr;
     }
+}
+
+body.dark-mode .task-card.priority-high {
+    background: #d78882;
+}
+
+body.dark-mode .task-card.priority-medium {
+    background: #98b69b;
+}
+
+body.dark-mode .task-card.priority-low {
+    background: #7fbe94;
+}
+
+body.dark-mode .tbd-chip {
+    background: rgba(255, 255, 255, 0.7);
+    color: #111;
+}
+
+body.dark-mode .tbd-chip {
+    background: rgba(255, 255, 255, 0.7);
+    color: #111;
+}
+
+body.dark-mode .tbd-chip:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .tbd-chip:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .tbd-more,
+body.dark-mode .tbd-more,
+body.dark-mode .tasks-month-day-count,
+body.dark-mode .task-schedule-context {
+    color: #e9e9ea;
+}
+
+#task-time {
+    background: #111;
+    color: #e9e9ea;
+    border: 1px solid grey;
+}
+
+#task-time:focus {
+    outline: 2px solid rgba(129, 239, 126, 0.5);
+}
+
+#task-time::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.85;
 }

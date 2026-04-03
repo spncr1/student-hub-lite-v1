@@ -1190,63 +1190,6 @@ body.dark-mode .dash-dots span.active {
   background: rgba(255,255,255,0.7);
 }
 
-/* Responsive fallback just in case */
-@media (max-width: 1100px) {
-    html, body {
-        display: block;
-        width: 100%;
-    }
-
-    .navbar {
-        width: 100%;
-        border-right: 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .content {
-        padding: 16px;
-    }
-    
-    .assignments-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-    }
-
-    .assignments-widgets {
-        grid-row: auto;
-    }
-
-    .weighting-carousel, .assignments-controls {
-        width: 100%;
-        margin: 0;
-    }
-
-    .assignments-controls {
-        margin-top: 12px;
-    }
-}
-
-@media (max-width: 900px) {
-    .assignments-table-card {
-        overflow-x: auto;
-    }
-
-    .assignments-table {
-        min-width: 720px;
-    }
-}
-
-@media (max-width: 600px) {
-    .page-title { font-size: 26px; }
-    .navbar ul { font-size: 18px; }
-    .menu-toggle { font-size: 54px; margin-left: 0; }
-
-    .carousel-slide {
-        width: 100%;
-        min-height: 160px;
-    }
-}
-
 /* =========================================
    ASSIGNMENTS DARK MODE SYNC (CURRENT LAYOUT)
    Mirrors assignments.css structure/placement
@@ -1976,6 +1919,10 @@ body.dark-mode .task-card {
     border-color: rgba(0, 0, 0, 0.45);
 }
 
+/*  ===================================
+    RESPONSIVE SCREEN & WINDOW RESIZING 
+    ===================================
+*/
 @media (max-width: 1400px) {
     body.dark-mode .dashboard-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1998,15 +1945,54 @@ body.dark-mode .task-card {
     }
 }
 
-@media (max-width: 620px) {
-    body.dark-mode .dashboard-cards {
-        grid-template-columns: 1fr;
+@media (max-width: 1100px) {
+    html body.dark-mode {
+        display: block;
+        width: 100%;
     }
 
-    body.dark-mode .calendar-widget {
-        grid-column: auto;
-        max-width: 100%;
-        justify-self: stretch;
+    body.dark-mode .navbar {
+        width: 100%;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    body.dark-mode .content {
+        padding: 16px;
+    }
+    
+    body.dark-mode .assignments-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    body.dark-mode .assignments-widgets {
+        grid-row: auto;
+    }
+
+    body.dark-mode .weighting-carousel, .assignments-controls {
+        width: 100%;
+        margin: 0;
+    }
+
+    body.dark-mode .assignments-controls {
+        margin-top: 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    body.dark-mode .assignments-table-card {
+        overflow-x: auto;
+    }
+
+    body.dark-mode .assignments-table {
+        min-width: 720px;
+    }
+}
+
+@media (max-width: 800px) {
+    body.dark-mode .tasks-range-label-wrap h2 {
+        font-size: 28px;
     }
 }
 
@@ -2246,6 +2232,17 @@ body.dark-mode .task-card {
     }
 }
 
+@media (max-width: 600px) {
+    body.dark-mode .page-title { font-size: 26px; }
+    body.dark-mode .navbar ul { font-size: 18px; }
+    body.dark-mode .menu-toggle { font-size: 54px; margin-left: 0; }
+
+    body.dark-mode .carousel-slide {
+        width: 100%;
+        min-height: 160px;
+    }
+}
+
 @media (max-width: 560px) {
     body.dark-mode .dashboard-cards {
         grid-template-columns: 1fr;
@@ -2320,10 +2317,4 @@ body.dark-mode #task-time:focus {
 body.dark-mode #task-time::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.85;
-}
-
-@media (max-width: 800px) {
-    body.dark-mode .tasks-range-label-wrap h2 {
-        font-size: 28px;
-    }
 }
