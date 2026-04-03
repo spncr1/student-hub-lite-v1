@@ -778,20 +778,11 @@ body.nav-collapsed .system-settings {
     color: black;
 }
 
-/*if i wanna add specific styling for the reset btn then it can go here under the "btn-secondary" class */
-.reset-btn {
-    font-size: 14px;
-    border-radius: 5px;
+#reset-btn {
     background-color: rgba(144, 190, 144, 0.6);
-    border: 2px solid black;
-    color: black;
-    width: 70px;
-    height: 30px;
-    align-self: center;
-    justify-self: center;
 }
 
-.reset-btn:hover {
+#reset-btn:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
     border-color: grey;
@@ -984,7 +975,7 @@ body.nav-collapsed .system-settings {
 .dash-nav:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
 
@@ -1120,7 +1111,7 @@ body.nav-collapsed .system-settings {
     min-width: 0;
 }
 
-.subjects-add-btn,
+/* this is needed because the base styling for btn-primary isn't enough to handle for how this fits within the subjects card */
 #add-subject-btn {
     flex: 0 0 30px;
     width: 30px;

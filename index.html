@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Student Hub (Lite) Dashboard</title>
+        <title>NEXA</title>
         
         <!-- CSS stylesheet -->
         <link rel="stylesheet" href="/Styling/style.css">
@@ -51,16 +51,14 @@
             <div class="dashboard-cards">
                     <div class="today-tasks">
                     <div class="today-tasks-header">
-                        <button class="btn-primary" id="add-task-btn">+</button>
-                        
                         <h2>TODAY'S TASKS</h2>
-                        
-                        <button class="btn-primary" id="sort-btn">S</button>
-                        <!-- Sort dropdown panel-->
-                        <div id="sort-panel" class="sort-panel hidden" role="menu" aria-label="Sort Tasks">
-                            <div class="sort-row">
-                                <label for="sort-select"><strong>Sort By</strong></label>
-                                <select id="sort-select">
+
+                        <div class="today-tasks-controls">
+                            <button class="btn-primary" id="add-task-btn">+</button>
+
+                            <div class="controls-group">
+                                <label class="control-label" for="sort-select">Sort</label>
+                                <select id="sort-select" class="control-select">
                                     <option value="az">A-Z</option>
                                     <option value="za">Z-A</option>
                                     <option value="priority">Priority</option>
@@ -112,6 +110,10 @@
 
             <template id="assignment-due-empty-template">
                 <li class="assignment-due-empty">No assignments due on this date.</li>
+            </template>
+
+            <template id="task-empty-template">
+                <li class="task-empty">No tasks to show yet.</li>
             </template>
 
              <div id="modal-backdrop" class="hidden"></div>

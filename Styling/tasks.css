@@ -154,7 +154,7 @@ h2 {
     border: 2px solid black;
     color: black;
     width: 70px;
-    height: 32px;
+    height: 30px;
     align-self: center;
     justify-self: center;
 }
@@ -186,6 +186,7 @@ h2 {
     font-size: 18px;
     border-radius: 5px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 100px;
     height: 38px;
@@ -195,6 +196,7 @@ h2 {
     font-size: 25px;
     border-radius: 20px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 40px;
     height: 38px;
@@ -204,8 +206,8 @@ h2 {
 .tasks-nav-btn:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
-    color: rgb(255, 255, 255);
+    border-color: black;
+    color: black;
 }
 
 .tasks-view-toggle {
@@ -333,14 +335,14 @@ h2 {
     border-right: 0;
 }
 
-.slot-add-btn {
+.slot-add-btn { /* note: this is intentionally separate to the shared button styling of btn-primary / btn-secondary */
     position: absolute;
     top: 4px;
     left: 4px;
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1.5px solid grey;
     background: black;
     color: white;
     font-size: 15px;
@@ -362,7 +364,7 @@ h2 {
 
 .slot-add-btn:hover {
     background-color: rgb(80, 90, 80);
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
 

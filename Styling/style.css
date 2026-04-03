@@ -193,6 +193,7 @@ h2 {
     font-size: 24px;
     border-radius: 5px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 100px;
 }
@@ -201,6 +202,7 @@ h2 {
     font-size: 25px;
     border-radius: 20px;
     background-color: black;
+    border: 2px solid grey;
     color: white;
     width: 40px;
 }
@@ -209,7 +211,7 @@ h2 {
 #today-btn:hover, #previous-btn:hover, #next-btn:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
 
@@ -259,7 +261,7 @@ h2 {
     grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
-.today-tasks-header, .assignments-due-header {
+.assignments-due-header {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 30px 1fr 30px;
@@ -275,19 +277,51 @@ h2 {
 
 .today-tasks-header h2, .assignments-due-header h2 {
     margin: 0;
+    text-align: center;
     line-height: 1.05;
 }
 
-.today-tasks-header h2 {
-    text-align: center;
+.today-tasks-header {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 14px;
+    align-items: start;
 }
 
-.assignments-due-header h2 {
+.today-tasks-controls {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.today-tasks-controls .controls-group {
+    display: grid;
+    gap: 6px;
+    justify-items: center;
+    max-width: 160px;
+}
+
+.control-label {
+    font-family: sans-serif, arial;
+    font-size: 16px;
+    font-weight: 700;
     text-align: left;
 }
 
+.control-select {
+    font-family: sans-serif, arial;
+    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 2px solid #111;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.3);
+    width: 100%;
+}
+
 /* TODAY'S TASKS (Card 1) */
-.today-tasks #add-task-btn, .today-tasks #sort-btn {
+.today-tasks #add-task-btn {
     font-size: 18px;
     border-radius: 20px;
     background-color: black;
@@ -302,7 +336,7 @@ h2 {
 #add-task-btn:hover, #sort-btn:hover {
     background-color: rgb(80, 90, 80);
     cursor: pointer;
-    border-color: rgb(80, 90, 80);
+    border-color: black;
     color: black;
 }
 
@@ -317,7 +351,7 @@ h2 {
     min-height: 0;
 }
 
-#task-list li {
+#task-list .task-list-item {
     background: rgba(255, 255, 255, 0.6);
     border: rgb(3, 46, 8) 2px solid;
     border-radius: 10px;
@@ -328,6 +362,10 @@ h2 {
     font-weight: 700;
     color: #111;
     cursor: pointer;
+}
+
+#task-list .task-empty {
+    text-align: center;
 }
 
 /* TODAY'S TASKS (ADD TASK) STYLING */

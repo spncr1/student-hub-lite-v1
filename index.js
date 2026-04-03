@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const taskListEl = document.getElementById("task-list");
     const statusEl = document.getElementById("task-status");
+    const taskEmptyTemplate = document.getElementById("task-empty-template");
     const assignmentsDueCard = document.querySelector(".assignments-due");
     const assignmentsDueListEl = document.getElementById("assignments-due-list");
     const assignmentsDueMoreEl = document.getElementById("assignments-due-more");
@@ -52,8 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendarMonthLabelEl = document.getElementById("calendar-month-label");
     const calendarDaysEl = document.getElementById("calendar-days");
 
-    const sortBtn = document.getElementById("sort-btn");
-    const sortPanel = document.getElementById("sort-panel");
     const sortSelect = document.getElementById("sort-select");
     let currentSortMode = localStorage.getItem("taskSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
     sortSelect.value = currentSortMode;
@@ -208,8 +207,15 @@ document.addEventListener("DOMContentLoaded", () => {
         
         taskListEl.innerHTML = ""; // clears the old list
 
+        if (!sortedTasks.length) {
+            if (!taskEmptyTemplate) return;
+            taskListEl.appendChild(taskEmptyTemplate.content.firstElementChild.cloneNode(true));
+            return;
+        }
+
         sortedTasks.forEach((t) => {
             const li = document.createElement("li");
+            li.className = "task-list-item";
             li.textContent = `${t.title} (${t.priority})`;
             li.dataset.taskId = t.id; // attach the task id to the element (so clicks can find the correct task)
             taskListEl.appendChild(li);
@@ -431,7 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
         prioritySelect.value = "medium";
         statusEl.textContent = "";
         titleInput.focus(); // subtle UX improvement
-        closeSortPanel();
     }
 
     function closeModal() {
@@ -561,25 +566,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* SORT */
-    // helper methods
-    function openSortPanel() {
-        sortPanel.classList.remove("hidden");
-    }
-
-    function closeSortPanel() {
-        sortPanel.classList.add("hidden");
-    }
-
-    closeSortPanel();
-
-    function toggleSortPanel() {
-        sortPanel.classList.toggle("hidden");
-    }
-
-    function isSortPanelOpen() {
-        return !sortPanel.classList.contains("hidden");
-    }
-
     function sortTasks(tasks, mode) {
         const copy = [...tasks]; // never mutate the original array
 
@@ -619,17 +605,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return copy;
     }
 
-    function renderSortUI() {
-        const buttons = sortOptionsEl.querySelectorAll(".sort-options");
-        buttons.forEach(btn => {
-            btn.classList.toggle("active", btn.dataset.sort === currentSortMode);
-        });
-    }
-
     /* SYSTEM SETTINGS */
     // helper methods
     function openSystemSettings() {
-        closeSortPanel(); // close sort modal if its open
 
         backdrop.classList.remove("hidden");
         systemSettingsModal.classList.remove("hidden");
@@ -705,7 +683,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Prepare lab notes",
             "Submit discussion post",
             "Revise formulas",
-            "Practice coding drills",
+            "Practice coding",
             "Watch tutorial",
             "Clean up inbox"
         ];
@@ -884,27 +862,10 @@ document.addEventListener("DOMContentLoaded", () => {
         openEditModal(taskId);
     });
 
-    // clicking the sort icon toggles the sort panel
-    sortBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleSortPanel();
-    });
-
-    // prevent clicks *inside* the panel from closing it
-    sortPanel.addEventListener("click", (e) => {
-        e.stopPropagation();
-    });
-
-    // close the sort panel when the user clicks anywhere else on the page
-    document.addEventListener("click", () => {
-        closeSortPanel();
-    });
-
     sortSelect.addEventListener("change", () => {
         currentSortMode = sortSelect.value;
         localStorage.setItem("taskSortMode", currentSortMode);
         renderTasksForSelectedDate();
-        closeSortPanel();
     });
 
     // System Settings wired up clicks
@@ -922,7 +883,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key !== "Escape") return;
         closeModal();
         closeSystemSettings();
-        closeSortPanel();
     });
 
     navButtons.forEach(btn => {
