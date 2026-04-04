@@ -131,32 +131,27 @@ body.dark-mode .date-text h1, body.dark-mode .date-text h2 {
 }
 
 body.dark-mode #today-btn, body.dark-mode #previous-btn, body.dark-mode #next-btn {
-    background: #e9e9ea;
-    border-color: #e9e9ea;
+    background-color: white;
+    color: rgb(64, 84, 64);
+    border: rgba(64, 84, 64, 0.7) 2px solid;
 }
 
 body.dark-mode #today-btn {
     font-size: 24px;
     border-radius: 5px;
-    background-color: white;
-    border: 2px solid grey;
-    color: black;
     width: 100px;
 }
 
 body.dark-mode #previous-btn, body.dark-mode #next-btn {
     font-size: 25px;
     border-radius: 20px;
-    background-color: white;
-    border: 2px solid grey;
-    color: black;
     width: 40px;
 }
 
 body.dark-mode #today-btn:hover, body.dark-mode #previous-btn:hover, body.dark-mode #next-btn:hover {
-    background: #cfcfd2;
-    color: #111;
-    border-color: #cfcfd2;
+    background-color: rgb(64, 84, 64, 0.7);
+    color: white;
+    border: rgb(64, 84, 64) 2px solid;
     cursor: pointer;
 }
 
@@ -205,15 +200,6 @@ body.dark-mode .assignments-due {
     grid-template-rows: auto minmax(0, 1fr) auto;
 }
 
-body.dark-mode .today-tasks-header, body.dark-mode .assignments-due-header {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 30px 1fr 30px;
-    align-items: center;
-    column-gap: 10px;
-    position: relative;
-}
-
 body.dark-mode .assignments-due-header {
     grid-template-columns: 1fr;
 }
@@ -223,23 +209,43 @@ body.dark-mode .today-tasks-header h2, body.dark-mode .assignments-due-header h2
     line-height: 1.05;
 }
 
-body.dark-mode .today-tasks-header h2 {
+body.dark-mode .today-tasks-header {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 14px;
+    align-items: start;
+}
+
+body.dark-mode .today-tasks-header h2,
+body.dark-mode .assignments-due-header h2 {
     text-align: center;
 }
 
-body.dark-mode .assignments-due-header h2 {
-    text-align: left;
+body.dark-mode .today-tasks-controls {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-body.dark-mode .today-tasks #add-task-btn, body.dark-mode .today-tasks #sort-btn {
+body.dark-mode .today-tasks-controls .controls-group {
+    display: grid;
+    gap: 6px;
+    justify-items: center;
+    max-width: 160px;
+}
+
+body.dark-mode .today-tasks #add-task-btn {
     font-size: 18px;
     border-radius: 20px;
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: rgb(64, 84, 64);
+    border: rgba(64, 84, 64, 0.7) 2px solid;
     width: 30px;
     height: 30px;
     align-self: center;
     justify-self: center;
+    cursor: pointer;
 }
 
 body.dark-mode #task-list {
@@ -253,22 +259,23 @@ body.dark-mode #task-list {
     min-height: 0;
 }
 
-body.dark-mode #task-list li {
-    background: rgba(255, 255, 255, 0.6);
-    border: rgb(3, 46, 8) 2px solid;
+body.dark-mode #task-list .task-list-item {
+    background: rgb(84, 99, 84);
+    border: rgb(64, 84, 64) 2px solid;
     border-radius: 10px;
     padding: 10px 12px;
     margin-top: 10px;
     font-family: sans-serif, arial;
     font-size: 16px;
     font-weight: 700;
-    color: #111;
+    color: #e9e9ea;
     cursor: pointer;
 }
 
-body.dark-mode .today-tasks #add-task-btn:hover, body.dark-mode .today-tasks #sort-btn:hover {
-    background: #e9e9ea;
-    color: #111;
+body.dark-mode .today-tasks #add-task-btn:hover {
+    background: rgb(64, 84, 64, 0.7);
+    color: white;
+    border: rgb(64, 84, 64) 2px solid;
     cursor: pointer;
 }
 
@@ -348,55 +355,6 @@ body.dark-mode .task-status {
     font-weight: 700;
     text-align: center;
     min-height: 1.2em;
-}
-
-body.dark-mode .sort-panel {
-    position: absolute;
-    top: 40px;
-    left: calc(100% + 10px);
-    right: auto;
-
-    background: black;
-    border: 1px solid grey;
-    border-radius: 10px;
-    padding: 10px;
-
-    display: grid;
-    gap: 8px;
-
-    width: 190px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-
-    z-index: 999;
-    font-family: sans-serif, arial;
-
-    display: none;
-}
-
-body.dark-mode .sort-panel:not(.hidden) {
-    display: grid;
-}
-
-body.dark-mode .sort-panel label, body.dark-mode .sort-panel select {
-font-family: inherit;
-    font-size: 14px;
-}
-
-body.dark-mode .sort-panel select {
-    width: 100%;
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1px solid grey;
-}
-
-body.dark-mode .sort-row {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-body.dark-mode .sort-row label {
-    margin-bottom: 8px;
 }
 
 body.dark-mode #assignments-due-list {
@@ -804,20 +762,20 @@ body.dark-mode .carousel-slide svg {
 body.dark-mode .carousel-nav {
   font-size: 18px;
   border-radius: 20px;
-  background-color: #fff;
-  color: #000;
+  background-color: white;
+  color: rgb(64, 84, 64);
   width: 30px;
   height: 30px;
   align-self: center;
   justify-self: center;
   cursor: pointer;
-  border: 1px solid #fff;
+  border: rgba(64, 84, 64, 0.7) 2px solid;
 }
 
 body.dark-mode .carousel-nav:hover {
-  background-color: rgb(80, 90, 80);
-  border-color: black;
-  color: #fff;
+  background: rgb(64, 84, 64, 0.7);
+  color: white;
+  border: rgb(64, 84, 64) 2px solid;
   cursor: pointer;
 }
 
@@ -859,8 +817,8 @@ body.dark-mode .assignments-controls {
 body.dark-mode .btn-primary {
   font-size: 18px;
   border-radius: 999px;
-  background-color: #fff;
-  color: #000;
+  background-color: white;
+  color: rgb(64, 84, 64);
   width: 30px;
   height: 30px;
   padding: 0;
@@ -871,15 +829,15 @@ body.dark-mode .btn-primary {
   align-self: center;
   justify-self: center;
   cursor: pointer;
-  border: 1px solid grey;
+  border: rgba(64, 84, 64, 0.7) 2px solid;
   appearance: none;
   -webkit-appearance: none;
 }
 
 body.dark-mode .btn-primary:hover {
-  background-color: rgb(80, 90, 80);
-  border-color: white;
-  color: #fff;
+  background: rgb(64, 84, 64, 0.7);
+  color: white;
+  border: rgb(64, 84, 64) 2px solid;
   cursor: pointer;
 }
 
@@ -922,9 +880,9 @@ body.dark-mode .control-select {
   font-size: 13px;
   padding: 8px 10px;
   border-radius: 8px;
-  border: 2px solid #e9e9ea;
+  background: rgb(64, 84, 64, 0.7);
+  border: rgb(64, 84, 64) 2px solid;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.6);
   color: #e9e9ea;
 }
 
@@ -1061,20 +1019,20 @@ body.dark-mode .dash-tabs {
 body.dark-mode .dash-nav {
   font-size: 18px;
   border-radius: 20px;
-  background-color: #fff;
-  color: #000;           
+  background-color: white;
+  color: rgb(64, 84, 64);           
   width: 30px;
   height: 30px;
   align-self: center;
   justify-self: center;
   cursor: pointer;
-  border: 1px solid #fff;
+  border: rgba(64, 84, 64, 0.7) 2px solid;
 }
 
 body.dark-mode .dash-nav:hover {
-  background-color: rgb(80, 90, 80);
-  border-color: rgb(80, 90, 80);
-  color: #fff;
+  background: rgb(64, 84, 64, 0.7);
+  color: white;
+  border: rgb(64, 84, 64) 2px solid;
   cursor: pointer;
 }
 
@@ -2141,12 +2099,6 @@ body.dark-mode .task-card {
         justify-self: center;
     }
 
-    body.dark-mode .today-tasks-header,
-    body.dark-mode .assignments-due-header {
-        grid-template-columns: 36px minmax(0, 1fr) 36px;
-        column-gap: 8px;
-    }
-
     body.dark-mode .today-tasks-header h2,
     body.dark-mode .assignments-due-header h2,
     body.dark-mode .calendar-widget-header h2 {
@@ -2159,11 +2111,12 @@ body.dark-mode .task-card {
         overflow: visible;
     }
 
-    body.dark-mode .sort-panel {
-        top: calc(100% + 8px);
-        left: auto;
-        right: 0;
-        width: min(220px, calc(100vw - 48px));
+    body.dark-mode .today-tasks-controls {
+        gap: 10px;
+    }
+
+    body.dark-mode .today-tasks-controls .controls-group {
+        max-width: 150px;
     }
 
     body.dark-mode .calendar-widget {

@@ -190,12 +190,13 @@ h2 {
 }
 
 #today-btn {
-    font-size: 24px;
+    font-size: 20px;
     border-radius: 5px;
     background-color: black;
     border: 2px solid grey;
     color: white;
     width: 100px;
+    height: 38px;
 }
 
 #previous-btn, #next-btn {
