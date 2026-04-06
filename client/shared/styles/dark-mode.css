@@ -46,12 +46,13 @@ body.dark-mode .navbar ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     gap: 12px;
     padding: 0;
     margin-top: 16px;
     font-size: 20px;
     text-align: center;
+    font-weight: 500;
 }
 
 body.dark-mode .navbar a {
@@ -102,8 +103,14 @@ body.dark-mode.nav-collapsed .menu-toggle {
     margin-left: 0;
 }
 
-body.dark-mode h1, body.dark-mode h2 {
-    font-family: sans-serif, arial;
+body.dark-mode h1 {
+    font-family: "Manrope";
+    font-weight: 700;
+}
+
+body.dark-mode h2 {
+    font-family: "Manrope";
+    font-weight: 600;
 }
 
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode label, body.dark-mode a {
@@ -265,7 +272,7 @@ body.dark-mode #task-list .task-list-item {
     border-radius: 10px;
     padding: 10px 12px;
     margin-top: 10px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 16px;
     font-weight: 700;
     color: #e9e9ea;
@@ -293,7 +300,7 @@ body.dark-mode #add-task-modal {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     background: black;
     border-radius: 12px;
     padding: 16px;
@@ -324,7 +331,7 @@ body.dark-mode #add-task-modal input, body.dark-mode #add-task-modal textarea {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid grey;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 body.dark-mode #add-task-modal select {
@@ -333,7 +340,7 @@ body.dark-mode #add-task-modal select {
     padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid grey;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 body.dark-mode .modal-actions {
@@ -351,8 +358,8 @@ body.dark-mode #task-notes {
 
 body.dark-mode .task-status {
     margin: 8px 0 12px;
-    font-family: sans-serif, arial;
-    font-weight: 700;
+    font-family: "Noto Sans";
+    font-weight: 500;
     text-align: center;
     min-height: 1.2em;
 }
@@ -534,7 +541,7 @@ body.dark-mode #system-settings-modal {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     background: black;
     border-radius: 12px;
     padding: 0;
@@ -868,7 +875,7 @@ body.dark-mode .controls-group {
 }
 
 body.dark-mode .control-label {
-  font-family: sans-serif, arial;
+  font-family: "Noto Sans";
   font-size: 12px;
   font-weight: 700;
   text-align: left;
@@ -876,7 +883,7 @@ body.dark-mode .control-label {
 }
 
 body.dark-mode .control-select {
-  font-family: sans-serif, arial;
+  font-family: "Noto Sans";
   font-size: 13px;
   padding: 8px 10px;
   border-radius: 8px;
@@ -907,12 +914,12 @@ body.dark-mode .widget-card {
   min-height: 150px;
   padding: 12px;
   box-sizing: border-box;
-  border: 2px solid grey;
+  border: 1px solid grey;
 }
 
 body.dark-mode .widget-title {
-  font-family: sans-serif, arial;
-  font-weight: 900;
+  font-family: "Manrope";
+  font-weight: 700;
   font-size: 14px;
   margin: 0 0 10px;
   color: #e9e9ea;

@@ -23,7 +23,7 @@ html, body {
     min-height: 100vh;
     overscroll-behavior: none;
     width: 100%;
-    font-family: sans-serif, arial;
+    font-family: "Manrope";
 }
 
 .content {
@@ -54,7 +54,7 @@ ul { /* for the navbar for now so the bulletpoints don't show (will organise lat
     list-style: none;
     display: flex;
     flex-direction: column;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     gap: 12px;
     padding: 0;
     margin-top: 16px;
@@ -112,14 +112,16 @@ body.nav-collapsed .menu-toggle {
 /* ----- HEADERS STYLING ----- */
 h1 {
     color: black;
-    font-family: sans-serif, arial;
-    font-size: 40px;
+    font-family: "Manrope";
+    font-size: 36px;
+    font-weight: 700;
 }
 
 h2 {
     color: black;
-    font-family: sans-serif, arial;
-    font-size: 30px;
+    font-family: "Manrope";
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .date-header {
@@ -304,14 +306,14 @@ h2 {
 }
 
 .control-label {
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     text-align: left;
 }
 
 .control-select {
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 12px;
     padding: 8px 10px;
     border-radius: 8px;
@@ -358,9 +360,9 @@ h2 {
     border-radius: 10px;
     padding: 10px 12px;
     margin-top: 10px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
     color: #111;
     cursor: pointer;
 }
@@ -384,7 +386,7 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     background: white;
     border-radius: 12px;
     padding: 16px;
@@ -415,7 +417,7 @@ h2 {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 #add-task-modal select {
@@ -424,7 +426,7 @@ h2 {
     padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 .modal-actions {
@@ -443,7 +445,7 @@ h2 {
 
 .task-status {
     margin: 8px 0 12px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-weight: 700;
     text-align: center;
     min-height: 1.2em;
@@ -468,7 +470,7 @@ h2 {
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 
     z-index: 999;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 
     display: none;
 }
@@ -676,7 +678,7 @@ body.nav-collapsed .system-settings {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     background: white;
     border-radius: 12px;
     padding: 0;

@@ -30,7 +30,7 @@ html, body {
     min-height: 100vh;
     overscroll-behavior: none;
     width: 100%;
-    font-family: sans-serif, arial;
+    font-family: "Manrope";
 }
 
 .content {
@@ -62,7 +62,7 @@ ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     gap: 12px;
     padding: 0;
     margin-top: 16px;
@@ -120,14 +120,16 @@ body.nav-collapsed .menu-toggle {
 /* ----- HEADERS STYLING ----- */
 h1 {
     color: black;
-    font-family: sans-serif, arial;
-    font-size: 40px;
+    font-family: "Manrope";
+    font-size: 36px;
+    font-weight: 700;
 }
 
 h2 {
     color: black;
-    font-family: sans-serif, arial;
-    font-size: 30px;
+    font-family: "Manrope";
+    font-size: 28px;
+    font-weight: 600;
 }
 
 /* UTIL */
@@ -169,7 +171,7 @@ body.nav-collapsed .system-settings {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 360px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     background: white;
     border-radius: 12px;
     padding: 0;
@@ -361,10 +363,11 @@ body.nav-collapsed .system-settings {
 
 .page-title {
     margin: 0;
-    font-family: sans-serif, arial;
+    font-family: "Manrope";
     font-size: 34px;
     letter-spacing: 1px;
     margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .page-subtitle {
@@ -416,8 +419,8 @@ body.nav-collapsed .system-settings {
 .panel-title {
     margin: 0 0 10px;
     font-size: 16px;
-    font-weight: 800;
-    font-family: sans-serif, arial;
+    font-weight: 700;
+    font-family: "Manrope";
 }
 
 .panel-subtitle {
@@ -455,7 +458,7 @@ body.nav-collapsed .system-settings {
     display: block;
     margin-top: 6px;
     text-align: left;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 14px;
     font-weight: 700;
     color: #111;
@@ -504,9 +507,9 @@ body.nav-collapsed .system-settings {
 
 .table-title {
     margin: 0;
-    font-family: sans-serif, arial;
+    font-family: "Manrope";
     font-size: 26px;
-    font-weight: 900;
+    font-weight: 700;
 }
 
 .assignments-table-wrap {
@@ -518,7 +521,7 @@ body.nav-collapsed .system-settings {
     width: 100%;
     border-collapse: collapse;
     background: rgba(255, 255, 255, 0.6);
-    font-family: sans-serif, arial;
+    font-family: "Manrope";
 }
 
 /* ALL ASSIGNMENTS table header */
@@ -800,14 +803,14 @@ body.nav-collapsed .system-settings {
 }
 
 .control-label {
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 12px;
     font-weight: 700;
     text-align: left;
 }
 
 .control-select {
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 13px;
     padding: 8px 10px;
     border-radius: 8px;
@@ -843,8 +846,8 @@ body.nav-collapsed .system-settings {
 }
 
 .widget-title {
-    font-family: sans-serif, arial;
-    font-weight: 900;
+    font-family: "Manrope";
+    font-weight: 700;
     font-size: 14px;
     margin: 0 0 10px;
 }
@@ -1158,7 +1161,7 @@ body.nav-collapsed .system-settings {
 }
 
 #add-subject-modal .form-row input {
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 14px;
     padding: 10px 12px;
     border: 1px solid #ccc;
@@ -1173,7 +1176,7 @@ body.nav-collapsed .system-settings {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 #add-subject-modal select {
@@ -1182,7 +1185,7 @@ body.nav-collapsed .system-settings {
     padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 .modal-actions {
@@ -1193,7 +1196,7 @@ body.nav-collapsed .system-settings {
 
 #subject-status.task-status {
     margin: 8px 0 12px;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-weight: 700;
     text-align: center;
     min-height: 1.2em;
@@ -1245,7 +1248,7 @@ button, input, select, textarea { font-family: inherit; }
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 #add-assignment-modal select {
@@ -1254,7 +1257,7 @@ button, input, select, textarea { font-family: inherit; }
     padding: 6px 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
 }
 
 .modal-actions {
@@ -1279,7 +1282,7 @@ button, input, select, textarea { font-family: inherit; }
 
 .view-assignment-desc {
     margin: 8px 0 0;
-    font-family: sans-serif, arial;
+    font-family: "Noto Sans";
     font-size: 14px;
     line-height: 1.45;
     color: #111;
