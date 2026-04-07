@@ -45,11 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskListEl = document.getElementById("task-list");
     const statusEl = document.getElementById("task-status");
     const taskEmptyTemplate = document.getElementById("task-empty-template");
+    const todayTasksCard = document.querySelector(".today-tasks");
     const assignmentsDueCard = document.querySelector(".assignments-due");
     const assignmentsDueListEl = document.getElementById("assignments-due-list");
     const assignmentsDueMoreEl = document.getElementById("assignments-due-more");
     const assignmentDueItemTemplate = document.getElementById("assignment-due-item-template");
     const assignmentDueEmptyTemplate = document.getElementById("assignment-due-empty-template");
+    const upcomingAssignmentsListEl = document.getElementById("upcoming-assignments-list");
+    const upcomingAssignmentItemTemplate = document.getElementById("upcoming-assignment-item-template");
+    const upcomingAssignmentEmptyTemplate = document.getElementById("upcoming-assignment-empty-template");
+    const upcomingAssignmentsWidget = document.querySelector(".upcoming-assignments-widget");
     const calendarMonthLabelEl = document.getElementById("calendar-month-label");
     const calendarDaysEl = document.getElementById("calendar-days");
 
@@ -95,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const DEFAULT_SEMESTER_LABEL = "Autumn Session 2026";
     const APP_DATA_KEYS = [TASKS_KEY, SUBJECTS_KEY, ASSIGNMENTS_KEY, USER_NAME_KEY, SEMESTER_KEY];
     const ASSIGNMENTS_PREVIEW_LIMIT = 2;
+    const UPCOMING_ASSIGNMENTS_LIMIT = 3;
 
     const STATUS_MS = 1500;
     let statusTimer = null;
@@ -210,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!sortedTasks.length) {
             if (!taskEmptyTemplate) return;
             taskListEl.appendChild(taskEmptyTemplate.content.firstElementChild.cloneNode(true));
+            updateHomeOverflowHints();
             return;
         }
 
@@ -220,6 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
             li.dataset.taskId = t.id; // attach the task id to the element (so clicks can find the correct task)
             taskListEl.appendChild(li);
         });
+
+        updateHomeOverflowHints();
     }
 
     function isSameCalendarDay(a, b) {
@@ -249,6 +258,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const d = new Date(year, month, day);
         d.setHours(12, 0, 0, 0);
         return d;
+    }
+
+    function parseISODate(iso) {
+        if (!iso) return null;
+        const d = new Date(`${iso}T00:00:00`);
+        return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function getTodayAtNoon() {
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+        return today;
+    }
+
+    function getDaysUntil(targetDate, fromDate) {
+        return Math.round((targetDate - fromDate) / 86400000);
+    }
+
+    function getAssignmentDetailsHref(assignmentId) {
+        // I want both home-page assignment card types to open the exact same
+        // assignment target, so the deep-link path lives in one place.
+        return `/client/features/Assignments/assignments.html?assignmentId=${encodeURIComponent(assignmentId)}`;
     }
 
     function formatCalendarMonthYear(dateObj) {
@@ -362,6 +393,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 priorityDotEl.classList.add(className);
             }
 
+            li.dataset.assignmentId = assignment.id;
+            li.setAttribute("role", "link");
+            li.setAttribute("tabindex", "0");
+            li.setAttribute(
+                "aria-label",
+                `${assignment.task || "Assignment"}, due ${isSelectedRealToday ? "today" : formatFullDate(selectedDate)}`
+            );
+
             assignmentsDueListEl.appendChild(li);
         });
 
@@ -369,6 +408,94 @@ document.addEventListener("DOMContentLoaded", () => {
         if (remaining > 0) {
             assignmentsDueMoreEl.textContent = `+${remaining} more on Assignments page`;
             assignmentsDueMoreEl.classList.remove("hidden");
+        }
+    }
+
+    function renderUpcomingAssignmentsWidget() {
+        if (!upcomingAssignmentsListEl) return;
+
+        // This is designed to stay tied to the real upcoming due dates synced with the date they are given when created in the assignments page (or when randomly generated from system settings)
+        const today = getTodayAtNoon();
+        const subjectsMap = loadSubjectsMap();
+
+        const upcomingAssignments = loadAssignments()
+            .map((assignment) => ({
+                ...assignment,
+                dueDateObj: parseISODate(assignment.dueDate)
+            }))
+            .filter((assignment) =>
+                assignment &&
+                typeof assignment.task === "string" &&
+                assignment.dueDateObj &&
+                assignment.dueDateObj >= today
+            )
+            .sort((a, b) => {
+                const dueDateDiff = a.dueDateObj - b.dueDateObj;
+                if (dueDateDiff !== 0) return dueDateDiff;
+
+                const prioDiff = priorityRank(b.priority) - priorityRank(a.priority);
+                if (prioDiff !== 0) return prioDiff;
+
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            })
+            .slice(0, UPCOMING_ASSIGNMENTS_LIMIT);
+
+        upcomingAssignmentsListEl.innerHTML = "";
+
+        if (!upcomingAssignments.length) {
+            if (!upcomingAssignmentEmptyTemplate) return;
+            upcomingAssignmentsListEl.appendChild(
+                upcomingAssignmentEmptyTemplate.content.firstElementChild.cloneNode(true)
+            );
+            updateHomeOverflowHints();
+            return;
+        }
+
+        upcomingAssignments.forEach((assignment) => {
+            if (!upcomingAssignmentItemTemplate) return;
+
+            const item = upcomingAssignmentItemTemplate.content.firstElementChild.cloneNode(true);
+            const linkEl = item.querySelector(".upcoming-assignment-link");
+            const dueInLabelEl = item.querySelector(".upcoming-assignment-prefix");
+            const daysValueEl = item.querySelector(".upcoming-assignment-days-value");
+            const daysLabelEl = item.querySelector(".upcoming-assignment-days-label");
+            const taskEl = item.querySelector(".upcoming-assignment-task");
+            const subjectEl = item.querySelector(".upcoming-assignment-subject");
+            const dueDateEl = item.querySelector(".upcoming-assignment-due-date");
+            const daysUntil = getDaysUntil(assignment.dueDateObj, today);
+
+            if (linkEl) {
+                // Clicking an upcoming card should take the user straight to the exact assignment it came from
+                linkEl.href = getAssignmentDetailsHref(assignment.id);
+                linkEl.setAttribute(
+                    "aria-label",
+                    `${assignment.task || "Assignment"}, due ${formatFullDate(assignment.dueDateObj)}`
+                );
+            }
+
+            // Structured such that it reads like a stacked mini "big day countdown" counter:
+            if (daysValueEl) daysValueEl.textContent = String(daysUntil);
+            if (daysLabelEl) daysLabelEl.textContent = daysUntil === 1 ? "DAY" : "DAYS";
+            if (taskEl) taskEl.textContent = assignment.task.trim() || "Assignment";
+            if (subjectEl) subjectEl.textContent = subjectsMap.get(assignment.courseId) || "Unknown subject";
+
+            upcomingAssignmentsListEl.appendChild(item);
+        });
+
+        updateHomeOverflowHints();
+    }
+
+    function updateHomeOverflowHints() {
+        // I want this to match the working subjects list behaviour:
+        // only show the fade if the inner list actually has content hidden below.
+        if (todayTasksCard && taskListEl) {
+            const tasksCanScroll = taskListEl.scrollHeight > taskListEl.clientHeight + 1;
+            todayTasksCard.classList.toggle("has-more", tasksCanScroll);
+        }
+
+        if (upcomingAssignmentsWidget && upcomingAssignmentsListEl) {
+            const upcomingCanScroll = upcomingAssignmentsListEl.scrollHeight > upcomingAssignmentsListEl.clientHeight + 1;
+            upcomingAssignmentsWidget.classList.toggle("has-more", upcomingCanScroll);
         }
     }
 
@@ -395,6 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderTasksForSelectedDate(); // keeps tasks synced with the displayed date
         renderAssignmentsDueForSelectedDate();
+        renderUpcomingAssignmentsWidget();
         renderCalendarWidget();
     }
 
@@ -727,13 +855,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function generateDemoAssignmentsData() {
         const subjectPool = [
-            "Software Engineering",
-            "Database Systems",
-            "Cyber Security",
-            "Computer Networks",
-            "Data Structures",
-            "Operating Systems",
-            "Web Development"
+            "Stochastic Processes",
+            "Nonlinear Dynamics and Chaos",
+            "Quantum Mechanics II",
+            "Advanced Organic Synthesis",
+            "Genomics and Bioinformatics",
+            "Neuropsychology",
+            "Behavioural Economics",
+            "Game Theory",
+            "Derivative Securities",
+            "Corporate Taxation Law",
+            "International Trade Law",
+            "Postcolonial Literature",
+            "Philosophy of Mind",
+            "Ethics of Artificial Intelligence",
+            "Digital Signal Processing",
+            "Embedded Systems Design",
+            "Distributed Systems",
+            "Compiler Construction",
+            "Advanced Database Systems",
+            "Network Security",
+            "Penetration Testing",
+            "Cloud Architecture",
+            "Big Data Analytics",
+            "Reinforcement Learning",
+            "Computer Vision",
+            "Natural Language Processing",
+            "Human-Centred Design",
+            "Interaction Design Studio",
+            "Urban Sustainability",
+            "Climate Change Modelling",
+            "Biomechanics",
+            "Exercise Physiology",
+            "Curriculum Design and Assessment",
+            "Second Language Acquisition",
+            "Film Theory and Criticism",
+            "Sound Design",
+            "Game Design Studio",
+            "Entrepreneurial Finance",
+            "Innovation Management",
+            "Supply Chain Analytics"
         ];
         const taskPool = [
             "Quiz",
@@ -862,6 +1023,20 @@ document.addEventListener("DOMContentLoaded", () => {
         openEditModal(taskId);
     });
 
+    assignmentsDueListEl?.addEventListener("click", (e) => {
+        const item = e.target.closest(".assignment-due-item");
+        if (!item?.dataset.assignmentId) return;
+        window.location.href = getAssignmentDetailsHref(item.dataset.assignmentId);
+    });
+
+    assignmentsDueListEl?.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        const item = e.target.closest(".assignment-due-item");
+        if (!item?.dataset.assignmentId) return;
+        e.preventDefault();
+        window.location.href = getAssignmentDetailsHref(item.dataset.assignmentId);
+    });
+
     sortSelect.addEventListener("change", () => {
         currentSortMode = sortSelect.value;
         localStorage.setItem("taskSortMode", currentSortMode);
@@ -894,15 +1069,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (assignmentsDueCard) {
         assignmentsDueCard.setAttribute("role", "button");
         assignmentsDueCard.setAttribute("tabindex", "0");
-        assignmentsDueCard.addEventListener("click", () => {
-            window.location.href = "/client/features/Assignments/assignments.html";
-        });
-        assignmentsDueCard.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                window.location.href = "/client/features/Assignments/assignments.html";
-            }
-        });
     }
 
     if (darkToggle) {
@@ -927,6 +1093,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (saveAccountBtn) {
         saveAccountBtn.addEventListener("click", saveAccountSettings);
     }
+
+    taskListEl?.addEventListener("scroll", updateHomeOverflowHints);
+    upcomingAssignmentsListEl?.addEventListener("scroll", updateHomeOverflowHints);
+    window.addEventListener("resize", updateHomeOverflowHints);
 
     renderUserName();
     renderSemesterLabel();

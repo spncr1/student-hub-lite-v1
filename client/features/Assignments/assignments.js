@@ -638,6 +638,17 @@ document.addEventListener("DOMContentLoaded", () => {
         viewAssignmentModal.classList.add("hidden");
     }
 
+    function openAssignmentFromHomeWidget() {
+        const params = new URLSearchParams(window.location.search);
+        const assignmentId = params.get("assignmentId");
+        if (!assignmentId) return;
+
+        // From my POV, if the user came here from the home page widget,
+        // I want to open the exact assignment they clicked straight away.
+        openAssignmentModalEdit(assignmentId);
+        window.history.replaceState({}, "", window.location.pathname);
+    }
+
     function addAssignment() {
         if (assignmentCourse.disabled) {
             assignmentStatusText.textContent = "Add a subject first.";
@@ -1632,6 +1643,7 @@ document.addEventListener("DOMContentLoaded", () => {
     populateAccountInputs();
     renderTotalCourseAssignmentsWidget();
     renderDashboard();
+    openAssignmentFromHomeWidget();
     subjectsListEl.addEventListener("scroll", updateSubjectsOverflowHint);
     window.addEventListener("resize", updateSubjectsOverflowHint);
 });

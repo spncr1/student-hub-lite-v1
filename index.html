@@ -40,20 +40,30 @@
         </nav>
 
         <main class="content">
-            <button id="today-btn">TODAY</button>
-            
-            <div class="date-header">
+            <div class="home-overview">
+                <div class="home-date-summary">
+                    <button id="today-btn">TODAY</button>
+                    
+                    <div class="date-header">
+                        <div class="date-row">
+                            <button id="previous-btn"><</button>
 
-                <div class="date-row">
-                    <button id="previous-btn"><</button>
+                            <div class="date-text">
+                                <h1 id="date-display"></h1>
+                                <h2 id="day-display"></h2>
+                            </div>
 
-                    <div class="date-text">
-                        <h1 id="date-display"></h1>
-                        <h2 id="day-display"></h2>
+                            <button id="next-btn">></button>
+                        </div>
                     </div>
-
-                    <button id="next-btn">></button>
                 </div>
+
+                <aside class="upcoming-assignments-widget">
+                    <div class="upcoming-assignments-header">
+                        <h3>UPCOMING ASSIGNMENTS</h3>
+                    </div>
+                    <ul id="upcoming-assignments-list"></ul>
+                </aside>
             </div>
             
             <hr>
@@ -70,7 +80,7 @@
 
                             <div class="controls-group">
                                 <label class="control-label" for="sort-select">Sort</label>
-                                <select id="sort-select" class="control-select">
+                                <select class="control-select" id="sort-select">
                                     <option value="az">A-Z</option>
                                     <option value="za">Z-A</option>
                                     <option value="priority">Priority</option>
@@ -122,6 +132,27 @@
 
             <template id="assignment-due-empty-template">
                 <li class="assignment-due-empty">No assignments due on this date.</li>
+            </template>
+
+            <template id="upcoming-assignment-item-template">
+                <li class="upcoming-assignment-item">
+                    <a class="upcoming-assignment-link" href="#">
+                        <div class="upcoming-assignment-countdown">
+                            <span class="upcoming-assignment-days-value"></span>
+                            <span class="upcoming-assignment-days-label"></span>
+                        </div>
+
+                        <div class="upcoming-assignment-content">
+                            <div class="upcoming-assignment-task"></div>
+                            <div class="upcoming-assignment-subject"></div>
+                            <div class="upcoming-assignment-due-date"></div>
+                        </div>
+                    </a>
+                </li>
+            </template>
+
+            <template id="upcoming-assignment-empty-template">
+                <li class="upcoming-assignment-empty">No upcoming assignments yet.</li>
             </template>
 
             <template id="task-empty-template">
