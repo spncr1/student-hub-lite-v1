@@ -75,17 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const accountSemesterInput = document.getElementById("account-semester-input");
     const saveAccountBtn = document.getElementById("save-account-btn");
 
-    // Load the last selected date from localStorage (so that when you refresh, you keep your place)
-    const savedDate = localStorage.getItem("selectedDate");
-
-    // IF there is a saved date, use it. Otherwise default to today.
     let selectedDate = new Date();
-    if (savedDate) {
-        const parsed = new Date(savedDate);
-        if (!Number.isNaN(parsed.getTime())) {
-            selectedDate = parsed;
-        }
-    }
 
     // Normalise the time to midday to avoid timezone issues
     selectedDate.setHours(12, 0, 0, 0);
@@ -518,8 +508,6 @@ document.addEventListener("DOMContentLoaded", () => {
         dateDisplay.textContent = formatFullDate(selectedDate);
         dayDisplay.textContent = formatDayOfTheWeek(selectedDate);
 
-        localStorage.setItem("selectedDate", selectedDate.toISOString()); // save the selected date so that refreshing the page doesn't reset it
-
         renderTasksForSelectedDate(); // keeps tasks synced with the displayed date
         renderAssignmentsDueForSelectedDate();
         renderUpcomingAssignmentsWidget();
@@ -930,14 +918,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 updatedAt: now - subjectIndex * 1000
             });
 
-            const assignmentCount = randomInt(1, 4);
-            const rawWeights = Array.from({ length: assignmentCount }, () => Math.random() + 0.25);
-            const weightSum = rawWeights.reduce((sum, value) => sum + value, 0);
+            const assignmentCount = randomInt(1, 5);
+            const weightingTemplates = {
+                1: [[100]],
+                2: [[50, 50], [40, 60], [30, 70]],
+                3: [[20, 30, 50], [25, 25, 50], [30, 30, 40], [20, 40, 40]],
+                4: [[25, 25, 25, 25], [20, 20, 20, 40], [10, 20, 30, 40], [15, 20, 25, 40]],
+                5: [[10, 15, 20, 25, 30], [10, 20, 20, 20, 30], [15, 15, 20, 25, 25], [10, 10, 20, 30, 30]]
+            };
+
+            function shuffleArray(arr) {
+                return [...arr].sort(() => Math.random() - 0.5);
+            }
+
+            function pickWeightings(count) {
+                const templates = weightingTemplates[count];
+                const chosen = pick(templates);
+                return shuffleArray(chosen);
+            }
+
+            const weightings = pickWeightings(assignmentCount);
 
             for (let i = 0; i < assignmentCount; i += 1) {
                 const dueDate = new Date(today);
                 dueDate.setDate(today.getDate() + randomInt(2, 120));
-                const weight = Number(((rawWeights[i] / weightSum) * 100).toFixed(1));
                 const taskType = pick(taskPool);
 
                 assignments.push({
@@ -948,7 +952,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     priority: pick(priorities),
                     status: pick(statuses),
                     dueDate: formatISODate(dueDate),
-                    weighting: weight,
+                    weighting: Number(weightings[i].toFixed(1)),
                     createdAt: now - randomInt(0, 10) * 86400000,
                     updatedAt: now - randomInt(0, 3) * 3600000
                 });

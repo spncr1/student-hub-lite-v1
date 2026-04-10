@@ -919,9 +919,140 @@ document.addEventListener("DOMContentLoaded", () => {
         return tasksByDate;
     }
 
+    function formatISODate(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const d = String(dateObj.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+    }
+
+    function generateDemoAssignmentsData() {
+        const subjectPool = [
+            "Stochastic Processes",
+            "Nonlinear Dynamics and Chaos",
+            "Quantum Mechanics II",
+            "Advanced Organic Synthesis",
+            "Genomics and Bioinformatics",
+            "Neuropsychology",
+            "Behavioural Economics",
+            "Game Theory",
+            "Derivative Securities",
+            "Corporate Taxation Law",
+            "International Trade Law",
+            "Postcolonial Literature",
+            "Philosophy of Mind",
+            "Ethics of Artificial Intelligence",
+            "Digital Signal Processing",
+            "Embedded Systems Design",
+            "Distributed Systems",
+            "Compiler Construction",
+            "Advanced Database Systems",
+            "Network Security",
+            "Penetration Testing",
+            "Cloud Architecture",
+            "Big Data Analytics",
+            "Reinforcement Learning",
+            "Computer Vision",
+            "Natural Language Processing",
+            "Human-Centred Design",
+            "Interaction Design Studio",
+            "Urban Sustainability",
+            "Climate Change Modelling",
+            "Biomechanics",
+            "Exercise Physiology",
+            "Curriculum Design and Assessment",
+            "Second Language Acquisition",
+            "Film Theory and Criticism",
+            "Sound Design",
+            "Game Design Studio",
+            "Entrepreneurial Finance",
+            "Innovation Management",
+            "Supply Chain Analytics"
+        ];
+        const taskPool = [
+            "Quiz",
+            "Lab Report",
+            "Case Study",
+            "Team Presentation",
+            "Project Milestone",
+            "Final Exam",
+            "Reflection",
+            "Research Summary"
+        ];
+        const descPool = [
+            "Draft and submit a concise response with key references.",
+            "Apply the weekly concepts and include screenshots/evidence.",
+            "Demonstrate the workflow and explain design choices.",
+            "Collaborate with your group and document outcomes."
+        ];
+        const priorities = ["low", "medium", "high"];
+        const statuses = ["not-started", "in-progress", "completed"];
+        const now = Date.now();
+        const today = new Date();
+        const subjectCount = randomInt(4, 5);
+        const subjects = [];
+        const assignments = [];
+        const shuffledSubjects = [...subjectPool].sort(() => Math.random() - 0.5).slice(0, subjectCount);
+
+        shuffledSubjects.forEach((name, subjectIndex) => {
+            const subjectId = `subject_demo_${now}_${subjectIndex}`;
+            subjects.push({
+                id: subjectId,
+                name,
+                createdAt: now - subjectIndex * 1000,
+                updatedAt: now - subjectIndex * 1000
+            });
+
+            const assignmentCount = randomInt(1, 5);
+            const weightingTemplates = {
+                1: [[100]],
+                2: [[50, 50], [40, 60], [30, 70]],
+                3: [[20, 30, 50], [25, 25, 50], [30, 30, 40], [20, 40, 40]],
+                4: [[25, 25, 25, 25], [20, 20, 20, 40], [10, 20, 30, 40], [15, 20, 25, 40]],
+                5: [[10, 15, 20, 25, 30], [10, 20, 20, 20, 30], [15, 15, 20, 25, 25], [10, 10, 20, 30, 30]]
+            };
+
+            function shuffleArray(arr) {
+                return [...arr].sort(() => Math.random() - 0.5);
+            }
+
+            function pickWeightings(count) {
+                const templates = weightingTemplates[count];
+                const chosen = pick(templates);
+                return shuffleArray(chosen);
+            }
+
+            const weightings = pickWeightings(assignmentCount);
+
+            for (let i = 0; i < assignmentCount; i += 1) {
+                const dueDate = new Date(today);
+                dueDate.setDate(today.getDate() + randomInt(2, 120));
+                const taskType = pick(taskPool);
+
+                assignments.push({
+                    id: `assignment_demo_${now}_${subjectIndex}_${i}`,
+                    courseId: subjectId,
+                    task: `${taskType} ${i + 1}`,
+                    description: pick(descPool),
+                    priority: pick(priorities),
+                    status: pick(statuses),
+                    dueDate: formatISODate(dueDate),
+                    weighting: Number(weightings[i].toFixed(1)),
+                    createdAt: now - randomInt(0, 10) * 86400000,
+                    updatedAt: now - randomInt(0, 2) * 3600000
+                });
+            }
+        });
+
+        return { subjects, assignments };
+    }
+
     function loadDemoTasksData() {
         const demoTasksByDate = generateDemoTasksByDate();
+        const demoAssignments = generateDemoAssignmentsData();
         localStorage.setItem(TASKS_KEY, JSON.stringify(demoTasksByDate));
+        localStorage.setItem(SUBJECTS_KEY, JSON.stringify(demoAssignments.subjects));
+        localStorage.setItem(ASSIGNMENTS_KEY, JSON.stringify(demoAssignments.assignments));
         localStorage.setItem(USER_NAME_KEY, "Demo Student");
         localStorage.setItem(SEMESTER_KEY, DEFAULT_SEMESTER_LABEL);
 

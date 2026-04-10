@@ -596,9 +596,9 @@ body.nav-collapsed .system-settings {
 
 .carousel-footer {
     display: grid;
-    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    grid-template-columns: 50px minmax(0, 1fr) 50px;
     align-items: center;
-    width: calc(var(--pie-size) + 80px);
+    width: calc(var(--pie-size) + 100px);
     max-width: 100%;
     justify-self: center;
 }

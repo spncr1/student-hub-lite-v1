@@ -126,14 +126,16 @@ body.dark-mode .date-header {
 
 body.dark-mode .home-overview {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+    grid-template-columns: minmax(0, 1fr) 800px;
     align-items: start;
     gap: 24px;
+    width: 100%;
 }
 
 body.dark-mode .home-date-summary {
     display: grid;
     justify-items: center;
+    grid-column: 2;
 }
 
 body.dark-mode .date-row {
@@ -469,11 +471,11 @@ body.dark-mode .upcoming-assignments-widget {
     gap: 8px;
     overflow: visible;
     position: relative;
-    box-shadow: -8px 8px 0 rgba(255, 255, 255, 0.18);
+    grid-column: 3;
+    box-shadow: 4px 4px 6px rgb(110, 160, 115);
 }
 
-body.dark-mode .today-tasks.has-more::after,
-body.dark-mode .upcoming-assignments-widget.has-more::after {
+body.dark-mode .today-tasks.has-more::after, body.dark-mode .upcoming-assignments-widget.has-more::after {
     content: "";
     position: absolute;
     left: 12px;
@@ -485,13 +487,16 @@ body.dark-mode .upcoming-assignments-widget.has-more::after {
     background: linear-gradient(to bottom, rgba(141, 157, 141, 0), rgba(141, 157, 141, 1));
 }
 
+body.dark-mode .upcoming-assignments-widget.has-more::after {
+    bottom: 5px;
+}
+
 body.dark-mode .upcoming-assignments-header h3 {
     margin: 0;
     text-align: left;
     line-height: 1.05;
-    color: #ddd;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 750;
 }
 
 body.dark-mode #upcoming-assignments-list {
@@ -506,21 +511,21 @@ body.dark-mode #upcoming-assignments-list {
     padding-right: 2px;
 }
 
-body.dark-mode .upcoming-assignment-link {
-    display: grid;
-    grid-template-columns: 68px minmax(0, 1fr);
-    gap: 0;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.75);
-    border: rgb(3, 46, 8) 1px solid;
-    border-radius: 10px;
-    padding: 0 10px 0 0;
-    text-decoration: none;
-    color: inherit;
+body.dark-mode .upcoming-assignment-item {
+    width: 100%;
+    max-width: 220px;
 }
 
-body.dark-mode .upcoming-assignment-link:hover {
-    transform: translateY(-1px);
+body.dark-mode .upcoming-assignment-link {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 0;
+    align-items: center;
+    background: rgb(84, 99, 84);
+    border-radius: 10px;
+    padding: 0 8px 0 0;
+    text-decoration: none;
+    color: inherit;
 }
 
 body.dark-mode .upcoming-assignment-countdown {
@@ -530,61 +535,46 @@ body.dark-mode .upcoming-assignment-countdown {
     gap: 1px;
     min-height: 100%;
     align-self: stretch;
-    padding: 8px 4px;
-    border-radius: 8px 0 0 8px;
-    background: rgba(141, 157, 141, 0.45);
-}
-
-body.dark-mode .upcoming-assignment-prefix {
-    font-size: 10px;
-    font-weight: 700;
-    color: rgba(17, 17, 17, 0.78);
-    letter-spacing: 0.06em;
+    border-radius: 8px;
+    background: rgba(124, 255, 122, 0.3);
 }
 
 body.dark-mode .upcoming-assignment-days-value {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
     line-height: 1;
-    color: #111;
+    color: #ddd;
 }
 
 body.dark-mode .upcoming-assignment-days-label {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
-    color: rgba(17, 17, 17, 0.78);
-    text-transform: uppercase;
+    color: #ddd;
     letter-spacing: 0.04em;
 }
 
 body.dark-mode .upcoming-assignment-content {
     display: grid;
-    gap: 3px;
+    gap: 1px;
     text-align: left;
 }
 
 body.dark-mode .upcoming-assignment-task {
     font-size: 15px;
-    font-weight: 700;
-    color: #111;
-    line-height: 1.12;
+    font-weight: 550;
+    color: #ddd;
+    padding-left: 4px;
 }
 
 body.dark-mode .upcoming-assignment-subject {
-    font-size: 12px;
-    color: rgba(17, 17, 17, 0.72);
-}
-
-body.dark-mode .upcoming-assignment-due-date {
-    font-size: 11px;
-    font-weight: 600;
-    color: #111;
+    font-size: 13px;
+    color: #ccc;
+    padding-left: 4px;
 }
 
 body.dark-mode .upcoming-assignment-empty {
     text-align: center;
     font-size: 16px;
-    font-weight: 600;
     color: #e9e9ea;
     padding: 12px 8px;
 }
@@ -1548,9 +1538,9 @@ body.dark-mode .carousel-content {
 
 body.dark-mode .carousel-footer {
     display: grid;
-    grid-template-columns: 30px minmax(0, 1fr) 30px;
+    grid-template-columns: 50px minmax(0, 1fr) 50px;
     align-items: center;
-    width: calc(var(--pie-size) + 36px);
+    width: calc(var(--pie-size) + 100px);
     max-width: 100%;
     justify-self: center;
 }
@@ -2429,10 +2419,6 @@ body.dark-mode .tbd-chip {
 body.dark-mode .tbd-chip {
     background: rgba(255, 255, 255, 0.7);
     color: #111;
-}
-
-body.dark-mode .tbd-chip:hover {
-    background: rgba(255, 255, 255, 0.9);
 }
 
 body.dark-mode .tbd-chip:hover {
