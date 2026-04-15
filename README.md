@@ -60,7 +60,7 @@ My motivation behind building this project was to help me build a clean, simple 
 ## Running the Project (locally)
 Clone the repoistory:
 ```bash
-https://github.com/spncr1/student-hub-lite-v1.git
+https://github.com/spncr1/nexa-v1.git
 ```
 
 Run the development server:
