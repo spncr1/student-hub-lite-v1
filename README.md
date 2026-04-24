@@ -1,8 +1,8 @@
-# NEXA - A Student Productivity Hub
+# NEXA - Student Workload Management Tool
 
-A browser-based productivity web app designed to help students manage tasks, assignments, and schedules all in the one place.
+A student-focused web application designed to centralise assignment tracking, task management, and academic workload within a single interface.
 
-My motivation behind building this project was to help me build a clean, simple system that visualises how daily work connects to larger academic goals. The focus was on clarity, usability, and creating an interface that makes planning feel calm rather than overwhelming.
+My motivation behind building this project was to address how overwhelming managing academic work across multiple disconnected productivity platforms can be. Rather than splitting workflows across different apps, I wanted to create a cleaner, more structured interface that makes it easier to track assignments, organise smaller tasks, and visualise day-to-day workload more effectively. The project has also become a way for me to explore how a practical student-facing tool can evolve from a frontend-driven application initially, into a more complete, full-stack system.
 
 *Live version: https://nexa-v1.vercel.app/*
 
@@ -26,34 +26,36 @@ My motivation behind building this project was to help me build a clean, simple 
 - **Dark Mode**
     - Toggle between light and dark mode interfaces to account for different user preferences
 - **Data Storage**
-    - For now, all data is stored within the browser via localStorage
-
+    - The current version utilises a Node.js, Express, and PostgreSQLL backend to support user authentication, persistent data storage, and multi-user scalability
 ---
 
 ## Screenshots
 ### Dashboard Overview
-![Dashboard](Screenshots/app-screenshot-1.png)
+![Dashboard](/client/shared/assets/Screenshots/app-screenshot-1.png)
 
 ### Weekly Task Planner
-![Tasks Planner](Screenshots/app-screenshot-2.png)
+![Tasks Planner](/client/shared/assets/Screenshots/app-screenshot-2.png)
 
 ### Monthly Calendar View
-![Calendar](Screenshots/app-screenshot-3.png)
+![Calendar](/client/shared/assets/Screenshots/app-screenshot-3.png)
 
 ### Assignment Analytics & Visual Widgets
-![Assignments](Screenshots/app-screenshot-4.png)
+![Assignments](/client/shared/assets/Screenshots/app-screenshot-4.png)
 
 ### Dark Mode
-![Dark Mode](Screenshots/app-screenshot-5.png)
+![Dark Mode](/client/shared/assets/Screenshots/app-screenshot-5.png)
 
 ---
 
 ## Tech Stack
 - **HTML**
 - **CSS**
-- **JavaScript** (vanilla)
+- **JavaScript**
 - **Chart.js** for data visualisations
 - **Vercel** for deployment
+- **Node.js** for backend
+- **Express** for backend
+- **PostgreSQL** for backend
 
 ---
 
@@ -73,10 +75,8 @@ Then open the local URL shown in the terminal by clicking on it.
 ---
 
 ## Future Improvements
-Some ideas for future iterations:
-- User accounts and cloud storage
-- Login page
+- Continued refinement of the interface and overall user workflow
 - Mobile optimisation
 - Notifications & reminder systems
 - Additional producitivity analytics & visuals
-- Additional features with practical usage beyond school/university
+- Additional features with practical usage beyond a solely school/university focus
