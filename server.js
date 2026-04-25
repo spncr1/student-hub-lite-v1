@@ -1,26 +1,38 @@
+/*
+    handles Express routes and middleware (auth)
+*/
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
 const express = require('express')
+const path = require('path')
 const app = express()
 const bcrypt = require('bcrypt') // needed to facilitate password hashing
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const {
+    createUser,
+    ensureDatabaseSchema,
+    findUserByEmail,
+    findUserById,
+    formatDbError,
+    getUserAppState,
+    saveUserAppState,
+    testDatabaseConnection,
+    updateUserById
+} = require('./db')
 
 const initialisePassport = require('./passport.config')
 initialisePassport(
     passport, 
-    email => users.find(user => user.email === email), 
-    id => users.find(user => user.id === id)
+    findUserByEmail,
+    findUserById
 )
 
-const users = [] /* where we're storing our users (for now, this will be upgraded to integrate the PostgreSQL DB later) */
-// when app reloads, all users are gone, because this is all saved in memory, so connecting the DB will most likely be the next natural step here
-
-app.set('view-engine', 'ejs')
+app.set('view engine', 'ejs')
 app.use(express.urlencoded( { extended: false })) // allows us to take the forms in our ejs files and then be able to access them inside of our request variable inside of our POST method
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -33,8 +45,12 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(express.json()) // allows our application to accept JSON
 
-app.get('/', checkAuthenticated, (req, res) => {
-    res.render('index.ejs', { name: req.user.name })
+app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+        return res.redirect('/index.html')
+    }
+
+    res.redirect('/login')
 });
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -46,71 +62,133 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 });
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/index.html',
     failureRedirect: '/login',
     failureFlash: true
 }))
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
     try {
+        const existingUser = await findUserByEmail(req.body.email)
+        if (existingUser) {
+            req.flash('error', 'An account with that email already exists')
+            return res.redirect('/register')
+        }
+
         const hashed_password = await bcrypt.hash(req.body.password, 10);
-        
-        users.push ({ // only using this for this tutorial because when connecting a DB, this is automatically done for you
-            id: Date.now().toString(),
+
+        await createUser({
             name: req.body.name,
             email: req.body.email,
-            password: hashed_password
-        }); 
+            passwordHash: hashed_password
+        })
+
+        req.flash('success', 'Account created successfully. You can log in now.')
         res.redirect('/login') // redirect to login page so user can login with the account they just registered
-    } catch {
+    } catch (error) {
+        console.error('Failed to register user:', formatDbError(error))
+        req.flash('error', 'Could not create account right now')
         res.redirect('/register') // redirect to register in case of a failure
     }
-    console.log(users)
 });
 
-// User authentication
-app.get('/users', (req, res) => { //request, response
-    res.json(users) //send our users
-});
-
-/* handles for creating a user, hashing the password they send, and saving this into our users variable (list) */
-app.post('/users', async (req, res) => {
-    try {
-        const hashed_password = await bcrypt.hash(req.body.password, 10) // 10 by default
-        const user = { name: req.body.name, password: hashed_password }
-        users.push(user)
-        res.status(201).send() // sends a blank response back to the user
-        // hash(salt + 'password') - salt is a unique, random string generated for each password. without it, identical passwords produce identical hashes. we don't have to use this line of code here, its more of an example, for this project, we will use bcrypt
-    } catch { // in case something goes wrong
-        res.status(500).send()
-    }
-});
-
-app.post('/users/login', async(req, res) => {
-    const user = users.find(user => user.name = req.body.name) // trying to find a particular user based on the name we pass in
-    if (user == null) { // if user does not exist
-        return res.status(400).send('Cannot find user')
-    }
-
-    try {
-        if (await bcrypt.compare(req.body.password, user.password)) { //user.password is the hashed version of the password, where this if statement checks if the passwords are the same, and if they are, then the user is logged in
-            res.status(500).send() // success
-        } else {
-            res.send('Not allowed')
-        }
-    } catch {
-        res.status(500).send()
-    }
-});
-
-app.delete('/logout', (req, res) => {
+app.delete('/logout', (req, res, next) => {
     req.logout(function(err) {
         if (err) {
             return next(err)
         }
-        res.redirect('/login');
+        req.session.destroy((sessionError) => {
+            if (sessionError) {
+                return next(sessionError)
+            }
+
+            res.clearCookie('connect.sid')
+            res.status(204).send()
+        })
     })
 });
+
+app.get('/api/me', checkAuthenticatedApi, (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email
+    })
+})
+
+app.patch('/api/me', checkAuthenticatedApi, async (req, res) => {
+    try {
+        const name = (req.body?.name || '').trim()
+        const email = (req.body?.email || '').trim().toLowerCase()
+
+        if (!name || !email) {
+            return res.status(400).json({ error: 'Name and email are required' })
+        }
+
+        const existingUser = await findUserByEmail(email)
+        if (existingUser && String(existingUser.id) !== String(req.user.id)) {
+            return res.status(409).json({ error: 'That email is already in use' })
+        }
+
+        const updatedUser = await updateUserById(req.user.id, { name, email })
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        req.login(updatedUser, (loginError) => {
+            if (loginError) {
+                console.error('Failed to refresh session user:', formatDbError(loginError))
+                return res.status(500).json({ error: 'Could not refresh session right now' })
+            }
+
+            return res.json({
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email
+            })
+        })
+    } catch (error) {
+        console.error('Failed to update user account:', formatDbError(error))
+        res.status(500).json({ error: 'Could not update account right now' })
+    }
+})
+
+app.get('/api/app-state', checkAuthenticatedApi, async (req, res) => {
+    try {
+        const storage = await getUserAppState(req.user.id)
+
+        if (!storage.studenthub_user_name && req.user.name) {
+            storage.studenthub_user_name = req.user.name
+        }
+
+        res.json({ storage })
+    } catch (error) {
+        console.error('Failed to load app state:', formatDbError(error))
+        res.status(500).json({ error: 'Could not load app data right now' })
+    }
+})
+
+app.put('/api/app-state', checkAuthenticatedApi, async (req, res) => {
+    try {
+        const incomingStorage = req.body?.storage
+        const storage = incomingStorage && typeof incomingStorage === 'object' ? incomingStorage : {}
+
+        if (!storage.studenthub_user_name && req.user.name) {
+            storage.studenthub_user_name = req.user.name
+        }
+
+        const savedStorage = await saveUserAppState(req.user.id, storage)
+        res.json({ storage: savedStorage })
+    } catch (error) {
+        console.error('Failed to save app state:', formatDbError(error))
+        res.status(500).json({ error: 'Could not save app data right now' })
+    }
+})
+
+app.get('/index.html', checkAuthenticated, sendProtectedHtml)
+app.get('/client/features/:featureName/:pageName.html', checkAuthenticated, sendProtectedHtml)
+
+app.use(express.static(__dirname))
 
 //middleware function
 function checkAuthenticated(req, res, next) {
@@ -128,6 +206,34 @@ function checkNotAuthenticated(req, res, next) {
     next()
 }
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000')
-})
+function checkAuthenticatedApi(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next()
+    }
+
+    res.status(401).json({ error: 'Not authenticated' })
+}
+
+function sendProtectedHtml(req, res) {
+    res.sendFile(path.join(__dirname, req.path))
+}
+
+const PORT = process.env.PORT || 3000
+
+async function startServer() {
+    try {
+        await testDatabaseConnection()
+        console.log('Database connection OK')
+        await ensureDatabaseSchema()
+        console.log('Database schema OK')
+
+        app.listen(PORT, () => {
+          console.log(`Server running at http://localhost:${PORT}`)
+        })
+    } catch (error) {
+        console.error('Database startup check failed:', formatDbError(error))
+        process.exit(1)
+    }
+}
+
+startServer()

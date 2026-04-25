@@ -1,18 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    await window.NexaAppStorage.ready;
+    const storage = window.NexaAppStorage;
+    const currentUser = storage.getCurrentUser();
     const menuToggle = document.querySelector(".menu-toggle");
     const NAV_COLLAPSED_KEY = "studenthub_nav_collapsed";
     const mobileNavQuery = window.matchMedia("(max-width: 768px)");
 
     function setNavCollapsed(isCollapsed) {
         document.body.classList.toggle("nav-collapsed", isCollapsed);
-        localStorage.setItem(NAV_COLLAPSED_KEY, isCollapsed ? "1" : "0");
+        storage.setItem(NAV_COLLAPSED_KEY, isCollapsed ? "1" : "0");
         if (menuToggle) {
             menuToggle.setAttribute("aria-expanded", (!isCollapsed).toString());
         }
     }
 
     if (menuToggle) {
-        const savedCollapsed = localStorage.getItem(NAV_COLLAPSED_KEY) === "1";
+        const savedCollapsed = storage.getItem(NAV_COLLAPSED_KEY) === "1";
         setNavCollapsed(mobileNavQuery.matches ? true : savedCollapsed);
         menuToggle.addEventListener("click", () => {
             const next = !document.body.classList.contains("nav-collapsed");
@@ -89,17 +92,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const STORAGE_KEY = "studenthub_subjects";
     const USER_NAME_KEY = "studenthub_user_name";
     const SEMESTER_KEY = "studenthub_semester_label";
-    const DEFAULT_USER_NAME = "Student";
-    const DEFAULT_SEMESTER_LABEL = "Autumn Session 2026";
+    const DEFAULT_USER_NAME = currentUser?.name || "Student"; // if for whatever reason an issue occurs with the name loading, the default should just be "student"
+    const DEFAULT_SEMESTER_LABEL = "Untitled Semester";
     const APP_DATA_KEYS = [TASKS_KEY, STORAGE_KEY, ASSIGNMENTS_KEY, USER_NAME_KEY, SEMESTER_KEY];
 
     function loadUserName() {
-        const saved = localStorage.getItem(USER_NAME_KEY);
+        const saved = storage.getItem(USER_NAME_KEY);
         return saved && saved.trim() ? saved : DEFAULT_USER_NAME;
     }
 
     function loadSemesterLabel() {
-        const saved = localStorage.getItem(SEMESTER_KEY);
+        const saved = storage.getItem(SEMESTER_KEY);
         return saved && saved.trim() ? saved : DEFAULT_SEMESTER_LABEL;
     }
 
@@ -124,27 +127,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const nameValue = (accountNameInput?.value || "").trim() || DEFAULT_USER_NAME;
         const semesterValue = (accountSemesterInput?.value || "").trim() || DEFAULT_SEMESTER_LABEL;
 
-        localStorage.setItem(USER_NAME_KEY, nameValue);
-        localStorage.setItem(SEMESTER_KEY, semesterValue);
+        storage.setItem(USER_NAME_KEY, nameValue);
+        storage.setItem(SEMESTER_KEY, semesterValue);
         populateAccountInputs();
         renderSemesterLabel();
     }
 
     function loadSubjects() {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            const raw = storage.getItem(STORAGE_KEY);
             const parsed = raw ? JSON.parse(raw) : [];
             return Array.isArray(parsed)
                 ? parsed.filter(s => s && typeof s.id === "string" && typeof s.name === "string")
                 : [];
         } catch (e) {
-            console.warn("Failed to parse subjects from localStorage:", e);
+            console.warn("Failed to parse subjects:", e);
             return [];
         }
     }
 
     function saveSubjects(subjects) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+        storage.setItem(STORAGE_KEY, JSON.stringify(subjects));
     }
 
     let editingSubjectId = null;
@@ -351,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setDarkMode(isOn) {
         document.body.classList.toggle("dark-mode", isOn);
-        localStorage.setItem("darkMode", isOn ? "1" : "0");
+        storage.setItem("darkMode", isOn ? "1" : "0");
     }
 
     if (systemSettingsBtn && systemSettingsModal && backdrop) {
@@ -376,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setActiveTab("general");
 
         if (darkToggle) {
-            const saved = localStorage.getItem("darkMode") === "1";
+            const saved = storage.getItem("darkMode") === "1";
             darkToggle.checked = saved;
             setDarkMode(saved);
 
@@ -389,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add Assignment
     function loadAssignments() {
         try {
-            const raw = localStorage.getItem(ASSIGNMENTS_KEY);
+            const raw = storage.getItem(ASSIGNMENTS_KEY);
             const parsed = raw ? JSON.parse(raw) : [];
             if (!Array.isArray(parsed)) return [];
 
@@ -406,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function saveAssignments(assignments) {
-        localStorage.setItem(ASSIGNMENTS_KEY, JSON.stringify(assignments));
+        storage.setItem(ASSIGNMENTS_KEY, JSON.stringify(assignments));
     }
 
     function getSubjectWeightingTotal(courseId, excludeAssignmentId = null) {
@@ -814,7 +817,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (!confirmed) return;
 
-        localStorage.removeItem(ASSIGNMENTS_KEY);
+        storage.removeItem(ASSIGNMENTS_KEY);
         editingAssignmentId = null;
 
         closeAssignmentModal();
@@ -834,7 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function hasAnyAppData() {
         return APP_DATA_KEYS.some((key) => {
-            const raw = localStorage.getItem(key);
+            const raw = storage.getItem(key);
             if (raw === null || raw.trim() === "") return false;
 
             try {
@@ -866,7 +869,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (!confirmed) return;
 
-        APP_DATA_KEYS.forEach((key) => localStorage.removeItem(key));
+        APP_DATA_KEYS.forEach((key) => storage.removeItem(key));
         editingAssignmentId = null;
         editingSubjectId = null;
 
@@ -1015,10 +1018,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function loadDemoAssignmentsData() {
         const demo = generateDemoAssignmentsData();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(demo.subjects));
-        localStorage.setItem(ASSIGNMENTS_KEY, JSON.stringify(demo.assignments));
-        localStorage.setItem(USER_NAME_KEY, "Demo Student");
-        localStorage.setItem(SEMESTER_KEY, DEFAULT_SEMESTER_LABEL);
+        storage.setItem(STORAGE_KEY, JSON.stringify(demo.subjects));
+        storage.setItem(ASSIGNMENTS_KEY, JSON.stringify(demo.assignments));
+        storage.setItem(USER_NAME_KEY, "Demo Student");
+        storage.setItem(SEMESTER_KEY, DEFAULT_SEMESTER_LABEL);
 
         editingAssignmentId = null;
         editingSubjectId = null;

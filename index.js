@@ -1,18 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    await window.NexaAppStorage.ready;
+    const storage = window.NexaAppStorage;
+    const currentUser = storage.getCurrentUser();
     const menuToggle = document.querySelector(".menu-toggle");
     const NAV_COLLAPSED_KEY = "studenthub_nav_collapsed";
     const mobileNavQuery = window.matchMedia("(max-width: 768px)");
 
     function setNavCollapsed(isCollapsed) {
         document.body.classList.toggle("nav-collapsed", isCollapsed);
-        localStorage.setItem(NAV_COLLAPSED_KEY, isCollapsed ? "1" : "0");
+        storage.setItem(NAV_COLLAPSED_KEY, isCollapsed ? "1" : "0");
         if (menuToggle) {
             menuToggle.setAttribute("aria-expanded", (!isCollapsed).toString());
         }
     }
 
     if (menuToggle) {
-        const savedCollapsed = localStorage.getItem(NAV_COLLAPSED_KEY) === "1";
+        const savedCollapsed = storage.getItem(NAV_COLLAPSED_KEY) === "1";
         setNavCollapsed(mobileNavQuery.matches ? true : savedCollapsed);
         menuToggle.addEventListener("click", () => {
             const next = !document.body.classList.contains("nav-collapsed");
@@ -61,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendarNextMonthBtn = document.getElementById("calendar-next-month");
 
     const sortSelect = document.getElementById("sort-select");
-    let currentSortMode = localStorage.getItem("taskSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
+    let currentSortMode = storage.getItem("taskSortMode") || "createdNewOld"; // load saved sort mode (default: createdNewOld)
     sortSelect.value = currentSortMode;
 
     // SYSTEM SETTINGS
@@ -74,8 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetAppDataBtn = document.getElementById("reset-app-data-btn");
     const loadDemoDataBtn = document.getElementById("load-demo-data-btn");
     const accountNameInput = document.getElementById("account-name-input");
+    const accountEmailInput = document.getElementById("account-email-input");
     const accountSemesterInput = document.getElementById("account-semester-input");
     const saveAccountBtn = document.getElementById("save-account-btn");
+    const logoutBtn = document.getElementById("logout-btn");
 
     let selectedDate = new Date();
 
@@ -89,8 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const SUBJECTS_KEY = "studenthub_subjects";
     const USER_NAME_KEY = "studenthub_user_name";
     const SEMESTER_KEY = "studenthub_semester_label";
-    const DEFAULT_USER_NAME = "Student";
-    const DEFAULT_SEMESTER_LABEL = "Autumn Session 2026";
+    const DEFAULT_USER_NAME = currentUser?.name || "Student";
+    const DEFAULT_SEMESTER_LABEL = "Untitled Semester";
     const APP_DATA_KEYS = [TASKS_KEY, SUBJECTS_KEY, ASSIGNMENTS_KEY, USER_NAME_KEY, SEMESTER_KEY];
     const ASSIGNMENTS_PREVIEW_LIMIT = 2;
     const UPCOMING_ASSIGNMENTS_LIMIT = 3;
@@ -99,12 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let statusTimer = null;
 
     function loadUserName() {
-        const saved = localStorage.getItem(USER_NAME_KEY);
+        const saved = storage.getItem(USER_NAME_KEY);
         return saved && saved.trim() ? saved : DEFAULT_USER_NAME;
     }
 
     function loadSemesterLabel() {
-        const saved = localStorage.getItem(SEMESTER_KEY);
+        const saved = storage.getItem(SEMESTER_KEY);
         return saved && saved.trim() ? saved : DEFAULT_SEMESTER_LABEL;
     }
 
@@ -127,21 +132,69 @@ document.addEventListener("DOMContentLoaded", () => {
         if (accountNameInput) {
             accountNameInput.value = loadUserName();
         }
+        if (accountEmailInput) {
+            accountEmailInput.value = currentUser?.email || "";
+        }
         if (accountSemesterInput) {
             accountSemesterInput.value = loadSemesterLabel();
         }
     }
 
-    function saveAccountSettings() {
+    async function saveAccountSettings() {
         const nameValue = (accountNameInput?.value || "").trim() || DEFAULT_USER_NAME;
+        const emailValue = (accountEmailInput?.value || "").trim().toLowerCase();
         const semesterValue = (accountSemesterInput?.value || "").trim() || DEFAULT_SEMESTER_LABEL;
 
-        localStorage.setItem(USER_NAME_KEY, nameValue);
-        localStorage.setItem(SEMESTER_KEY, semesterValue);
+        if (!emailValue) {
+            window.alert("Email cannot be blank.");
+            populateAccountInputs();
+            return;
+        }
+
+        const response = await fetch("/api/me", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                name: nameValue,
+                email: emailValue
+            })
+        });
+
+        if (!response.ok) {
+            const payload = await response.json().catch(() => ({}));
+            window.alert(payload.error || "Could not update account details right now.");
+            populateAccountInputs();
+            return;
+        }
+
+        currentUser = await response.json();
+        storage.setCurrentUser(currentUser);
+        storage.setItem(USER_NAME_KEY, nameValue);
+        storage.setItem(SEMESTER_KEY, semesterValue);
 
         renderUserName();
         renderSemesterLabel();
         populateAccountInputs();
+    }
+
+    async function logoutCurrentUser() {
+        const confirmed = window.confirm("Are you sure you want to log out?");
+        if (!confirmed) return;
+
+        const response = await fetch("/logout", {
+            method: "DELETE",
+            credentials: "same-origin"
+        });
+
+        if (!response.ok) {
+            window.alert("Could not log out right now.");
+            return;
+        }
+
+        window.location.href = "/login";
     }
 
     // converts selectedDate to YYYY-MM-DD
@@ -152,10 +205,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${y}-${m}-${d}`;
     }
 
-    // load/save tasks object from localStorage
+
     function loadAllTasks() {
         try {
-            const raw = localStorage.getItem(TASKS_KEY);
+            const raw = storage.getItem(TASKS_KEY);
             const parsed = raw ? JSON.parse(raw) : {};
             return parsed && typeof parsed === "object" ? parsed : {};
         } catch (e) {
@@ -166,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function loadAssignments() {
         try {
-            const raw = localStorage.getItem(ASSIGNMENTS_KEY);
+            const raw = storage.getItem(ASSIGNMENTS_KEY);
             const parsed = raw ? JSON.parse(raw) : [];
             return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
@@ -177,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function loadSubjectsMap() {
         try {
-            const raw = localStorage.getItem(SUBJECTS_KEY);
+            const raw = storage.getItem(SUBJECTS_KEY);
             const parsed = raw ? JSON.parse(raw) : [];
             if (!Array.isArray(parsed)) return new Map();
 
@@ -193,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function saveAllTasks(tasksByDate) {
-        localStorage.setItem(TASKS_KEY, JSON.stringify(tasksByDate));
+        storage.setItem(TASKS_KEY, JSON.stringify(tasksByDate));
     }
 
     // render tasks for the currently selected date
@@ -833,7 +886,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setDarkMode(isOn) {
         document.body.classList.toggle("dark-mode", isOn);
-        localStorage.setItem("darkMode", isOn ? "1" : "0");
+        storage.setItem("darkMode", isOn ? "1" : "0");
     }
 
     function randomInt(min, max) {
@@ -846,7 +899,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function hasAnyAppData() {
         return APP_DATA_KEYS.some((key) => {
-            const raw = localStorage.getItem(key);
+            const raw = storage.getItem(key);
             if (raw === null || raw.trim() === "") return false;
 
             try {
@@ -1052,7 +1105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (!confirmed) return;
 
-        APP_DATA_KEYS.forEach((key) => localStorage.removeItem(key));
+        APP_DATA_KEYS.forEach((key) => storage.removeItem(key));
         editingTaskId = null;
         selectedDate = new Date();
         selectedDate.setHours(12, 0, 0, 0);
@@ -1066,11 +1119,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const demoTasks = generateDemoTasksByDate();
         const demoAssignments = generateDemoAssignmentsData();
 
-        localStorage.setItem(TASKS_KEY, JSON.stringify(demoTasks));
-        localStorage.setItem(SUBJECTS_KEY, JSON.stringify(demoAssignments.subjects));
-        localStorage.setItem(ASSIGNMENTS_KEY, JSON.stringify(demoAssignments.assignments));
-        localStorage.setItem(USER_NAME_KEY, "Demo Student");
-        localStorage.setItem(SEMESTER_KEY, DEFAULT_SEMESTER_LABEL);
+        storage.setItem(TASKS_KEY, JSON.stringify(demoTasks));
+        storage.setItem(SUBJECTS_KEY, JSON.stringify(demoAssignments.subjects));
+        storage.setItem(ASSIGNMENTS_KEY, JSON.stringify(demoAssignments.assignments));
+        storage.setItem(USER_NAME_KEY, "Demo Student");
+        storage.setItem(SEMESTER_KEY, DEFAULT_SEMESTER_LABEL);
 
         editingTaskId = null;
         selectedDate = new Date();
@@ -1124,7 +1177,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sortSelect.addEventListener("change", () => {
         currentSortMode = sortSelect.value;
-        localStorage.setItem("taskSortMode", currentSortMode);
+        storage.setItem("taskSortMode", currentSortMode);
         renderTasksForSelectedDate();
     });
 
@@ -1158,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (darkToggle) {
         // load saved preference
-        const saved = localStorage.getItem("darkMode") === "1";
+        const saved = storage.getItem("darkMode") === "1";
         darkToggle.checked = saved;
         setDarkMode(saved);
 
@@ -1176,7 +1229,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (saveAccountBtn) {
-        saveAccountBtn.addEventListener("click", saveAccountSettings);
+        saveAccountBtn.addEventListener("click", () => {
+            saveAccountSettings().catch((error) => {
+                console.error("Failed to save account settings:", error);
+                window.alert("Could not update account details right now.");
+            });
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            logoutCurrentUser().catch((error) => {
+                console.error("Failed to log out:", error);
+                window.alert("Could not log out right now.");
+            });
+        });
     }
 
     taskListEl?.addEventListener("scroll", updateHomeOverflowHints);

@@ -939,7 +939,7 @@ body.nav-collapsed .system-settings {
 .settings-layout {
     display: grid;
     grid-template-columns: 120px 1fr;
-    min-height: 240px;
+    height: auto;
 }
 
 .settings-sidebar {
@@ -1009,12 +1009,16 @@ body.nav-collapsed .system-settings {
 
 .settings-panel.hidden { display: none; }
 
+.settings-content {
+    padding-bottom: 16px;
+}
+
 .setting-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 14px;
-    margin-top: 12px;
+    margin-top: 6px;
 }
 
 .setting-labels { text-align: left; margin-left: 10px; }
@@ -1035,7 +1039,7 @@ body.nav-collapsed .system-settings {
 
 .setting-action-btn:hover {
     transform: scale(1.03);
-    filter: brightness(1.04);
+    filter: brightness(1.15);
 }
 
 .setting-action-btn.danger {
@@ -1046,6 +1050,11 @@ body.nav-collapsed .system-settings {
 .setting-action-btn.success {
     background: #2f9a4a;
     border-color: #227738;
+}
+
+.setting-action-btn.neutral {
+    background: #2f5d9a;
+    border-color: #132a4896;
 }
 
 .setting-account-input {

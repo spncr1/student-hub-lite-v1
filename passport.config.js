@@ -1,14 +1,18 @@
+/*
+    handles authentication logic
+*/
+
 const localStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 
 function initialize(passport, getUserByEmail, getUserById) {
     const authenticateUser = async (email, password, done) => { // call "done" when we're done authenticating our user
-        const user = getUserByEmail(email)
-        if (user == null) {
-            return done(null, false, { message: "No user with that email" })
-        }
-
         try {
+            const user = await getUserByEmail(email)
+            if (user == null) {
+                return done(null, false, { message: "No user with that email" })
+            }
+
             if (await bcrypt.compare(password, user.password)) {
                 return done(null, user)
             } else {
@@ -20,8 +24,13 @@ function initialize(passport, getUserByEmail, getUserById) {
     }
     passport.use(new localStrategy({ usernameField: 'email' }, authenticateUser))
     passport.serializeUser((user, done) => done(null, user.id));
-    passport.deserializeUser((id, done) => {
-        return done(null, getUserById(id))
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await getUserById(id)
+            return done(null, user)
+        } catch (e) {
+            return done(e)
+        }
     })
 }
 
