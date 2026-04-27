@@ -32,6 +32,24 @@ initialisePassport(
     findUserById
 )
 
+let startupPromise = null
+
+function ensureAppReady() {
+    if (!startupPromise) {
+        startupPromise = (async () => {
+            await testDatabaseConnection()
+            console.log('Database connection OK')
+            await ensureDatabaseSchema()
+            console.log('Database schema OK')
+        })().catch((error) => {
+            startupPromise = null
+            throw error
+        })
+    }
+
+    return startupPromise
+}
+
 app.set('view engine', 'ejs')
 app.use(express.urlencoded( { extended: false })) // allows us to take the forms in our ejs files and then be able to access them inside of our request variable inside of our POST method
 app.use(session({
@@ -44,6 +62,15 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(express.json()) // allows our application to accept JSON
+app.use(async (req, res, next) => {
+    try {
+        await ensureAppReady()
+        next()
+    } catch (error) {
+        console.error('App startup check failed:', formatDbError(error))
+        res.status(500).send('Application startup failed')
+    }
+})
 
 app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
@@ -187,8 +214,7 @@ app.put('/api/app-state', checkAuthenticatedApi, async (req, res) => {
 
 app.get('/index.html', checkAuthenticated, sendProtectedHtml)
 app.get('/client/features/:featureName/:pageName.html', checkAuthenticated, sendProtectedHtml)
-
-app.use(express.static(__dirname))
+app.use(express.static(path.join(__dirname, 'public')))
 
 //middleware function
 function checkAuthenticated(req, res, next) {
@@ -215,17 +241,14 @@ function checkAuthenticatedApi(req, res, next) {
 }
 
 function sendProtectedHtml(req, res) {
-    res.sendFile(path.join(__dirname, req.path))
+    res.sendFile(path.join(__dirname, 'public', req.path))
 }
 
 const PORT = process.env.PORT || 3000
 
 async function startServer() {
     try {
-        await testDatabaseConnection()
-        console.log('Database connection OK')
-        await ensureDatabaseSchema()
-        console.log('Database schema OK')
+        await ensureAppReady()
 
         app.listen(PORT, () => {
           console.log(`Server running at http://localhost:${PORT}`)
@@ -236,4 +259,8 @@ async function startServer() {
     }
 }
 
-startServer()
+if (require.main === module) {
+    startServer()
+}
+
+module.exports = app
