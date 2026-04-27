@@ -1,33 +1,13 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
-      "destination": "/api"
+      "src": "/",
+      "dest": "/"
     },
+
     {
-      "source": "/login",
-      "destination": "/api"
-    },
-    {
-      "source": "/register",
-      "destination": "/api"
-    },
-    {
-      "source": "/logout",
-      "destination": "/api"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    },
-    {
-      "source": "/index.html",
-      "destination": "/api"
-    },
-    {
-      "source": "/client/features/(.*)\\.html",
-      "destination": "/api"
+      "src": "/test",
+      "dest": "/"
     }
   ]
 }
