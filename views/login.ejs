@@ -1,21 +1,58 @@
-<h1>Login</h1>
-<% if (messages.success) { %>
-    <%= messages.success %>
-<% } %>
-<% if (messages.error) { %>
-    <%= messages.error %>
-<% } %>
-<form action="/login" method="POST"> <!-- POST to a route with the name /register (NOT our server) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXA - Login</title>
 
-    <div>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-    </div>
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="/client/shared/styles/auth.css">
+    
+    <!-- Primary Font (Headers & Titles - Manrope) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Login</button> <!-- to submit form -->
-</form>
-<a href="/register">Register</a>
+    <!-- Secondary Font (Body Text - Noto Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/client/shared/assets/Images/nexa-v1.png">
+</head>
+<body>
+
+    <main class="content">
+        <img id="nexa-logo" src="/client/shared/assets/Images/nexa-v1.png">
+        <h1>NEXA Login</h1>
+
+        <% if (messages.success) { %>
+            <p class="auth-message success"><%= messages.success %></p>
+        <% } %>
+
+        <% if (messages.error) { %>
+            <p class="auth-message error"><%= messages.error %></p>
+        <% } %>
+
+        <form class="auth-form" action="/login" method="POST">
+            <div class="form-row">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-row">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Don't have an account yet?</p> <!-- this is kinda just sitting here for now, but it does the job so i may just come back and polish this later -->
+
+        <a class="auth-link" href="/register">Register</a>
+    </main>
+
+</body>
+</html>
